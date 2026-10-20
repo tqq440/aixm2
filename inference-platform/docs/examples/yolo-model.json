@@ -1,0 +1,32 @@
+{
+  "modelId": "yolo-general",
+  "modelVersion": "yolov5n-v7.0-onnx",
+  "modelRepo": "ultralytics/yolov5",
+  "taskType": "vision",
+  "executionMode": "offline",
+  "adapterKey": "yolov5-onnx",
+  "parameterSchema": {
+    "defaultConfidenceThreshold": 0.25,
+    "defaultIouThreshold": 0.45,
+    "defaultMaxDetections": 100,
+    "maxDetections": 300
+  },
+  "inputConstraints": {
+    "maxFileBytes": 10485760,
+    "maxPixels": 20000000,
+    "formats": [
+      "JPEG",
+      "PNG"
+    ]
+  },
+  "outputCapabilities": [
+    "detections",
+    "imageDimensions"
+  ],
+  "resourceRequirements": {
+    "device": "cpu",
+    "inputType": "float16",
+    "maxConcurrency": 1,
+    "modelSha256": "04f0e55c26f58d17145b36045780fe1250d5bd2187543e11568e5141d05b3262"
+  }
+}

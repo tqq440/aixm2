@@ -1,5 +1,8 @@
 # concurrent_platform
 
+实际开发目录为 [`inference-platform/`](inference-platform/)，包含 Flask 后台、React 操作页面、数据库迁移、测试和 Windows 运行脚本。运行方式见 [平台 README](inference-platform/README.md)，当前状态见 [开发进度](inference-platform/docs/开发进度.md)；协作前请阅读 [AGENTS.md](AGENTS.md)。
+
+仓库保存源码和必要文档。运行数据库、上传文件、模型、依赖目录、`.env` 和密钥保留在本地；Git 上传不代表服务器部署或阶段验收通过。
 
 
 ## Getting started

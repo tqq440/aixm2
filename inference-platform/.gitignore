@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Runtime data, model weights, logs and temporary state
+/runtime/*
+!/runtime/.gitkeep
+*.log
+
+# Frontend dependencies and build output
+node_modules/
+dist/
+*.tsbuildinfo
+.vitest/
+playwright-report/
+test-results/
+
+# Editor and OS local state
+.idea/
+.DS_Store
+Thumbs.db

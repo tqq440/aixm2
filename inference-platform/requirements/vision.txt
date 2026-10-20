@@ -1,0 +1,3 @@
+-r asr.txt
+# Stage 9: reuse ONNX Runtime and NumPy from the existing ASR environment.
+Pillow==12.3.0

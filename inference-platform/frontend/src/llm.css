@@ -1,0 +1,41 @@
+.llm-service-panel { display: flex; align-items: center; gap: 15px; padding: 19px 22px; margin-bottom: 24px; }
+.llm-service-icon { width: 45px; height: 45px; display: grid; place-items: center; flex: 0 0 auto; color: #9a7b45; background: #faf3e6; border-radius: 9px; }
+.llm-service-copy { flex: 1; min-width: 0; }
+.llm-service-copy h2 { font-size: 14px; color: #415765; font-weight: 600; }
+.llm-service-copy p { font-size: 12px; line-height: 1.8; color: var(--muted); margin-top: 6px; }
+.llm-service-copy .llm-service-metrics { font-size: 11px; }
+.llm-service-tag { flex: 0 0 auto; padding: 5px 9px; border-radius: 4px; color: #947345; background: #faf4e9; font-size: 11px; }
+.llm-service-tag.is-configured { color: #58798b; background: #edf4f8; }
+.llm-work-grid { display: grid; grid-template-columns: minmax(280px, 360px) minmax(0, 1fr); align-items: start; gap: 24px; }
+.llm-compose-panel, .llm-output-panel, .llm-history-panel { padding: 24px; }
+.llm-compose-panel textarea { width: 100%; resize: vertical; min-height: 175px; max-height: 600px; padding: 12px; font: inherit; font-size: 13px; line-height: 1.9; color: #3e5861; background: #fcfdfd; border: 1px solid #dfe6e8; border-radius: 6px; }
+.llm-compose-panel textarea::placeholder { color: #97a5ac; }
+.llm-compose-panel textarea:disabled { background: #f7f9f8; }
+.llm-character-count { text-align: right; margin: 7px 0 22px; color: #86959c; font-size: 10px; }
+.llm-parameters { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin-bottom: 20px; }
+.llm-parameters input { height: 39px; padding: 0 10px; width: 100%; color: #3e5861; border: 1px solid #dfe6e8; border-radius: 5px; background: #fff; }
+.llm-parameters input:disabled { color: #94a0a6; background: #f7f9f8; }
+.llm-parameters p { font-size: 10px; color: var(--muted); margin-top: 7px; line-height: 1.6; }
+.llm-unconfigured-note, .llm-partial-note { padding: 12px 14px; color: #927a4a; background: #fbf7ed; border: 1px solid #eee3c9; border-radius: 6px; font-size: 12px; line-height: 1.8; margin-bottom: 17px; }
+.llm-reference { margin: 21px 0; }
+.llm-stream-status { display: flex; gap: 8px; align-items: center; color: var(--accent); font-size: 12px; margin: 18px 0; }
+.llm-response-text { min-height: 120px; padding: 22px 0; font-size: 14px; line-height: 2; color: #334d59; white-space: pre-wrap; overflow-wrap: anywhere; }
+.llm-empty-body { padding: 22px 0; font-size: 12px; line-height: 1.9; color: #87959c; }
+.llm-history-note { color: #82949c; font-size: 11px; margin-top: 12px; line-height: 1.8; }
+.llm-history-count { font-size: 11px; color: #879a9f; }
+.llm-history-empty { color: #899aa3; font-size: 12px; padding: 23px 0 8px; }
+.llm-history-list { margin-top: 15px; }
+.llm-history-item { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; text-align: left; color: #4d6672; padding: 13px 10px; border: 1px solid transparent; border-bottom-color: var(--line); background: #fff; border-radius: 5px; }
+.llm-history-item:hover { background: #f6faf8; }
+.llm-history-item.is-selected { background: #f0f8f4; border-color: #d4e7de; }
+.llm-history-item span { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.llm-history-item span:last-child { text-align: right; flex: 0 0 auto; }
+.llm-history-item strong { font-size: 12px; font-weight: 500; overflow-wrap: anywhere; }
+.llm-history-item code, .llm-history-item time { color: #8b9aa2; font-size: 10px; }
+.llm-history-item small { font-size: 11px; }
+.llm-pagination { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-top: 15px; color: #84979e; font-size: 10px; }
+.llm-pagination > div { display: flex; gap: 6px; }
+@media (max-width: 1100px) { .llm-work-grid { grid-template-columns: minmax(260px, 310px) minmax(0, 1fr); gap: 18px; } }
+@media (max-width: 900px) { .llm-work-grid { grid-template-columns: minmax(0, 1fr); } .llm-service-tag { display: none; } }
+@media (max-width: 760px) { .llm-compose-panel, .llm-output-panel, .llm-history-panel { padding: 21px; } .llm-service-panel { padding: 17px; gap: 12px; } .llm-service-icon { width: 36px; height: 36px; } .llm-service-copy h2 { line-height: 1.7; } .llm-service-copy p { font-size: 11px; } }
+@media (max-width: 420px) { .llm-compose-panel, .llm-output-panel, .llm-history-panel { padding: 19px; } .sidebar nav { flex-wrap: wrap; } }

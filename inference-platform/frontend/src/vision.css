@@ -1,0 +1,48 @@
+.vision-upload-panel form { display: block; }
+.vision-upload-panel .vision-dropzone { min-height: 182px; }
+.vision-upload-preview { display: block; max-width: 100%; width: auto; height: 142px; object-fit: contain; border-radius: 5px; margin-bottom: 12px; }
+.vision-dropzone.has-file small { margin-top: 10px; }
+.vision-remove-file { display: block; margin: 5px 0 0 auto; }
+.vision-preview-note { margin: 8px 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+.vision-upload-panel .input-limits { align-items: flex-start; line-height: 1.6; }
+.vision-upload-panel .input-limits svg { flex: 0 0 auto; margin-top: 2px; }
+.vision-parameters { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 17px 12px; margin: 0 0 24px; }
+.vision-parameters input { width: 100%; height: 40px; border: 1px solid #dfe6e8; border-radius: 5px; padding: 0 10px; color: #3e5861; background: #fff; font-size: 13px; }
+.vision-parameters input:disabled { background: #f7f8f9; color: #89969c; }
+.vision-parameters p { margin: 7px 0 0; font-size: 10px; line-height: 1.7; color: var(--muted); }
+.vision-parameter-wide { grid-column: 1 / -1; }
+.vision-image-section { margin-top: 24px; }
+.vision-image-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+.vision-image-toolbar h3 { font-size: 13px; font-weight: 550; color: #45636b; }
+.vision-image-switch { display: flex; padding: 3px; gap: 3px; background: #f0f5f3; border-radius: 6px; }
+.vision-image-switch button { min-height: 34px; padding: 6px 14px; border: 1px solid transparent; border-radius: 4px; font-size: 12px; background: transparent; color: #72857d; }
+.vision-image-switch button[aria-pressed="true"] { background: #fff; color: var(--accent); border-color: #dfe8e3; box-shadow: 0 1px 3px #253c4910; }
+.vision-image-switch button:disabled { opacity: .45; }
+.vision-image-stage { min-height: 180px; display: grid; place-items: center; padding: 12px; background: #f3f6f5; border: 1px solid #e4ebe7; border-radius: 7px; overflow: hidden; }
+.vision-image-stage figure { width: 100%; margin: 0; text-align: center; }
+.vision-result-image { display: block; max-width: 100%; max-height: 560px; width: auto; height: auto; margin: 0 auto; object-fit: contain; }
+.vision-image-stage .loading-state { margin: 18px 0; }
+.vision-image-note { font-size: 11px; line-height: 1.8; color: #7b8d95; margin: 10px 0 0; }
+.vision-image-error { width: 100%; }
+.vision-image-error .error-notice { margin: 0 0 10px; }
+.vision-detection-summary { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 0 0 16px; }
+.vision-detection-summary strong { font-size: 14px; color: #3d6558; }
+.vision-detection-summary span { font-size: 11px; color: var(--muted); }
+.vision-table-scroll { width: 100%; overflow: auto; border: 1px solid var(--line); border-radius: 6px; }
+.vision-detections { border-collapse: collapse; width: 100%; min-width: 590px; text-align: left; font-variant-numeric: tabular-nums; }
+.vision-detections caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.vision-detections th { font-size: 10px; font-weight: 500; color: #728a92; background: #f7faf8; white-space: nowrap; }
+.vision-detections td { font-size: 11px; color: #4b626d; }
+.vision-detections th, .vision-detections td { padding: 11px 12px; border-bottom: 1px solid var(--line); }
+.vision-detections tr:last-child td { border-bottom: none; }
+.vision-empty-detections { padding: 25px 20px; border: 1px solid #dcebe2; border-radius: 7px; background: #f8fcf9; line-height: 1.8; }
+.vision-empty-detections h3 { font-size: 14px; font-weight: 550; color: #3e6957; }
+.vision-empty-detections p { font-size: 12px; color: #778e80; margin-top: 6px; }
+.vision-detail-panel .result-actions { justify-content: flex-end; }
+@media (max-width: 1030px) { .vision-upload-panel form { display: block; } }
+@media (max-width: 760px) {
+  .vision-result-image { max-height: 430px; }
+  .vision-image-stage { padding: 7px; }
+  .vision-detection-summary { align-items: flex-start; flex-direction: column; gap: 7px; }
+  .vision-detail-panel .download-actions { width: 100%; }
+}

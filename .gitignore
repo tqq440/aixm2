@@ -1,0 +1,55 @@
+# This repository contains the active inference platform and its required references.
+# Other workspaces, archives, reports and temporary files stay local.
+/*
+!/.gitignore
+!/README.md
+!/AGENTS.md
+!/后端开发规范.md
+!/docs/
+!/inference-platform/
+
+/docs/*
+!/docs/后端开发规范-项目补充约定.md
+!/docs/分布式通用AI推理与算力调度平台-业务架构与详细设计-v2.1.md
+
+# Credentials and machine-specific state, including future additions.
+.env
+.env.*
+!.env.example
+.ssh/
+.aws/
+.codex/
+.agents/
+id_rsa
+id_ed25519
+id_ecdsa
+credentials.json
+secrets.json
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Generated files and local runtime assets.
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.venv/
+venv/
+node_modules/
+dist/
+build/
+*.log
+*.tsbuildinfo
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.onnx
+*.pt
+*.pth
+*.safetensors

@@ -1,0 +1,1906 @@
+{
+  "schema_version": 1,
+  "mode": "records_only",
+  "time_policy": "timestamps_only",
+  "plan_version": "v2.9",
+  "server_url": "https://multica.jasonhome.fun",
+  "cli_profile": "teacher",
+  "workspace": {
+    "id": "2481ec97-46db-4360-8c49-6629630b1099",
+    "slug": "bingfapingtai",
+    "name": "并发平台"
+  },
+  "project": {
+    "id": "1708b68d-a840-4e9b-985f-7b700948b949",
+    "name": "并发平台"
+  },
+  "sync_setup_started_at": "2026-10-14T00:17:38+08:00",
+  "last_synced_at": "2026-10-19T14:37:17+08:00",
+  "last_verified_at": "2026-10-19T14:37:27+08:00",
+  "bootstrap_evidence": "runtime/verification/multica-sync/20261014",
+  "runtime_binding": false,
+  "background_sync": false,
+  "issues": {
+    "overview": {
+      "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+      "identifier": "BING-3",
+      "title": "推理平台开发总览（v2.9）",
+      "status": "in_progress",
+      "parent_issue_id": null,
+      "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-3",
+      "last_synced_at": "2026-10-19T14:37:16+08:00",
+      "last_verified_at": "2026-10-19T14:37:27+08:00",
+      "remote_revision": 8,
+      "managed_description_sha256": "9a10bd2db412651689732490ce52b99f636d552f967d91f618bf4d32f36a63f6",
+      "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+      "remote_created_at": "2026-10-13T16:18:12Z",
+      "remote_updated_at": "2026-10-19T06:37:15Z"
+    },
+    "ASR-1": {
+      "id": "01a1360f-40db-732d-bd90-5b1e1f9f5222",
+      "identifier": "BING-4",
+      "title": "ASR-1：插件边界",
+      "status": "in_review",
+      "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+      "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-4",
+      "last_synced_at": "2026-10-14T00:18:51+08:00",
+      "last_verified_at": "2026-10-14T00:19:26+08:00",
+      "remote_revision": 1,
+      "managed_description_sha256": "d7f22620538172bdaf154ad847bc755a7f09f6162e91bc9011bedf7077fa3cba",
+      "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+      "remote_created_at": "2026-10-13T16:18:51Z",
+      "remote_updated_at": "2026-10-13T16:18:51Z"
+    },
+    "ASR-2": {
+      "id": "01a1360f-44aa-791b-a98f-b8dbad216ed1",
+      "identifier": "BING-5",
+      "title": "ASR-2：单节点 ASR 启停",
+      "status": "in_review",
+      "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+      "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-5",
+      "last_synced_at": "2026-10-14T11:38:20+08:00",
+      "last_verified_at": "2026-10-14T11:39:30+08:00",
+      "remote_revision": 2,
+      "managed_description_sha256": "7e0e56f0a20c3f9e2a06507df11f52a5b0f2118b12c6314291f3fc5ce6ae3786",
+      "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+      "remote_created_at": "2026-10-13T16:18:52Z",
+      "remote_updated_at": "2026-10-14T03:38:20Z"
+    },
+    "ASR-3": {
+      "id": "01a1360f-48b7-72bc-a624-6ff94d5f3fa6",
+      "identifier": "BING-6",
+      "title": "ASR-3：服务管理页面",
+      "status": "in_review",
+      "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+      "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-6",
+      "last_synced_at": "2026-10-14T11:38:21+08:00",
+      "last_verified_at": "2026-10-14T11:39:30+08:00",
+      "remote_revision": 2,
+      "managed_description_sha256": "75723b5875200d686ff79d9d1e353cd9931b8c32a717be0cc937d3dda9fd97ec",
+      "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+      "remote_created_at": "2026-10-13T16:18:53Z",
+      "remote_updated_at": "2026-10-14T03:38:21Z"
+    },
+    "ASR-4": {
+      "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+      "identifier": "BING-7",
+      "title": "ASR-4：课题组 ASR 接入",
+      "status": "in_progress",
+      "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+      "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-7",
+      "last_synced_at": "2026-10-19T14:37:17+08:00",
+      "last_verified_at": "2026-10-19T14:37:27+08:00",
+      "remote_revision": 9,
+      "managed_description_sha256": "3caf582f022e2c107f1a76b7c49a01425f4a09e72c9a0920b3c4078038878101",
+      "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+      "remote_created_at": "2026-10-13T16:18:54Z",
+      "remote_updated_at": "2026-10-19T06:37:16Z"
+    }
+  },
+  "pending": [],
+  "local_sources": [
+    "docs/开发计划.md",
+    "docs/开发进度.md",
+    "docs/阶段记录/ASR-1-插件边界-验收记录.md",
+    "docs/ASR服务对接清单.md",
+    "docs/阶段记录/ASR-2A-节点与实例登记-验收记录.md",
+    "docs/阶段记录/ASR-2B-独立启动与安全停止-验收记录.md",
+    "docs/阶段记录/ASR-3A-服务管理页面-验收记录.md",
+    "docs/阶段记录/ASR-3B-完整演示与集中交付-验收记录.md",
+    "docs/阶段记录/ASR-4A-外部调用可接入版本-验收记录.md",
+    "docs/外部ASR接入说明.md",
+    "docs/Remote-V2-ASR接口资料.md",
+    "docs/阶段记录/ASR-4B-真实服务联调-验收记录.md",
+    "docs/并发与设备分配方案.md",
+    "docs/阶段记录/v2.9-1-并发与设备分配核查记录.md"
+  ],
+  "last_verification_report": "runtime/verification/device-policy-3/multica-batch/verification-apply.json",
+  "sync_setup_completed_at": "2026-10-14T00:18:57+08:00",
+  "sync_setup_status": "verified",
+  "last_verification": {
+    "checked_at": "2026-10-19T14:37:27+08:00",
+    "mode": "apply",
+    "checkpoint": "v2.9-3-policy",
+    "passed": true,
+    "checks": {
+      "inventory_ids_unchanged": true,
+      "bing2_unchanged": true,
+      "comments_unchanged": true,
+      "resources_unchanged": true,
+      "project_metadata_unchanged": true,
+      "runs_unchanged": true,
+      "daemon_unchanged_stopped": true,
+      "active_autopilots_unchanged": true,
+      "ASR-1_unchanged": true,
+      "ASR-2_unchanged": true,
+      "ASR-3_unchanged": true,
+      "overview_readback": true,
+      "overview_protected_fields": true,
+      "ASR-4_readback": true,
+      "ASR-4_protected_fields": true
+    },
+    "created_count": 0,
+    "issue_count": 6,
+    "readbacks": {
+      "overview": {
+        "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+        "identifier": "BING-3",
+        "title": "推理平台开发总览（v2.9）",
+        "status": "in_progress",
+        "parent_issue_id": null,
+        "remote_revision": 8,
+        "remote_created_at": "2026-10-13T16:18:12Z",
+        "remote_updated_at": "2026-10-19T06:37:15Z",
+        "managed_description_sha256": "9a10bd2db412651689732490ce52b99f636d552f967d91f618bf4d32f36a63f6",
+        "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF"
+      },
+      "ASR-4": {
+        "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+        "identifier": "BING-7",
+        "title": "ASR-4：课题组 ASR 接入",
+        "status": "in_progress",
+        "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+        "remote_revision": 9,
+        "remote_created_at": "2026-10-13T16:18:54Z",
+        "remote_updated_at": "2026-10-19T06:37:16Z",
+        "managed_description_sha256": "3caf582f022e2c107f1a76b7c49a01425f4a09e72c9a0920b3c4078038878101",
+        "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF"
+      }
+    },
+    "deferred_event_ids": [
+      "v29-3-policy-offline-start-20261019",
+      "v29-3-policy-offline-delivery-20261019"
+    ],
+    "user_acceptance": "pending",
+    "mapping_not_modified": true,
+    "verified_at": "2026-10-19T14:37:27+08:00",
+    "assigned_agents": 0,
+    "agent_runs": 0,
+    "teacher_daemon": "stopped",
+    "pending_count": 0,
+    "transport": "existing_multica_cli",
+    "browser_navigation_tested": false
+  },
+  "url_route_reference": "https://github.com/multica-ai/multica/pull/8147/files",
+  "local_plan_version": "v2.12",
+  "last_synced_plan_version": "v2.9",
+  "plan_version_semantics": "legacy_remote_plan_snapshot",
+  "sync_policy": {
+    "cadence": "batch_delivery",
+    "next_checkpoint": "v2.12-local-3b",
+    "checkpoint_condition": "仅ASR专项本机-3B真实完整联调开发侧交付后集中同步既有BING-3/BING-7；2A/2B/2C/3A、规划与普通阻塞仅本地。保留全部既有入口；本机-2A已开发侧交付、待用户验收；本机-2B已开发侧交付、待用户验收；本机-2C已开发侧交付、待用户验收，阶段起步与交付仅本地记录，不提前同步。缺少真实设备/容量/CPU证据不预填通过，旧v2.10/v2.11待同步事实随批次汇总。 本机-3A已获准实施，真实目标与资源条件待核查、未交付；仅新增本地started，不提前同步，3B尚未开始。",
+    "batch_stage_keys": [
+      "本机-1",
+      "本机-2A",
+      "本机-2B",
+      "本机-2C",
+      "本机-3A",
+      "本机-3B"
+    ],
+    "issue_groups": {
+      "overview": [
+        "本机-1",
+        "本机-2A",
+        "本机-2B",
+        "本机-2C",
+        "本机-3A",
+        "本机-3B"
+      ],
+      "ASR-4": [
+        "本机-1",
+        "本机-2A",
+        "本机-2B",
+        "本机-2C",
+        "本机-3A",
+        "本机-3B"
+      ]
+    },
+    "interim_events": "local_only",
+    "after_delivery_user_acceptance": "sync_explicitly_confirmed_scope",
+    "next_batch": "asr_local_2a_to_3b_delivery",
+    "last_completed_checkpoint": "v2.9-3-policy",
+    "last_completed_at": "2026-10-19T14:37:27+08:00",
+    "paused_checkpoints": [
+      "v2.10-lab-2",
+      "v2.10-lab-4"
+    ]
+  },
+  "deferred_updates": [
+    {
+      "event_id": "v210-lab1-implementation-start-20261019",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-19T16:59:19+08:00",
+      "started_at": "2026-10-19T16:52:44+08:00",
+      "stage": "实验室-1",
+      "checkpoint": "v2.10-lab-2",
+      "local_plan_version": "v2.10",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "evidence": [
+        "docs/阶段记录/实验室-1-认证与自动源码传输-验收记录.md",
+        "docs/实验室自动传输说明.md"
+      ],
+      "summary": "用户授权v2.10当前仅实验室-1认证与自动源码传输；带口令专用ED25519、本人核对主机指纹/初次公钥追加，swufe权限及tyb固定范围，源码清单SHA256暂存核对后首次安装，排除秘密/运行数据/模型，冲突与中断不覆盖。进行中，独立SSH认证及真实上传未完成。后续Linux和整套历史迁移、真实资源、真实GPU/CPU路由逐部分交付暂停；仅实验室2/4集中同步，无远端写入。"
+    },
+    {
+      "event_id": "v210-lab1-host-trust-user-setup-pending-20261019",
+      "event_type": "progress_recorded",
+      "recorded_at": "2026-10-19T17:09:58+08:00",
+      "stage": "实验室-1",
+      "checkpoint": "v2.10-lab-2",
+      "local_plan_version": "v2.10",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "evidence": [
+        "docs/阶段记录/实验室-1-认证与自动源码传输-验收记录.md",
+        "runtime/verification/lab-1/transport-tests.xml"
+      ],
+      "summary": "用户提供公开ED25519指纹，正常Windows权限TrustHost匹配并写known_hosts；ConfigureAgent因当前进程非管理员拒绝、无服务变更，非自动审批拒绝。正常权限Status确认key/pub缺失、agent Stopped/Disabled；沙箱.ssh拒绝不能当作服务器登录失败。传输/结构24通过，其他最终测试待结果；等待用户本人管理员Setup交互输入口令/密码，独立认证及真实上传未完成，阶段仍进行中。"
+    },
+    {
+      "event_id": "v210-lab1-local-tools-tested-auth-pending-20261019",
+      "event_type": "progress_recorded",
+      "recorded_at": "2026-10-19T17:16:41+08:00",
+      "stage": "实验室-1",
+      "checkpoint": "v2.10-lab-2",
+      "local_plan_version": "v2.10",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "evidence": [
+        "docs/阶段记录/实验室-1-认证与自动源码传输-验收记录.md",
+        "runtime/verification/lab-1/all-lab-final.xml"
+      ],
+      "summary": "本地认证/传输工具完整定向109通过93.30秒无warning，旧批次上传前白名单及远端响应身份/数量两处审查问题已修复，428旧保护文件保持。正常权限Check因key/pub缺失返回SSH_SETUP_REQUIRED且未发网络。本机Package成功，最终安装演练待结果；独立SSH/SFTP未成功，待本人管理员Setup后继续首次真实上传。实验室1仍进行中，未真实完成，不进入实验室2、不写远端。"
+    },
+    {
+      "event_id": "v211-local-development-scope-changed-20261019",
+      "event_type": "scope_changed",
+      "recorded_at": "2026-10-19T17:20:11+08:00",
+      "stage": "本机-1",
+      "checkpoint": "v2.11-local-3",
+      "local_plan_version": "v2.11",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "evidence": [
+        "docs/阶段记录/本机-1-实验室设备与容量对接核查.md",
+        "docs/阶段记录/实验室-1-认证与自动源码传输-验收记录.md",
+        "runtime/verification/lab-1/local-delivery-smoke.json",
+        "runtime/verification/lab-1/final-local-checks.json"
+      ],
+      "summary": "用户明确先放下文件上传，继续笔记本开发。实验室1密钥/上传暂停未验收，实验室2 Linux与历史迁移暂缓；保留109测试、478文件3358631字节Windows隔离安装/重复核验及428旧文件无差异，真实认证/上传仍未完成。当前本机1只读原文及获准GET核查设备/容量，不上传、不Setup、不启停/发音频；后续本机2接真实目标准入/快照，本机3真实GPU优先CPU合条件承接/浏览器。全部旧待同步事件保留，实验室2/4节点冻结，改本机3闭环集中BING3/7，远端v2.9时间快照保持。"
+    },
+    {
+      "event_id": "v211-laptop1-review-completed-20261019",
+      "event_type": "review_completed",
+      "recorded_at": "2026-10-19T17:25:09+08:00",
+      "stage": "本机-1",
+      "checkpoint": "v2.11-local-3",
+      "local_plan_version": "v2.11",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "real_device_conditions": "pending",
+      "evidence": [
+        "docs/阶段记录/本机-1-实验室设备与容量对接核查.md",
+        "runtime/verification/laptop-1/service-metadata.json",
+        "runtime/verification/laptop-1/local-verification.json"
+      ],
+      "summary": "本机1文档/代码及3次实际只读GET核查完成，真实设备/容量条件待补、待用户验收。health200整体就绪，docs/openapi为HTTP500包装404正文，未取得在线定义；device_id仅可选、无取值语义，worker.devices部署绑定、CPU仅文档支持，无资源GET契约。当前adapter不传设备、pool固定remote-default、unknown/1及capacity仅本平台许可；旧地址/模型/TLS指纹不可换URL重定向。17:26:15保护428及3响应hash核对通过，无新增业务测试/音频/代码。下一项本机-2路由配置与资源观测接入可先在笔记本完成契约和原领取隔离测试；真实领取待目标设备绑定/共享容量，CPU承接另需同模型CPU与性能；SSH上传或全部服务器资料非隔离开发前提。交付后暂停，不写远端。"
+    },
+    {
+      "event_id": "v212-asr-plan-saved-20261019",
+      "event_type": "plan_saved",
+      "recorded_at": "2026-10-19T17:44:34+08:00",
+      "planning_started_at": "2026-10-19T17:41:53+08:00",
+      "stage": "v2.12规划",
+      "checkpoint": "v2.12-local-3b",
+      "local_plan_version": "v2.12",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "implementation_status": "not_started",
+      "user_acceptance": "unchanged",
+      "evidence": [
+        "docs/开发计划.md",
+        "docs/开发进度.md"
+      ],
+      "summary": "用户下班前要求仅保存已确认ASR专项计划；包括并发、GPU优先和合条件CPU承接，保留全部既有入口和运行方式，不做ASR-only。五个待实施部分为本机2A/2B/2C/3A/3B，前三部分本机开发隔离验证、后两部分待真实条件。2A尚未开始，上传/密钥/Linux/迁移继续暂停；未改业务代码或执行测试/网络/服务操作，本机3B交付后集中同步。"
+    },
+    {
+      "event_id": "v212-local2a-implementation-start-20261020",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-20T08:47:24+08:00",
+      "stage": "本机-2A",
+      "checkpoint": "v2.12-local-3b",
+      "local_plan_version": "v2.12",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "implementation_status": "in_progress",
+      "evidence": [
+        "docs/阶段记录/本机-2A-ASR目标配置与资源记录-验收记录.md"
+      ],
+      "summary": "用户已授权执行v2.12，本轮仅本机-2A ASR目标配置与资源记录，08:47:24为实际本地起步登记时间。受控CLI多目标登记（新目标执行禁用）、不可变目录元数据修订、追加资源观测及分页只读targets GET正在实施，复用原target/capacity；0013和隔离验证待完成，不预填测试或迁移通过。不接Worker路由、不做页面，不访问校园服务、不改env/下载模型/扩大20MiB及300秒；原unknown/1、同步协议、任务指纹与未知结果不重发保持。保留全部入口和旧数据；上传/密钥/Linux迁移暂停，模型启停由服务方负责。真实GPU/CPU及容量未验证，旧用户验收不变；本机3B真实交付后集中同步，当前不写远端。"
+    },
+    {
+      "event_id": "v212-local2a-development-delivered-20261020",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-20T09:09:39+08:00",
+      "stage": "本机-2A",
+      "checkpoint": "v2.12-local-3b",
+      "local_plan_version": "v2.12",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "implementation_status": "delivered",
+      "evidence": [
+        "docs/阶段记录/本机-2A-ASR目标配置与资源记录-验收记录.md",
+        "runtime/verification/laptop-2a/catalog-verified.xml",
+        "runtime/verification/laptop-2a/regression.xml",
+        "runtime/verification/laptop-2a/cli-smoke/report.json",
+        "runtime/verification/laptop-2a/daily-migration.json",
+        "runtime/verification/laptop-2a/api-http.json",
+        "runtime/verification/laptop-2a/daily-final.json"
+      ],
+      "summary": "本机-2A受控多目标目录、不可变元数据修订、追加资源观测和分页只读GET开发侧交付，待用户验收。新目标默认执行禁用，资料仍unverified，不接Worker或页面。最终新增/兼容/结构159通过69.50秒，旧ASR定向338通过99.85秒，均无warning且分列不累加旧批次；未复跑完整后台/前端全量或浏览器。隔离五独立CLI进程验证幂等和持久化；日常0012到0013首次/重复迁移与结构/完整性/外键通过，21旧表和42上传保持，新两表为空。API-only查询200、校验422、POST405并正常退出，5000/5173空闲；不补写原管理器旧state为正常停机。未访问校园服务、发送音频、采集真实GPU/CPU或启用新调度；旧unknown/1、指纹、20MiB/300秒、同步与未知结果不重发保持。保留全部入口，无ASR-only，上传/SSH/Linux仍暂停，模型启停由服务方负责。下一本机-2B未开始；远端v2.9快照与时间不变，本机-3B真实交付后才集中同步。"
+    },
+    {
+      "event_id": "v212-local2b-implementation-start-20261020",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-20T09:17:12+08:00",
+      "stage": "本机-2B",
+      "checkpoint": "v2.12-local-3b",
+      "local_plan_version": "v2.12",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "implementation_status": "in_progress",
+      "evidence": [
+        "docs/阶段记录/本机-2B-调度策略接入任务执行-验收记录.md"
+      ],
+      "summary": "用户授权仅本机-2B调度策略接入任务执行，09:17:12为实际本地起步登记，不补造更早授权时分。复用原队列/通知/租约/共享许可，固定目标Worker在原领取事务重核策略，仅尚未执行任务可选择，未知结果不重发；本轮仅隔离接入验证，真实新增目标仍禁用。具体实现/迁移和测试按实际结果补记，不预填通过。保留全部入口、unknown/1、同步/版本可选、旧指纹与20MiB/300秒；不改页面、不访问校园服务，模型启停仍由服务方负责，上传/密钥/Linux继续暂停。2A仍待用户验收，8旧事件和远端v2.9/时间/快照保持，不写Multica；本机-3B真实交付后集中同步，2B交付讲解后暂停等待2C授权。"
+    },
+    {
+      "event_id": "v212-local2b-development-delivered-20261020",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-20T09:45:44+08:00",
+      "stage": "本机-2B",
+      "checkpoint": "v2.12-local-3b",
+      "local_plan_version": "v2.12",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "implementation_status": "delivered",
+      "evidence": [
+        "docs/阶段记录/本机-2B-调度策略接入任务执行-验收记录.md",
+        "runtime/verification/laptop-2b/final-new.xml",
+        "runtime/verification/laptop-2b/regression.xml",
+        "runtime/verification/laptop-2b/routing-processes-verified.xml",
+        "runtime/verification/laptop-2b/daily-migration.json",
+        "runtime/verification/laptop-2b/api-http.json",
+        "runtime/verification/laptop-2b/daily-final.json",
+        "runtime/verification/laptop-2b/source-protection.json"
+      ],
+      "summary": "本机-2B已开发侧交付、待用户验收并暂停；原队列/通知/租约/共享许可内重核策略，固定目标Worker一次冻结选择，失败整体回滚，未知结果不重发。新增immutable路由/任务选择、register-route与安全routing投影；只允许isolated资料、隔离数据与回环替身执行，真实新增目标禁用，日常.env及路由None/False、unknown/1保持。最终新功能/目录兼容/结构245通过128.61秒、旧ASR回归341通过106.49秒、最终Windows/HTTPS替身2通过23.70秒，三批无warning且不叠加旧批次；无完整后台/前端全量或浏览器复验。日常0013至0014首次/重复与结构/完整性/外键通过，23旧表/42上传保持、新两表空；API-only GET旧42任务无routing及旧结果一致，正常退出0/资源释放，5000/5173空闲，不补写原管理器旧state。源码417核对404不变、13已知改动/12新增、无意外。没有校园调用、真实GPU/CPU、资源采集或新真实转写；全部入口/20MiB300秒/同步/版本可选/旧指纹保留。2A旧验收保持，下一2C未开始；远端v2.9快照与时间不变，3B真实交付后集中同步。"
+    },
+    {
+      "event_id": "v212-local2c-implementation-start-20261020",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-20T09:52:29+08:00",
+      "stage": "本机-2C",
+      "checkpoint": "v2.12-local-3b",
+      "local_plan_version": "v2.12",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "implementation_status": "in_progress",
+      "evidence": [
+        "docs/阶段记录/本机-2C-ASR调度页面与故障说明-验收记录.md"
+      ],
+      "summary": "用户授权仅本机-2C ASR调度页面与故障说明，09:52:29为实际读取登记时间，不补造更早授权时分。现有ASR页展示目标状态、资源来源、任务选择/等待原因及最近错误，按需增加只读后端诊断，沿用原上传结果/其他入口。真实新增目标仍禁用，未知/过期/未核实不当空闲；本轮只本机隔离/浏览器，不校园调用、不模型或依赖下载、不改.env、不SSH/Linux，旧unknown/1、同步/版本可选/旧指纹和20MiB300秒保持，模型启停由服务方负责。具体API与测试待实际实现，不预填通过或迁移，预计无DB结构变更。2A/2B仍待用户验收；保留10旧事件及远端v2.9全部快照时间，不写Multica；3B真实闭环后集中同步。2C交付讲解后暂停，下一3A须真实目标/设备/容量，CPU另须同模型支持及性能依据。"
+    },
+    {
+      "event_id": "v212-local2c-development-delivered-20261020",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-20T10:23:42+08:00",
+      "stage": "本机-2C",
+      "checkpoint": "v2.12-local-3b",
+      "local_plan_version": "v2.12",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "implementation_status": "delivered",
+      "evidence": [
+        "docs/阶段记录/本机-2C-ASR调度页面与故障说明-验收记录.md",
+        "runtime/verification/laptop-2c/backend-final.xml",
+        "runtime/verification/laptop-2c/backend-regression.xml",
+        "runtime/verification/local2c/scheduling-release-regression.xml",
+        "runtime/verification/laptop-2c/frontend-full.xml",
+        "runtime/verification/laptop-2c/frontend-unknown-permit.xml",
+        "runtime/verification/laptop-2c/frontend-build.txt",
+        "runtime/verification/laptop-2c/browser-final/playwright-results.json",
+        "runtime/verification/laptop-2c/daily-browser.json",
+        "runtime/verification/laptop-2c/daily-after.json",
+        "runtime/verification/laptop-2c/shutdown-check.json",
+        "runtime/verification/laptop-2c/source-protection.json",
+        "runtime/verification/laptop-2c/browser-legacy-compat/playwright-results.json"
+      ],
+      "summary": "本机-2C开发侧交付、待用户验收并暂停，2A/2B验收不自动通过。ASR调度面板/目标资源来源/选择等待及错误说明、纯本地只读scheduling和routing诊断已完成；详情基于本地只读快照、列表批量投影，保留冻结原因，unknown不因释放容量改成功或重发。后台128通过83.09秒/旧链路264通过152.69秒均无warning，另release1通过2.55秒；前端308通过13.08秒、审查修复后26通过3.54秒、最终类型检查/构建通过；新调度隔离mock浏览器3通过13.8秒，旧外部ASR隔离兼容3通过16.6秒，1366/390视检无溢出，各批分列不累加，无后台全量或旧e2e整套。实际日常API/Vite/已安装Edge只读页面及42旧任务/旧结果验证通过，无POST/推理/Worker；API/Vite独立退出0且所属PID消失端口空闲，辅助发信脚本返回1已如实区分，旧mock兼容仅临时再运行Vite且API保持停止，Vite再次q退出0，最终数据/端口复核通过；不补写旧管理器正常停止。日常26表含alembic/42任务42上传前后保持，head0014无迁移，.env不变、routeNone/isolationfalse；源码442核对430不变/12已说明变更/18新增，原Worker/迁移代码/依赖保持，不宣称.gitkeep新增。无校园请求、真实GPU/CPU/容量验证、模型/依赖下载或SSH/Linux；真实新增目标禁用，全部入口与20MiB300秒/旧规则保持。下一3A未开始须真实目标设备容量与合条件CPU性能证据；远端v2.9时间快照原样，仅3B真实交付后集中同步。"
+    },
+    {
+      "event_id": "v212-local3a-implementation-start-20261020",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-20T10:30:38+08:00",
+      "stage": "本机-3A",
+      "checkpoint": "v2.12-local-3b",
+      "local_plan_version": "v2.12",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "implementation_status": "in_progress",
+      "real_device_conditions": "pending",
+      "evidence": [
+        "docs/阶段记录/本机-3A-实验室真实目标与资源接入-验收记录.md"
+      ],
+      "summary": "用户继续授权本机-3A实验室真实目标与资源接入，10:30:38为实际起步登记时间。先核查已有接口/历史证据、校园ASR及可用只读连接，分别确认目标设备绑定、共享容量和资源来源；CPU承接另需同模型支持与性能实证，不用本机Whisper替代外部SenseVoice。尚未取得新增设备/容量资料，网络/硬件/CPU结果按实际补记，不预填通过；真实新增目标禁用、不启用路由，不上传源码/配置密钥、不部署启停对方模型、不下载依赖模型、不迁移历史。全部入口、unknown/1、20MiB300秒/同步/版本可选/旧指纹和未知结果不重发保持，2A/2B/2C与旧阶段验收不变。本地v2.12远端v2.9，12旧事件和所有远端时间快照保持，不写Multica；3B真实闭环交付后才集中同步，本轮完成讲解后暂停。"
+    }
+  ],
+  "sync_history": [
+    {
+      "plan_version": "v2.6",
+      "last_synced_plan_version": "v2.6",
+      "last_synced_at": "2026-10-14T00:18:57+08:00",
+      "last_verified_at": "2026-10-14T00:19:31+08:00",
+      "issues": {
+        "overview": {
+          "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "identifier": "BING-3",
+          "title": "推理平台开发总览（v2.6）",
+          "status": "in_progress",
+          "parent_issue_id": null,
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-3",
+          "last_synced_at": "2026-10-14T00:18:50+08:00",
+          "last_verified_at": "2026-10-14T00:19:26+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "dcd8a353597f99bcaacc50cf8e08df8ddc612df453a8b48b4608bcd1b2532ace",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:12Z",
+          "remote_updated_at": "2026-10-13T16:18:12Z"
+        },
+        "ASR-1": {
+          "id": "01a1360f-40db-732d-bd90-5b1e1f9f5222",
+          "identifier": "BING-4",
+          "title": "ASR-1：插件边界",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-4",
+          "last_synced_at": "2026-10-14T00:18:51+08:00",
+          "last_verified_at": "2026-10-14T00:19:26+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "d7f22620538172bdaf154ad847bc755a7f09f6162e91bc9011bedf7077fa3cba",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:51Z",
+          "remote_updated_at": "2026-10-13T16:18:51Z"
+        },
+        "ASR-2": {
+          "id": "01a1360f-44aa-791b-a98f-b8dbad216ed1",
+          "identifier": "BING-5",
+          "title": "ASR-2：单节点 ASR 启停",
+          "status": "todo",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-5",
+          "last_synced_at": "2026-10-14T00:18:52+08:00",
+          "last_verified_at": "2026-10-14T00:19:27+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "af5732bffa35377ffe24c74248a6fea4c6c3505761a565d0918dcd6d8cb340cf",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:52Z",
+          "remote_updated_at": "2026-10-13T16:18:52Z"
+        },
+        "ASR-3": {
+          "id": "01a1360f-48b7-72bc-a624-6ff94d5f3fa6",
+          "identifier": "BING-6",
+          "title": "ASR-3：服务管理页面",
+          "status": "backlog",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-6",
+          "last_synced_at": "2026-10-14T00:18:53+08:00",
+          "last_verified_at": "2026-10-14T00:19:27+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "9a9c1cba8710d240bcdff0acda62d5969356727daf22c54744e43f442105fc43",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:53Z",
+          "remote_updated_at": "2026-10-13T16:18:53Z"
+        },
+        "ASR-4": {
+          "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+          "identifier": "BING-7",
+          "title": "ASR-4：课题组 ASR 接入",
+          "status": "backlog",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-7",
+          "last_synced_at": "2026-10-14T00:18:54+08:00",
+          "last_verified_at": "2026-10-14T00:19:28+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "e4cbb44d03b12aff57f3e7a15da6de39f326a2d72b3ab7a5c6a2d5837c356ce8",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:54Z",
+          "remote_updated_at": "2026-10-13T16:18:54Z"
+        }
+      },
+      "last_verification": {
+        "verified_at": "2026-10-14T00:19:31+08:00",
+        "created_issues_in_initial_setup": 5,
+        "created_issues_on_repeat": 0,
+        "remote_revisions_unchanged_on_repeat": true,
+        "assigned_agents": 0,
+        "agent_runs": 0,
+        "teacher_daemon": "stopped",
+        "protected_bing2_and_resources_unchanged": true,
+        "pending_count": 0,
+        "transport": "existing_multica_cli",
+        "browser_navigation_tested": false
+      },
+      "last_verification_report": "runtime/verification/multica-sync/20261014/verification-apply.json"
+    },
+    {
+      "plan_version": "v2.7",
+      "last_synced_plan_version": "v2.7",
+      "last_synced_at": "2026-10-14T11:38:21+08:00",
+      "last_verified_at": "2026-10-14T11:39:30+08:00",
+      "issues": {
+        "overview": {
+          "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "identifier": "BING-3",
+          "title": "推理平台开发总览（v2.7）",
+          "status": "in_progress",
+          "parent_issue_id": null,
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-3",
+          "last_synced_at": "2026-10-14T11:38:19+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "47d069e89530476438e11257b6074dae54e15479b6fa7712ed01c950b8da6965",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:12Z",
+          "remote_updated_at": "2026-10-14T03:38:19Z"
+        },
+        "ASR-1": {
+          "id": "01a1360f-40db-732d-bd90-5b1e1f9f5222",
+          "identifier": "BING-4",
+          "title": "ASR-1：插件边界",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-4",
+          "last_synced_at": "2026-10-14T00:18:51+08:00",
+          "last_verified_at": "2026-10-14T00:19:26+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "d7f22620538172bdaf154ad847bc755a7f09f6162e91bc9011bedf7077fa3cba",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:51Z",
+          "remote_updated_at": "2026-10-13T16:18:51Z"
+        },
+        "ASR-2": {
+          "id": "01a1360f-44aa-791b-a98f-b8dbad216ed1",
+          "identifier": "BING-5",
+          "title": "ASR-2：单节点 ASR 启停",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-5",
+          "last_synced_at": "2026-10-14T11:38:20+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "7e0e56f0a20c3f9e2a06507df11f52a5b0f2118b12c6314291f3fc5ce6ae3786",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:52Z",
+          "remote_updated_at": "2026-10-14T03:38:20Z"
+        },
+        "ASR-3": {
+          "id": "01a1360f-48b7-72bc-a624-6ff94d5f3fa6",
+          "identifier": "BING-6",
+          "title": "ASR-3：服务管理页面",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-6",
+          "last_synced_at": "2026-10-14T11:38:21+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "75723b5875200d686ff79d9d1e353cd9931b8c32a717be0cc937d3dda9fd97ec",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:53Z",
+          "remote_updated_at": "2026-10-14T03:38:21Z"
+        },
+        "ASR-4": {
+          "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+          "identifier": "BING-7",
+          "title": "ASR-4：课题组 ASR 接入",
+          "status": "backlog",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-7",
+          "last_synced_at": "2026-10-14T00:18:54+08:00",
+          "last_verified_at": "2026-10-14T00:19:28+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "e4cbb44d03b12aff57f3e7a15da6de39f326a2d72b3ab7a5c6a2d5837c356ce8",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:54Z",
+          "remote_updated_at": "2026-10-13T16:18:54Z"
+        }
+      },
+      "last_verification": {
+        "verified_at": "2026-10-14T11:39:30+08:00",
+        "updated_issues": 3,
+        "created_issues": 0,
+        "issue_count": 6,
+        "assigned_agents": 0,
+        "agent_runs": 0,
+        "teacher_daemon": "stopped",
+        "protected_bing2_bing4_bing7_comments_resources_unchanged": true,
+        "pending_count": 0,
+        "transport": "existing_multica_cli",
+        "browser_navigation_tested": false,
+        "initial_position_difference_reconciled": {
+          "BING-5": [
+            -1,
+            -2
+          ],
+          "BING-6": [
+            -1,
+            -3
+          ]
+        },
+        "checks": {
+          "inventory_ids_unchanged": true,
+          "bing2_unchanged": true,
+          "bing4_unchanged": true,
+          "bing7_unchanged": true,
+          "comments_unchanged": true,
+          "resources_unchanged": true,
+          "project_metadata_unchanged": true,
+          "teacher_daemon_unchanged": true,
+          "teacher_daemon_stopped": true,
+          "active_autopilots_unchanged": true,
+          "runs_unchanged": true,
+          "no_assigned_execution": true,
+          "overview_target_readback": true,
+          "overview_other_fields_unchanged": true,
+          "overview_board_position_accounted": true,
+          "ASR-2_target_readback": true,
+          "ASR-2_other_fields_unchanged": true,
+          "ASR-2_board_position_accounted": true,
+          "ASR-3_target_readback": true,
+          "ASR-3_other_fields_unchanged": true,
+          "ASR-3_board_position_accounted": true
+        }
+      },
+      "last_verification_report": "runtime/verification/asr3b/multica-batch/verification-verify.json"
+    },
+    {
+      "checkpoint": "ASR-4A",
+      "plan_version": "v2.8",
+      "last_synced_plan_version": "v2.8",
+      "last_synced_at": "2026-10-15T14:15:38+08:00",
+      "last_verified_at": "2026-10-15T14:15:45+08:00",
+      "issues": {
+        "overview": {
+          "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "identifier": "BING-3",
+          "title": "推理平台开发总览（v2.8）",
+          "status": "in_progress",
+          "parent_issue_id": null,
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-3",
+          "last_synced_at": "2026-10-15T14:15:37+08:00",
+          "last_verified_at": "2026-10-15T14:15:45+08:00",
+          "remote_revision": 3,
+          "managed_description_sha256": "2e6d062a49a4cf584cde333133778752477fe76af11bf8e3dd2b548039b797db",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:12Z",
+          "remote_updated_at": "2026-10-15T06:15:41Z"
+        },
+        "ASR-1": {
+          "id": "01a1360f-40db-732d-bd90-5b1e1f9f5222",
+          "identifier": "BING-4",
+          "title": "ASR-1：插件边界",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-4",
+          "last_synced_at": "2026-10-14T00:18:51+08:00",
+          "last_verified_at": "2026-10-14T00:19:26+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "d7f22620538172bdaf154ad847bc755a7f09f6162e91bc9011bedf7077fa3cba",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:51Z",
+          "remote_updated_at": "2026-10-13T16:18:51Z"
+        },
+        "ASR-2": {
+          "id": "01a1360f-44aa-791b-a98f-b8dbad216ed1",
+          "identifier": "BING-5",
+          "title": "ASR-2：单节点 ASR 启停",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-5",
+          "last_synced_at": "2026-10-14T11:38:20+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "7e0e56f0a20c3f9e2a06507df11f52a5b0f2118b12c6314291f3fc5ce6ae3786",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:52Z",
+          "remote_updated_at": "2026-10-14T03:38:20Z"
+        },
+        "ASR-3": {
+          "id": "01a1360f-48b7-72bc-a624-6ff94d5f3fa6",
+          "identifier": "BING-6",
+          "title": "ASR-3：服务管理页面",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-6",
+          "last_synced_at": "2026-10-14T11:38:21+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "75723b5875200d686ff79d9d1e353cd9931b8c32a717be0cc937d3dda9fd97ec",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:53Z",
+          "remote_updated_at": "2026-10-14T03:38:21Z"
+        },
+        "ASR-4": {
+          "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+          "identifier": "BING-7",
+          "title": "ASR-4：课题组 ASR 接入",
+          "status": "in_progress",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-7",
+          "last_synced_at": "2026-10-15T14:15:38+08:00",
+          "last_verified_at": "2026-10-15T14:15:45+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "83ad9264e3660ca6cbb06d31f87f6fc575d8cf7bfab10c7d93e2e4c0a5556013",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:54Z",
+          "remote_updated_at": "2026-10-15T06:15:42Z"
+        }
+      },
+      "last_verification": {
+        "checked_at": "2026-10-15T14:15:45+08:00",
+        "passed": true,
+        "checks": {
+          "inventory_ids_unchanged": true,
+          "bing2_unchanged": true,
+          "comments_unchanged": true,
+          "resources_unchanged": true,
+          "project_metadata_unchanged": true,
+          "runs_unchanged": true,
+          "daemon_stopped_unchanged": true,
+          "autopilots_unchanged": true,
+          "ASR-1_unchanged": true,
+          "ASR-2_unchanged": true,
+          "ASR-3_unchanged": true,
+          "overview_readback": true,
+          "overview_protected_fields": true,
+          "ASR-4_readback": true,
+          "ASR-4_protected_fields": true
+        },
+        "created_issues": 0,
+        "updated_issues": 2,
+        "issue_count": 6,
+        "user_acceptance": "pending",
+        "verified_at": "2026-10-15T14:15:45+08:00",
+        "assigned_agents": 0,
+        "agent_runs": 0,
+        "teacher_daemon": "stopped",
+        "pending_count": 0,
+        "transport": "existing_multica_cli",
+        "browser_navigation_tested": false
+      },
+      "last_verification_report": "runtime/verification/asr4a/multica-batch/verification.json"
+    },
+    {
+      "checkpoint": "ASR-4B",
+      "plan_version": "v2.8",
+      "last_synced_plan_version": "v2.8",
+      "last_synced_at": "2026-10-19T10:50:45+08:00",
+      "last_verified_at": "2026-10-19T10:52:05+08:00",
+      "issues": {
+        "overview": {
+          "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "identifier": "BING-3",
+          "title": "推理平台开发总览（v2.9）",
+          "status": "in_progress",
+          "parent_issue_id": null,
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-3",
+          "last_synced_at": "2026-10-19T11:35:39+08:00",
+          "last_verified_at": "2026-10-19T11:35:51+08:00",
+          "remote_revision": 5,
+          "managed_description_sha256": "6f84e804bb2b41fb3a8d5b40a15ce136d07c5e1f8a4f12f9faefa34084a46c3b",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:12Z",
+          "remote_updated_at": "2026-10-19T03:35:38Z"
+        },
+        "ASR-1": {
+          "id": "01a1360f-40db-732d-bd90-5b1e1f9f5222",
+          "identifier": "BING-4",
+          "title": "ASR-1：插件边界",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-4",
+          "last_synced_at": "2026-10-14T00:18:51+08:00",
+          "last_verified_at": "2026-10-14T00:19:26+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "d7f22620538172bdaf154ad847bc755a7f09f6162e91bc9011bedf7077fa3cba",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:51Z",
+          "remote_updated_at": "2026-10-13T16:18:51Z"
+        },
+        "ASR-2": {
+          "id": "01a1360f-44aa-791b-a98f-b8dbad216ed1",
+          "identifier": "BING-5",
+          "title": "ASR-2：单节点 ASR 启停",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-5",
+          "last_synced_at": "2026-10-14T11:38:20+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "7e0e56f0a20c3f9e2a06507df11f52a5b0f2118b12c6314291f3fc5ce6ae3786",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:52Z",
+          "remote_updated_at": "2026-10-14T03:38:20Z"
+        },
+        "ASR-3": {
+          "id": "01a1360f-48b7-72bc-a624-6ff94d5f3fa6",
+          "identifier": "BING-6",
+          "title": "ASR-3：服务管理页面",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-6",
+          "last_synced_at": "2026-10-14T11:38:21+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "75723b5875200d686ff79d9d1e353cd9931b8c32a717be0cc937d3dda9fd97ec",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:53Z",
+          "remote_updated_at": "2026-10-14T03:38:21Z"
+        },
+        "ASR-4": {
+          "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+          "identifier": "BING-7",
+          "title": "ASR-4：课题组 ASR 接入",
+          "status": "in_progress",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-7",
+          "last_synced_at": "2026-10-19T11:35:40+08:00",
+          "last_verified_at": "2026-10-19T11:35:51+08:00",
+          "remote_revision": 6,
+          "managed_description_sha256": "88c6a4a2c824de5fde3297d8c38f3de3fb79765c232dae996501340e31d08365",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:54Z",
+          "remote_updated_at": "2026-10-19T03:35:40Z"
+        }
+      },
+      "last_verification": {
+        "checked_at": "2026-10-19T10:52:05+08:00",
+        "mode": "verify",
+        "checkpoint": "ASR-4B",
+        "passed": true,
+        "checks": {
+          "inventory_ids_unchanged": true,
+          "bing2_unchanged": true,
+          "comments_unchanged": true,
+          "resources_unchanged": true,
+          "project_metadata_unchanged": true,
+          "runs_unchanged": true,
+          "daemon_unchanged_stopped": true,
+          "active_autopilots_unchanged": true,
+          "ASR-1_unchanged": true,
+          "ASR-2_unchanged": true,
+          "ASR-3_unchanged": true,
+          "overview_readback": true,
+          "overview_protected_fields": true,
+          "ASR-4_readback": true,
+          "ASR-4_protected_fields": true
+        },
+        "created_count": 0,
+        "issue_count": 6,
+        "readbacks": {
+          "overview": {
+            "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+            "identifier": "BING-3",
+            "title": "推理平台开发总览（v2.8）",
+            "status": "in_progress",
+            "parent_issue_id": null,
+            "remote_revision": 4,
+            "remote_created_at": "2026-10-13T16:18:12Z",
+            "remote_updated_at": "2026-10-19T02:50:44Z",
+            "managed_description_sha256": "95f7019da6c84e2b27b5b80674849afde759ca54db8660e739a2f93d85dc2af4",
+            "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF"
+          },
+          "ASR-4": {
+            "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+            "identifier": "BING-7",
+            "title": "ASR-4：课题组 ASR 接入",
+            "status": "in_progress",
+            "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+            "remote_revision": 5,
+            "remote_created_at": "2026-10-13T16:18:54Z",
+            "remote_updated_at": "2026-10-19T02:50:45Z",
+            "managed_description_sha256": "83dd301dc277795ebeda9e8b41834ca0bed597b1d57bb6c573e4bd26a57b3732",
+            "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF"
+          }
+        },
+        "deferred_event_ids": [
+          "ASR-4B-authorized-awaiting-connection",
+          "ASR-4B-endpoint-received-network-timeout-20261015",
+          "ASR-4B-campus-and-materials-pending-confirmed-20261015",
+          "ASR-4B-campus-reported-provider-async-clarification-20261016",
+          "ASR-4B-gpu-cpu-goal-campus-disconnected-20261016",
+          "ASR-4B-campus-connected-tls-self-signed-20261019",
+          "ASR-4B-authorized-tls-exception-real-call-passed-20261019",
+          "ASR-4B-platform-prepared-awaiting-version-semantics-20261019",
+          "ASR-4B-version-optional-authorized-20261019",
+          "ASR-4B-development-delivery-20261019"
+        ],
+        "user_acceptance": "pending",
+        "mapping_not_modified": true,
+        "verified_at": "2026-10-19T10:52:05+08:00",
+        "assigned_agents": 0,
+        "agent_runs": 0,
+        "teacher_daemon": "stopped",
+        "pending_count": 0,
+        "transport": "existing_multica_cli",
+        "browser_navigation_tested": false
+      },
+      "last_verification_report": "runtime/verification/asr4b/multica-batch/verification-verify.json"
+    },
+    {
+      "checkpoint": "v2.9-1",
+      "plan_version": "v2.9",
+      "last_synced_plan_version": "v2.9",
+      "last_synced_at": "2026-10-19T11:35:40+08:00",
+      "last_verified_at": "2026-10-19T11:35:51+08:00",
+      "issues": {
+        "overview": {
+          "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "identifier": "BING-3",
+          "title": "推理平台开发总览（v2.9）",
+          "status": "in_progress",
+          "parent_issue_id": null,
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-3",
+          "last_synced_at": "2026-10-19T12:19:00+08:00",
+          "last_verified_at": "2026-10-19T12:19:11+08:00",
+          "remote_revision": 6,
+          "managed_description_sha256": "b0b16417a13e9dfd22099c94febc2e0bdd17a87cda3cb366689576182d9b9b74",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:12Z",
+          "remote_updated_at": "2026-10-19T04:18:59Z"
+        },
+        "ASR-1": {
+          "id": "01a1360f-40db-732d-bd90-5b1e1f9f5222",
+          "identifier": "BING-4",
+          "title": "ASR-1：插件边界",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-4",
+          "last_synced_at": "2026-10-14T00:18:51+08:00",
+          "last_verified_at": "2026-10-14T00:19:26+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "d7f22620538172bdaf154ad847bc755a7f09f6162e91bc9011bedf7077fa3cba",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:51Z",
+          "remote_updated_at": "2026-10-13T16:18:51Z"
+        },
+        "ASR-2": {
+          "id": "01a1360f-44aa-791b-a98f-b8dbad216ed1",
+          "identifier": "BING-5",
+          "title": "ASR-2：单节点 ASR 启停",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-5",
+          "last_synced_at": "2026-10-14T11:38:20+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "7e0e56f0a20c3f9e2a06507df11f52a5b0f2118b12c6314291f3fc5ce6ae3786",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:52Z",
+          "remote_updated_at": "2026-10-14T03:38:20Z"
+        },
+        "ASR-3": {
+          "id": "01a1360f-48b7-72bc-a624-6ff94d5f3fa6",
+          "identifier": "BING-6",
+          "title": "ASR-3：服务管理页面",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-6",
+          "last_synced_at": "2026-10-14T11:38:21+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "75723b5875200d686ff79d9d1e353cd9931b8c32a717be0cc937d3dda9fd97ec",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:53Z",
+          "remote_updated_at": "2026-10-14T03:38:21Z"
+        },
+        "ASR-4": {
+          "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+          "identifier": "BING-7",
+          "title": "ASR-4：课题组 ASR 接入",
+          "status": "in_progress",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-7",
+          "last_synced_at": "2026-10-19T12:19:01+08:00",
+          "last_verified_at": "2026-10-19T12:19:11+08:00",
+          "remote_revision": 7,
+          "managed_description_sha256": "8a0dba23fdbc0153d47de64276b9543eaf2dd6a94ce7645a4bff68576a840ab3",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:54Z",
+          "remote_updated_at": "2026-10-19T04:19:01Z"
+        }
+      },
+      "last_verification": {
+        "checked_at": "2026-10-19T11:35:51+08:00",
+        "mode": "apply",
+        "checkpoint": "v2.9-1",
+        "passed": true,
+        "checks": {
+          "inventory_ids_unchanged": true,
+          "bing2_unchanged": true,
+          "comments_unchanged": true,
+          "resources_unchanged": true,
+          "project_metadata_unchanged": true,
+          "runs_unchanged": true,
+          "daemon_unchanged_stopped": true,
+          "active_autopilots_unchanged": true,
+          "ASR-1_unchanged": true,
+          "ASR-2_unchanged": true,
+          "ASR-3_unchanged": true,
+          "overview_readback": true,
+          "overview_protected_fields": true,
+          "ASR-4_readback": true,
+          "ASR-4_protected_fields": true
+        },
+        "created_count": 0,
+        "issue_count": 6,
+        "readbacks": {
+          "overview": {
+            "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+            "identifier": "BING-3",
+            "title": "推理平台开发总览（v2.9）",
+            "status": "in_progress",
+            "parent_issue_id": null,
+            "remote_revision": 5,
+            "remote_created_at": "2026-10-13T16:18:12Z",
+            "remote_updated_at": "2026-10-19T03:35:38Z",
+            "managed_description_sha256": "6f84e804bb2b41fb3a8d5b40a15ce136d07c5e1f8a4f12f9faefa34084a46c3b",
+            "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF"
+          },
+          "ASR-4": {
+            "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+            "identifier": "BING-7",
+            "title": "ASR-4：课题组 ASR 接入",
+            "status": "in_progress",
+            "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+            "remote_revision": 6,
+            "remote_created_at": "2026-10-13T16:18:54Z",
+            "remote_updated_at": "2026-10-19T03:35:40Z",
+            "managed_description_sha256": "88c6a4a2c824de5fde3297d8c38f3de3fb79765c232dae996501340e31d08365",
+            "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF"
+          }
+        },
+        "deferred_event_ids": [
+          "scope-v29-existing-service-concurrency-20261019",
+          "v29-1-review-start-20261019",
+          "v29-1-target-contract-decision-20261019",
+          "v29-1-review-delivery-20261019"
+        ],
+        "user_acceptance": "pending",
+        "mapping_not_modified": true,
+        "verified_at": "2026-10-19T11:35:51+08:00",
+        "assigned_agents": 0,
+        "agent_runs": 0,
+        "teacher_daemon": "stopped",
+        "pending_count": 0,
+        "transport": "existing_multica_cli",
+        "browser_navigation_tested": false
+      },
+      "last_verification_report": "runtime/verification/concurrency-review/multica-batch/verification-apply.json"
+    },
+    {
+      "checkpoint": "v2.9-2A",
+      "plan_version": "v2.9",
+      "last_synced_plan_version": "v2.9",
+      "last_synced_at": "2026-10-19T12:19:01+08:00",
+      "last_verified_at": "2026-10-19T12:19:11+08:00",
+      "issues": {
+        "overview": {
+          "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "identifier": "BING-3",
+          "title": "推理平台开发总览（v2.9）",
+          "status": "in_progress",
+          "parent_issue_id": null,
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-3",
+          "last_synced_at": "2026-10-19T12:19:00+08:00",
+          "last_verified_at": "2026-10-19T12:19:11+08:00",
+          "remote_revision": 6,
+          "managed_description_sha256": "b0b16417a13e9dfd22099c94febc2e0bdd17a87cda3cb366689576182d9b9b74",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:12Z",
+          "remote_updated_at": "2026-10-19T04:18:59Z"
+        },
+        "ASR-1": {
+          "id": "01a1360f-40db-732d-bd90-5b1e1f9f5222",
+          "identifier": "BING-4",
+          "title": "ASR-1：插件边界",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-4",
+          "last_synced_at": "2026-10-14T00:18:51+08:00",
+          "last_verified_at": "2026-10-14T00:19:26+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "d7f22620538172bdaf154ad847bc755a7f09f6162e91bc9011bedf7077fa3cba",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:51Z",
+          "remote_updated_at": "2026-10-13T16:18:51Z"
+        },
+        "ASR-2": {
+          "id": "01a1360f-44aa-791b-a98f-b8dbad216ed1",
+          "identifier": "BING-5",
+          "title": "ASR-2：单节点 ASR 启停",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-5",
+          "last_synced_at": "2026-10-14T11:38:20+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "7e0e56f0a20c3f9e2a06507df11f52a5b0f2118b12c6314291f3fc5ce6ae3786",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:52Z",
+          "remote_updated_at": "2026-10-14T03:38:20Z"
+        },
+        "ASR-3": {
+          "id": "01a1360f-48b7-72bc-a624-6ff94d5f3fa6",
+          "identifier": "BING-6",
+          "title": "ASR-3：服务管理页面",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-6",
+          "last_synced_at": "2026-10-14T11:38:21+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "75723b5875200d686ff79d9d1e353cd9931b8c32a717be0cc937d3dda9fd97ec",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:53Z",
+          "remote_updated_at": "2026-10-14T03:38:21Z"
+        },
+        "ASR-4": {
+          "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+          "identifier": "BING-7",
+          "title": "ASR-4：课题组 ASR 接入",
+          "status": "in_progress",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-7",
+          "last_synced_at": "2026-10-19T12:19:01+08:00",
+          "last_verified_at": "2026-10-19T12:19:11+08:00",
+          "remote_revision": 7,
+          "managed_description_sha256": "8a0dba23fdbc0153d47de64276b9543eaf2dd6a94ce7645a4bff68576a840ab3",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:54Z",
+          "remote_updated_at": "2026-10-19T04:19:01Z"
+        }
+      },
+      "last_verification": {
+        "checked_at": "2026-10-19T12:19:11+08:00",
+        "mode": "apply",
+        "checkpoint": "v2.9-2A",
+        "passed": true,
+        "checks": {
+          "inventory_ids_unchanged": true,
+          "bing2_unchanged": true,
+          "comments_unchanged": true,
+          "resources_unchanged": true,
+          "project_metadata_unchanged": true,
+          "runs_unchanged": true,
+          "daemon_unchanged_stopped": true,
+          "active_autopilots_unchanged": true,
+          "ASR-1_unchanged": true,
+          "ASR-2_unchanged": true,
+          "ASR-3_unchanged": true,
+          "overview_readback": true,
+          "overview_protected_fields": true,
+          "ASR-4_readback": true,
+          "ASR-4_protected_fields": true
+        },
+        "created_count": 0,
+        "issue_count": 6,
+        "readbacks": {
+          "overview": {
+            "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+            "identifier": "BING-3",
+            "title": "推理平台开发总览（v2.9）",
+            "status": "in_progress",
+            "parent_issue_id": null,
+            "remote_revision": 6,
+            "remote_created_at": "2026-10-13T16:18:12Z",
+            "remote_updated_at": "2026-10-19T04:18:59Z",
+            "managed_description_sha256": "b0b16417a13e9dfd22099c94febc2e0bdd17a87cda3cb366689576182d9b9b74",
+            "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF"
+          },
+          "ASR-4": {
+            "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+            "identifier": "BING-7",
+            "title": "ASR-4：课题组 ASR 接入",
+            "status": "in_progress",
+            "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+            "remote_revision": 7,
+            "remote_created_at": "2026-10-13T16:18:54Z",
+            "remote_updated_at": "2026-10-19T04:19:01Z",
+            "managed_description_sha256": "8a0dba23fdbc0153d47de64276b9543eaf2dd6a94ce7645a4bff68576a840ab3",
+            "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF"
+          }
+        },
+        "deferred_event_ids": [
+          "v29-2a-implementation-start-20261019",
+          "v29-2a-development-delivery-20261019"
+        ],
+        "user_acceptance": "pending",
+        "mapping_not_modified": true,
+        "verified_at": "2026-10-19T12:19:11+08:00",
+        "assigned_agents": 0,
+        "agent_runs": 0,
+        "teacher_daemon": "stopped",
+        "pending_count": 0,
+        "transport": "existing_multica_cli",
+        "browser_navigation_tested": false
+      },
+      "last_verification_report": "runtime/verification/concurrency-2a/multica-batch/verification-apply.json"
+    },
+    {
+      "checkpoint": "v2.9-2B",
+      "plan_version": "v2.9",
+      "last_synced_plan_version": "v2.9",
+      "last_synced_at": "2026-10-19T14:02:54+08:00",
+      "last_verified_at": "2026-10-19T14:03:04+08:00",
+      "issues": {
+        "overview": {
+          "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "identifier": "BING-3",
+          "title": "推理平台开发总览（v2.9）",
+          "status": "in_progress",
+          "parent_issue_id": null,
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-3",
+          "last_synced_at": "2026-10-19T14:02:53+08:00",
+          "last_verified_at": "2026-10-19T14:03:04+08:00",
+          "remote_revision": 7,
+          "managed_description_sha256": "ff51a9849722bb86d2b0a3840746df7cc3c0f8f66432e35fceb0829074d2a7cd",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:12Z",
+          "remote_updated_at": "2026-10-19T06:02:52Z"
+        },
+        "ASR-1": {
+          "id": "01a1360f-40db-732d-bd90-5b1e1f9f5222",
+          "identifier": "BING-4",
+          "title": "ASR-1：插件边界",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-4",
+          "last_synced_at": "2026-10-14T00:18:51+08:00",
+          "last_verified_at": "2026-10-14T00:19:26+08:00",
+          "remote_revision": 1,
+          "managed_description_sha256": "d7f22620538172bdaf154ad847bc755a7f09f6162e91bc9011bedf7077fa3cba",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:51Z",
+          "remote_updated_at": "2026-10-13T16:18:51Z"
+        },
+        "ASR-2": {
+          "id": "01a1360f-44aa-791b-a98f-b8dbad216ed1",
+          "identifier": "BING-5",
+          "title": "ASR-2：单节点 ASR 启停",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-5",
+          "last_synced_at": "2026-10-14T11:38:20+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "7e0e56f0a20c3f9e2a06507df11f52a5b0f2118b12c6314291f3fc5ce6ae3786",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:52Z",
+          "remote_updated_at": "2026-10-14T03:38:20Z"
+        },
+        "ASR-3": {
+          "id": "01a1360f-48b7-72bc-a624-6ff94d5f3fa6",
+          "identifier": "BING-6",
+          "title": "ASR-3：服务管理页面",
+          "status": "in_review",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-6",
+          "last_synced_at": "2026-10-14T11:38:21+08:00",
+          "last_verified_at": "2026-10-14T11:39:30+08:00",
+          "remote_revision": 2,
+          "managed_description_sha256": "75723b5875200d686ff79d9d1e353cd9931b8c32a717be0cc937d3dda9fd97ec",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:53Z",
+          "remote_updated_at": "2026-10-14T03:38:21Z"
+        },
+        "ASR-4": {
+          "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+          "identifier": "BING-7",
+          "title": "ASR-4：课题组 ASR 接入",
+          "status": "in_progress",
+          "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+          "url": "https://multica.jasonhome.fun/bingfapingtai/issues/BING-7",
+          "last_synced_at": "2026-10-19T14:02:54+08:00",
+          "last_verified_at": "2026-10-19T14:03:04+08:00",
+          "remote_revision": 8,
+          "managed_description_sha256": "06c87bc957ba59ca6d523670e8b9c828ae95f0b219ae312002d6a47b9e211a3d",
+          "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF",
+          "remote_created_at": "2026-10-13T16:18:54Z",
+          "remote_updated_at": "2026-10-19T06:02:53Z"
+        }
+      },
+      "last_verification": {
+        "checked_at": "2026-10-19T14:03:04+08:00",
+        "mode": "apply",
+        "checkpoint": "v2.9-2B",
+        "passed": true,
+        "checks": {
+          "inventory_ids_unchanged": true,
+          "bing2_unchanged": true,
+          "comments_unchanged": true,
+          "resources_unchanged": true,
+          "project_metadata_unchanged": true,
+          "runs_unchanged": true,
+          "daemon_unchanged_stopped": true,
+          "active_autopilots_unchanged": true,
+          "ASR-1_unchanged": true,
+          "ASR-2_unchanged": true,
+          "ASR-3_unchanged": true,
+          "overview_readback": true,
+          "overview_protected_fields": true,
+          "ASR-4_readback": true,
+          "ASR-4_protected_fields": true
+        },
+        "created_count": 0,
+        "issue_count": 6,
+        "readbacks": {
+          "overview": {
+            "id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+            "identifier": "BING-3",
+            "title": "推理平台开发总览（v2.9）",
+            "status": "in_progress",
+            "parent_issue_id": null,
+            "remote_revision": 7,
+            "remote_created_at": "2026-10-13T16:18:12Z",
+            "remote_updated_at": "2026-10-19T06:02:52Z",
+            "managed_description_sha256": "ff51a9849722bb86d2b0a3840746df7cc3c0f8f66432e35fceb0829074d2a7cd",
+            "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF"
+          },
+          "ASR-4": {
+            "id": "01a1360f-4c9b-7799-9705-4626026b314f",
+            "identifier": "BING-7",
+            "title": "ASR-4：课题组 ASR 接入",
+            "status": "in_progress",
+            "parent_issue_id": "01a1360e-a8e6-7647-87d3-3c9e622fc248",
+            "remote_revision": 8,
+            "remote_created_at": "2026-10-13T16:18:54Z",
+            "remote_updated_at": "2026-10-19T06:02:53Z",
+            "managed_description_sha256": "06c87bc957ba59ca6d523670e8b9c828ae95f0b219ae312002d6a47b9e211a3d",
+            "description_hash_normalization": "CRLF/CR to LF; exactly one trailing LF"
+          }
+        },
+        "deferred_event_ids": [
+          "v29-2b-implementation-start-20261019",
+          "v29-2b-development-delivery-20261019"
+        ],
+        "user_acceptance": "pending",
+        "mapping_not_modified": true,
+        "verified_at": "2026-10-19T14:03:04+08:00",
+        "assigned_agents": 0,
+        "agent_runs": 0,
+        "teacher_daemon": "stopped",
+        "pending_count": 0,
+        "transport": "existing_multica_cli",
+        "browser_navigation_tested": false
+      },
+      "last_verification_report": "runtime/verification/concurrency-2b/multica-batch/verification-apply.json"
+    }
+  ],
+  "synced_batches": [
+    {
+      "checkpoint": "ASR-3B",
+      "plan_version": "v2.7",
+      "written_and_readback_at": "2026-10-14T11:38:21+08:00",
+      "verified_at": "2026-10-14T11:39:30+08:00",
+      "events": [
+        {
+          "event_id": "v2.7-planning-local",
+          "recorded_at": "2026-10-14T08:45:20+08:00",
+          "event_type": "planning_recorded",
+          "local_plan_version": "v2.7",
+          "checkpoint": "ASR-3B",
+          "issue_keys": [
+            "overview",
+            "ASR-2",
+            "ASR-3"
+          ],
+          "summary": "仅落实v2.7本地规划：ASR-2A节点与实例登记、ASR-2B独立启动与安全停止、ASR-3A服务管理页面、ASR-3B完整演示与集中交付，四部分均未开始。每部分交付讲解后暂停，期间仅记本地事实；本机闭环交付后集中同步BING-3、BING-5、BING-6。停止策略为停止接收和领取新ASR任务，等待当前音频处理结束再退出；这是待实现行为。ASR-1仍待用户验收，ASR-4待资料；本次没有远端写入或业务开发。登记时间是规划记录时间，不是开发开始时间。"
+        },
+        {
+          "event_id": "ASR-2A-baseline-in-progress",
+          "recorded_at": "2026-10-14T08:54:10+08:00",
+          "event_type": "development_in_progress",
+          "local_plan_version": "v2.7",
+          "checkpoint": "ASR-3B",
+          "issue_keys": [
+            "overview",
+            "ASR-2"
+          ],
+          "summary": "用户在v2.7规划后以“进入下一项”授权ASR-2A节点与实例登记，已核对真实环境、默认库0007及23任务/23上传、2模型/2版本、online0、无活跃任务，停止状态和配套备份已核实。08:54:10是基线核查及开发中登记时间，不补造精确首次动工时间。登记、查询、实际会话观测及迁移正在实施，未预填测试或验收通过；不改变Worker/管理器启停权，ASR-2B/3A/3B未开始，ASR-1仍待用户验收。本事件仅本地待ASR-3B集中同步，未写远端。"
+        },
+        {
+          "event_id": "ASR-2A-development-delivered",
+          "recorded_at": "2026-10-14T09:07:15+08:00",
+          "event_type": "development_delivered",
+          "local_plan_version": "v2.7",
+          "checkpoint": "ASR-3B",
+          "issue_keys": [
+            "overview",
+            "ASR-2"
+          ],
+          "summary": "ASR-2A开发侧交付，待用户验收并暂停。0008新增节点/实例/真实会话观测三表，真实本机稳定身份与固定Whisper实例登记、显式采样和5个只读GET通过；后台1071通过/2既有Windows符号链接权限跳过，165.89秒，无warning。原五服务实际两轮加载Whisper/Vision、HTTP节点/实例/历史结果读取、停止及重启持久化通过，保留2个不同真实Worker会话。原23任务/23上传哈希、2模型/2版本及online0保持，新增1节点/1实例/2会话；平台已停止。登记仍不等于运行，exitConfirmed固定false，不接管原管理器；未新增转写任务，未改前端或复跑前端/浏览器，不宣称Agent闭环。ASR-2B/3A/3B未开始，ASR-1仍待用户验收；本事件仅本地待ASR-3B集中同步，未写远端。"
+        },
+        {
+          "event_id": "ASR-2B-baseline-in-progress",
+          "recorded_at": "2026-10-14T09:22:57+08:00",
+          "event_type": "development_in_progress",
+          "local_plan_version": "v2.7",
+          "checkpoint": "ASR-3B",
+          "issue_keys": [
+            "overview",
+            "ASR-2"
+          ],
+          "summary": "用户以继续进入下一项授权ASR-2B独立启动与安全停止。09:22:57为基线核查和成对备份记录时间，不补造首次动工时间；0008原23任务、23上传、2历史会话已备份。仅实施本机Agent固定ASR实例管理；本轮不写Multica，测试及真实模型验证完成后另记交付，用户验收仍独立。"
+        },
+        {
+          "event_id": "ASR-2B-development-delivered",
+          "recorded_at": "2026-10-14T09:47:45+08:00",
+          "event_type": "development_delivered",
+          "local_plan_version": "v2.7",
+          "checkpoint": "ASR-3B",
+          "issue_keys": [
+            "overview",
+            "ASR-2"
+          ],
+          "summary": "ASR-2B开发侧交付、待用户验收并暂停。0009新增Agent控制和受管启动历史；本机Agent唯一管理Whisper实例，平台默认ASR等待显式启动，HTTP固定本机令牌/会话/修订保护及CLI启停查询完成。停止接单与领取按原事务裁决，当前任务收尾后确认模型退出。最终后台1214通过/2旧Windows符号链接权限跳过207.83秒，随后补充实际平台信号3通过1.81秒分列不累加；真实Whisper启动、短中文和44.3735秒音频排空、队列原截止保持、Vision持续可用、再次启动、整平台在途完成后停止及重启持久化通过。首次整平台CTRL_BREAK触发native Fortran中断的证据保留，ASR子进程FreeConsole修复后完整真实复验通过，失败任务保留并按原机制attempt2成功。原23任务/23上传及模型/旧会话内容保持，当前33任务/33上传、4受管会话均退出确认、1Agent控制关闭确认；原2旧会话保留。最终全平台已停止，5000/5173释放。47前端/依赖文件未变，未新前端测试、构建或浏览器验收；ASR-3A/3B未开始。ASR-1/2A/2B用户验收均待明确确认。本轮仅本地记录，未写远端，不改v2.6远端版本或同步时间。"
+        },
+        {
+          "event_id": "ASR-3A-baseline-in-progress",
+          "recorded_at": "2026-10-14T10:23:45+08:00",
+          "event_type": "development_in_progress",
+          "local_plan_version": "v2.7",
+          "checkpoint": "ASR-3B",
+          "issue_keys": [
+            "overview",
+            "ASR-3"
+          ],
+          "summary": "用户以继续进入下一项授权ASR-3A服务管理页面。此时间是基线核查及成对备份登记：平台已停止、0009、原33任务/33上传、4受管会话已确认退出。只实施当前页面接入与相应验证，不进入ASR-3B，不写Multica；已有阶段用户验收仍待明确确认。"
+        },
+        {
+          "event_id": "ASR-3A-development-delivered",
+          "recorded_at": "2026-10-14T10:37:23+08:00",
+          "event_type": "development_delivered",
+          "local_plan_version": "v2.7",
+          "checkpoint": "ASR-3B",
+          "issue_keys": [
+            "overview",
+            "ASR-3"
+          ],
+          "summary": "ASR-3A服务管理页面已完成开发侧交付，待用户验收并暂停；ASR-3B完整演示与集中交付尚未开始。前端221通过、类型检查/构建通过，后台定向135通过；Edge2项（1真实Agent/Whisper页面、1模拟状态异常）通过。原33任务/33上传保持，当前34任务、5受管会话均退出确认；平台已停止、5000/5173空闲。本轮不写Multica，ASR-1/2A/2B/3A用户验收仍待明确确认。真实浏览器启动就绪/短中文/独立停止/停止后TXT及刷新/其他工作台通过，3视口查看；另1模拟状态异常。无再次启动、真实在途排空或实际故障的新证据；完整3B仍待授权。无新迁移或依赖，原远端版本、快照及同步时间保持。"
+        },
+        {
+          "event_id": "ASR-3B-baseline-in-progress",
+          "recorded_at": "2026-10-14T11:22:03+08:00",
+          "event_type": "development_in_progress",
+          "local_plan_version": "v2.7",
+          "checkpoint": "ASR-3B",
+          "issue_keys": [
+            "overview",
+            "ASR-3"
+          ],
+          "summary": "用户以继续进入下一步授权ASR-3B完整演示与集中交付；此为实际基线和配套备份时间。0009、原34任务/34上传、5受管会话已退出确认，平台停止且5000/5173空闲。先实际验证浏览器闭环、故障和历史兼容，完成交付后再集中同步BING-3/5/6，用户验收独立待确认。"
+        },
+        {
+          "event_id": "ASR-3B-development-delivered",
+          "recorded_at": "2026-10-14T11:34:25+08:00",
+          "event_type": "development_delivered",
+          "local_plan_version": "v2.7",
+          "checkpoint": "ASR-3B",
+          "issue_keys": [
+            "overview",
+            "ASR-2",
+            "ASR-3"
+          ],
+          "summary": "ASR-3B完整演示与集中交付已完成开发侧验证，待用户验收并暂停。后台全量1215通过/2旧Windows符号链接权限跳过，前端221通过、类型检查及构建通过，Edge2项通过（1真实闭环、1模拟异常）。真实三次ASR启动/转写/退出、在途停止后保留排队期限、重启继续、ASR停止期间真实Vision及历史下载、整平台重启持久化均通过。原34任务/34上传保持，现38任务/38上传、8受管会话全部退出确认；最终平台停止、锁释放、5000/5173空闲。实时状态须另查。ASR-1/2A/2B/3A/3B用户验收仍待明确确认，ASR-4未开始。 已达到集中同步节点，用户验收仍待确认。"
+        }
+      ],
+      "user_acceptance": "pending",
+      "initial_verification_note": "正文/状态均成功；首次严格检查仅对BING-5/6看板position变化报差，保留初报后只读核对实际值通过，没有重复写入。",
+      "evidence": "runtime/verification/asr3b/multica-batch/verification-verify.json"
+    },
+    {
+      "checkpoint": "ASR-4A",
+      "plan_version": "v2.8",
+      "written_and_readback_at": "2026-10-15T14:15:38+08:00",
+      "verified_at": "2026-10-15T14:15:45+08:00",
+      "events": [
+        {
+          "event_id": "ASR-4A-baseline-in-progress",
+          "recorded_at": "2026-10-15T13:31:48+08:00",
+          "event_type": "development_in_progress",
+          "local_plan_version": "v2.8",
+          "checkpoint": "ASR-4A",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "summary": "2026-10-15 用户确认实施 v2.8；当前只实施 ASR-4A 可接入版本。真实地址、鉴权及可信证书、部署版本未提供，真实调用与启停分别留待 ASR-4B/4C。既有阶段用户验收状态不变。 已保存默认库和38份上传配套备份；这是基线核查时间。尚未远端写入。"
+        },
+        {
+          "event_id": "ASR-4A-development-delivered",
+          "recorded_at": "2026-10-15T14:14:26+08:00",
+          "event_type": "development_delivered",
+          "local_plan_version": "v2.8",
+          "checkpoint": "ASR-4A",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "summary": "ASR-4A外部调用可接入版本已完成开发侧交付，待用户验收并暂停。后台全量1314通过/2项旧Windows符号链接权限跳过；全量启动后最后停止竞态修复另行定向54通过，分列不累加。前端冻结全量240通过、类型检查/构建通过，Edge隔离浏览器2项通过。真实本机Whisper短中文转写及独立/整平台停止通过，36份历史成功结果逐项一致；原38任务/38上传保持，当前39任务/39上传、9受管会话均退出确认。0010首次/重复迁移与结构检查通过。外部协议仅由隔离HTTPS和真实Windows子进程验证，课题组真实调用及远端启停尚未验证；日常未配置外部模型，remote_asr_calls为空。平台已停止、锁释放、5000/5173空闲。没有新增依赖、下载模型或扩大20MiB/300秒限制；既有阶段用户验收不变。"
+        }
+      ],
+      "user_acceptance": "pending",
+      "evidence": "runtime/verification/asr4a/multica-batch/verification.json"
+    },
+    {
+      "checkpoint": "ASR-4B",
+      "plan_version": "v2.8",
+      "written_and_readback_at": "2026-10-19T10:50:45+08:00",
+      "verified_at": "2026-10-19T10:52:05+08:00",
+      "events": [
+        {
+          "event_id": "ASR-4B-authorized-awaiting-connection",
+          "recorded_at": "2026-10-15T19:49:22+08:00",
+          "event_type": "authorized_waiting_for_inputs",
+          "local_plan_version": "v2.8",
+          "checkpoint": "ASR-4B",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "summary": "用户已要求继续下一部分，当前获准进入ASR-4B真实服务联调。已进行前置核对：本地外部地址、模型标识、部署版本及CA未配置，运行中的状态接口返回unconfigured/available=false；现有资料仅给出https://<host>:8003占位。真实调用等待用户补充实际地址、网络/鉴权、可信证书及可追溯部署版本；这不是缺少实施授权。ASR-4A及旧阶段用户验收不自动改变，ASR-4C尚未授权。 每个获准部分交付时，必须说明下一部分的名称、目标、所需资料或条件；当前部分完成后暂停，不自动实施下一部分。若当前被资料阻塞，也要说明当前缺口和后续顺序。 本轮没有新增业务实现或真实模型验收，未写入远端。"
+        },
+        {
+          "event_id": "ASR-4B-endpoint-received-network-timeout-20261015",
+          "recorded_at": "2026-10-15T22:33:01+08:00",
+          "event_type": "connection_check_waiting_for_inputs",
+          "local_plan_version": "v2.8",
+          "checkpoint": "ASR-4B",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "summary": "用户提供真实校园网ASR地址和SenseVoice文件转写示例。对指定8003端口在工具环境及正常Windows权限下分别5秒/8秒连接均超时；未到TLS/HTTP、未上传音频，没有真实转写结果。待校园网/服务器端口可达性确认以及鉴权/可信证书与可追溯部署版本。只记本地事实，不提前同步交付；ASR-4C仍未授权。"
+        },
+        {
+          "event_id": "ASR-4B-campus-and-materials-pending-confirmed-20261015",
+          "recorded_at": "2026-10-15T22:53:14+08:00",
+          "event_type": "input_conditions_confirmed",
+          "local_plan_version": "v2.8",
+          "checkpoint": "ASR-4B",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "summary": "用户明确确认笔记本尚未连接校园网，可信证书或CA文件及SenseVoice模型/部署版本待提供。ASR-4B等待接入条件，当前不重复连接、不发健康/转写请求、不变更配置或业务代码、不启停平台、不写Multica。此前TCP超时不作为服务器故障或TLS错误的结论；网络及资料齐备后继续已授权真实联调，实际交付后再集中同步。下一部分仍为需另行授权和管理条件的ASR-4C。"
+        },
+        {
+          "event_id": "ASR-4B-campus-reported-provider-async-clarification-20261016",
+          "recorded_at": "2026-10-16T11:21:38+08:00",
+          "event_type": "integration_conditions_reviewed",
+          "local_plan_version": "v2.8",
+          "checkpoint": "ASR-4B",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "summary": "用户报告已连接校园网，服务方提示异步查询并将并发/CPU-GPU分配归平台。已核对异步task_id协议、缺少外部取消及202响应丢失找回保证、device_id未解释设备选择语义；不把回复推断成GPU范围授权。正常Windows权限复测指定8003端口仍8秒TCP超时，未到TLS/HTTP、未上传音频。当前优先核对服务端可达性与设备控制契约，业务代码/配置保持，协议调整待确认；仅本地登记，未同步交付。"
+        },
+        {
+          "event_id": "ASR-4B-gpu-cpu-goal-campus-disconnected-20261016",
+          "recorded_at": "2026-10-16T11:42:28+08:00",
+          "event_type": "requirements_clarified_waiting_for_network",
+          "local_plan_version": "v2.8",
+          "checkpoint": "ASR-4B",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "summary": "用户明确最终调度目标：按资源情况选择合适GPU，GPU满载时适合CPU的小任务可由CPU承接；需模型CPU兼容、CPU余量及实测任务规模/耗时边界。当前只记录需求，不实施GPU调度或改原Worker领取/任务状态机。用户最新说明当前未连接校园网，稍后连接校园VPN后会通知；等待通知，不重复网络探测或发送音频、不启停平台。当前仍为已获准的ASR-4B，未切换异步协议，ASR-4C仍待条件和后续实施。仅本地记录，未写Multica或增加验收结论。"
+        },
+        {
+          "event_id": "ASR-4B-campus-connected-tls-self-signed-20261019",
+          "recorded_at": "2026-10-19T09:29:47+08:00",
+          "event_type": "integration_resumed_waiting_for_certificate",
+          "local_plan_version": "v2.8",
+          "checkpoint": "ASR-4B",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "summary": "用户确认校园网已连接并继续ASR-4B。本次TCP连接成功，默认TLS校验因自签名证书失败（verifyCode18），未发HTTP健康请求或音频。用户要求证书资料先记待提供，后续再问；保留TLS验证，未改业务代码/依赖/配置或业务数据，未启停服务。只读核对现有公开短中文音频、依赖和0010；39任务/2模型版本/remote_asr_calls0，本机管理器未运行且5000/5173空闲，但旧running状态不能当作退出确认。真实健康、转写、下载尚未验证；未完成交付，未写Multica，GPU与ASR-4C仍未实施。"
+        },
+        {
+          "event_id": "ASR-4B-authorized-tls-exception-real-call-passed-20261019",
+          "recorded_at": "2026-10-19T09:51:58+08:00",
+          "event_type": "authorized_tls_exception_real_direct_call_verified",
+          "local_plan_version": "v2.8",
+          "checkpoint": "ASR-4B",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "summary": "用户明确允许按curl -k跳过已指定校园网地址的证书校验，替代此前CA前置条件。09:38:32健康HTTP200、模型已加载；09:40:06—09:40:07一次公开5.5466875秒音频真实同步转写HTTP200，约1.016秒，request_id回显且全文/分段/通用TXT和JSON核对通过。新增默认关闭且精确origin绑定的TLS例外，定向90通过、原任务和Windows子进程24通过、共享配置43通过；这是分组检查，不是全量或浏览器验收。未改.env或登记模型，日常库仍39任务/2模型版本/remote_asr_calls0，未启停平台。实际模型/部署标识仍待提供，API14.2仅接口版本；平台任务/页面闭环和本机旧会话恢复尚未验证。ASR-4B未整体交付，按集中规则只记本地；未实施GPU、异步切换或ASR-4C，用户验收状态不变。",
+          "evidence": "docs/阶段记录/ASR-4B-真实服务联调-验收记录.md"
+        },
+        {
+          "event_id": "ASR-4B-platform-prepared-awaiting-version-semantics-20261019",
+          "recorded_at": "2026-10-19T09:58:52+08:00",
+          "event_type": "platform_preparation_waiting_for_version_choice",
+          "local_plan_version": "v2.8",
+          "checkpoint": "ASR-4B",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "summary": "用户继续授权推进ASR-4B平台与页面闭环。已核对本机旧状态：9条受管ASR会话均有退出确认、无未结束任务；旧Agent没有整体shutdown确认，上次管理器状态仍为running，不能补写为正常停机。09:56:53正常Windows权限下未发现项目服务进程，环境8项检查通过；沙箱内模型清单读取失败已确认属于权限差异，未下载模型。09:57:52完成数据库与39份上传配套备份，完整性、外键、全部表行及上传哈希核对通过，原39任务/2模型版本/remote_asr_calls0保持。现有版本登记只接受真实上游模型/部署版本；已向用户提出明确区分“上游版本未知＋本地接入修订”的小范围调整，仍待回复，尚未实施该语义调整或填写占位版本。本次未修改.env、登记模型、启动平台或再次发送音频；不进入ASR-4C，不写Multica。",
+          "evidence": "docs/阶段记录/ASR-4B-真实服务联调-验收记录.md"
+        },
+        {
+          "event_id": "ASR-4B-version-optional-authorized-20261019",
+          "recorded_at": "2026-10-19T10:26:11+08:00",
+          "event_type": "authorized_optional_upstream_version_implementation",
+          "local_plan_version": "v2.8",
+          "checkpoint": "ASR-4B",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "summary": "用户明确要求修改逻辑，上游模型版本不是必须项。已实现baseURL+模型标识即可配置，未知版本用自动稳定接入修订并明确versionInfo/upstreamVersion=null，旧已知规范和指纹兼容；任务与结果从不可变登记批量投影，页面同步调整。已在日常.env限定已授权TLS例外并登记sensevoice-external，未伪造上游版本；后台定向97及新增集成5通过，完整回归和真实页面验证进行中，尚未交付或同步远端。"
+        },
+        {
+          "event_id": "ASR-4B-development-delivery-20261019",
+          "checkpoint": "ASR-4B",
+          "event_type": "development_delivery",
+          "recorded_at": "2026-10-19T10:49:00+08:00",
+          "summary": "ASR-4B已完成开发侧交付，待用户验收并暂停。上游模型版本改为可选；未知时使用稳定的本地接入修订，明确显示“上游模型版本未知”，历史任务和结果继续读取原登记。真实页面上传、外部SenseVoice转写、全文/分段、TXT/JSON下载及平台重启后读取通过；本次平台仅新增1条任务、1次上游尝试。原39任务/39上传/37份成功结果及2个旧模型版本保持，现40任务/40上传/3模型版本，remote_asr_calls仅1条且已释放。两轮平台启动停止通过，最终管理器已退出、5000/5173空闲。本轮未启动本机Whisper，9条旧受管会话保持；Vision完成加载但未新增真实Vision推理。用户验收及旧阶段验收状态不变。后台全量首轮1361通过、3失败、2项旧Windows符号链接权限跳过（714.44秒）；失败定位为测试子进程冷启动超过夹具2秒预算，以及正式入口测试误读日常.env导致测试CA与TLS例外冲突。仅修测试夹具：健康预算恢复生产默认5秒，正式入口使用无.env的临时源码副本；其后三项定向全部通过（47.82秒），不宣称一次全量全绿。前端252通过，最终类型检查/构建通过；Edge真实流程复核1通过（11.4秒）。",
+          "user_acceptance": "pending",
+          "evidence": "docs/阶段记录/ASR-4B-真实服务联调-验收记录.md"
+        }
+      ],
+      "user_acceptance": "pending",
+      "evidence": "runtime/verification/asr4b/multica-batch/verification-verify.json"
+    },
+    {
+      "checkpoint": "v2.9-1",
+      "plan_version": "v2.9",
+      "written_and_readback_at": "2026-10-19T11:35:40+08:00",
+      "verified_at": "2026-10-19T11:35:51+08:00",
+      "events": [
+        {
+          "event_id": "scope-v29-existing-service-concurrency-20261019",
+          "checkpoint": "v2.9-scope",
+          "event_type": "scope_update",
+          "recorded_at": "2026-10-19T11:12:05+08:00",
+          "local_plan_version": "v2.9",
+          "summary": "用户明确最终不由平台启动、停止模型实例。模型部署、加载、启停和运行维护由服务方负责；本平台目标为并发任务受理、排队、已有服务的资源目标选择、调用及结果追踪，优先选择有容量的GPU，满足模型支持CPU、CPU有余量及任务规模/耗时条件时由CPU承接。GPU/CPU策略尚未实现，阈值须按实测确定。ASR-4C远端受管启停移出当前最终交付范围，不再作为后续开发前置，也不登记为已完成。保留已有本机Whisper、Node Agent、启停页面与历史证据，本次不删除功能。源码可作协议参考，克隆源码、下载模型、安装对方环境及获取模型进程管理权限均非当前前置。下一项为“并发与设备分配对接核查”：核对已有服务的CPU/GPU调用目标、设备选择语义、资源与可用并发容量、共享占用和异步查询/去重规则。核查结果形成小步实施方案后再按用户指令开发，不自动开始GPU、异步协议或多节点代码。本轮仅本地文档调整，没有实现或测试新调度能力，ASR-4B及旧阶段用户验收保持。",
+          "user_acceptance": "unchanged",
+          "evidence": "docs/开发计划.md"
+        },
+        {
+          "event_id": "v29-1-review-start-20261019",
+          "event_type": "review_started",
+          "recorded_at": "2026-10-19T11:23:53+08:00",
+          "summary": "用户授权继续下一项，开始并发与设备分配对接核查。只读资料/代码/旧证据，记录保护哈希；本轮不实施并发代码。",
+          "checkpoint": "v2.9-1",
+          "local_plan_version": "v2.9",
+          "user_acceptance": "pending",
+          "evidence": "docs/阶段记录/v2.9-1-并发与设备分配核查记录.md"
+        },
+        {
+          "event_id": "v29-1-target-contract-decision-20261019",
+          "event_type": "scope_clarification",
+          "recorded_at": "2026-10-19T11:32:03+08:00",
+          "summary": "用户要求不向师兄询问设备指定设计，由开发侧决定。平台采用受控target_id、目标修订与共享容量组；真实设备绑定未知仍不伪造。此时间为本地登记时间，不冒充用户回复的精确时刻。",
+          "checkpoint": "v2.9-1",
+          "local_plan_version": "v2.9",
+          "user_acceptance": "pending",
+          "evidence": "docs/阶段记录/v2.9-1-并发与设备分配核查记录.md"
+        },
+        {
+          "event_id": "v29-1-review-delivery-20261019",
+          "event_type": "review_delivery",
+          "recorded_at": "2026-10-19T11:32:03+08:00",
+          "summary": "v2.9第1部分文档/源码核查与平台侧方案已完成，待用户验收。用户要求不向师兄询问设计选择，由开发侧决定。采用受控target_id绑定已有服务及已核实设备、固定目标Worker主动领取、目标与共享capacity_group原子准入；首轮同步、目标/组限额1，别名和模型版本不增加容量。现外部地址设备未知，不能标GPU；本机Whisper不能作为SenseVoice的CPU替代。GPU优先及CPU承接尚未实现。下一项为第二部分的2A“计算目标与容量准入基础”：迁移、目标修订、共享容量组、许可与Worker身份/锁/会话及领取资格；先保留真实通道单槽，以隔离并发测试核对规则。2B再接受控并发执行与页面，第3部分再按实测验证GPU/CPU。当前交付后暂停，不自动开始代码。本轮只读资料、代码与ASR-4B历史证据；一次GET已知服务/docs返回HTTP500，未取得补充接口定义，不能据此判断转写故障。未发送音频、未启停平台、未下载模型、未修改业务代码/配置/数据或原设计；没有新增业务测试数量。",
+          "checkpoint": "v2.9-1",
+          "local_plan_version": "v2.9",
+          "user_acceptance": "pending",
+          "evidence": "docs/阶段记录/v2.9-1-并发与设备分配核查记录.md"
+        }
+      ],
+      "delivery_type": "review_and_design",
+      "user_acceptance": "pending",
+      "evidence": "runtime/verification/concurrency-review/multica-batch/verification-apply.json"
+    },
+    {
+      "checkpoint": "v2.9-2A",
+      "plan_version": "v2.9",
+      "written_and_readback_at": "2026-10-19T12:19:01+08:00",
+      "verified_at": "2026-10-19T12:19:11+08:00",
+      "events": [
+        {
+          "event_id": "v29-2a-implementation-start-20261019",
+          "event_type": "implementation_started",
+          "recorded_at": "2026-10-19T11:39:14+08:00",
+          "checkpoint": "v2.9-2A",
+          "local_plan_version": "v2.9",
+          "user_acceptance": "pending",
+          "summary": "用户以继续授权实施2A计算目标与容量准入基础，当前开始开发和隔离验证，尚未交付。默认remote-default/remote-asr-shared、设备unknown、目标/组限额1；保留旧global锁及profile单活动调用唯一索引，2B再接多执行槽与页面。不进入GPU/CPU策略、异步切换或远端模型启停；旧阶段验收保持。",
+          "evidence": "docs/阶段记录/v2.9-2A-计算目标与容量准入-验收记录.md"
+        },
+        {
+          "event_id": "v29-2a-development-delivery-20261019",
+          "event_type": "development_delivery",
+          "recorded_at": "2026-10-19T12:13:21+08:00",
+          "checkpoint": "v2.9-2A",
+          "local_plan_version": "v2.9",
+          "user_acceptance": "pending",
+          "summary": "2A开发侧交付完成：0011日常首次/重复迁移及结构检查、旧40任务/40上传/38成功结果保持；默认remote-default/remote-asr-shared、unknown、目标/组限额1幂等登记。一条真实公开中文任务单次提交attempt=1成功，重启仅GET结果一致，无再次音频；最终41任务/41上传，2外部调用与新1permit均released，2新目标Worker会话均stopped且槽释放，9旧受管会话和3模型版本保持。后台全量1416通过/2旧权限跳过、收集后24准入与9CLI/Worker另行定向通过，不累加，未重跑最终全量；未新跑前端/浏览器。最终检查仅修正compute_nodes.updated_at观察字段允许单调刷新，保留首次检查报告，其余字段逐列保持。平台已停止/端口释放，旧global/profile守卫仍保留，未实际多槽/GPU/CPU调度或远端启停；2B未实施待继续授权。",
+          "evidence": "docs/阶段记录/v2.9-2A-计算目标与容量准入-验收记录.md"
+        }
+      ],
+      "delivery_type": "development_and_real_single_call",
+      "user_acceptance": "pending",
+      "evidence": "runtime/verification/concurrency-2a/multica-batch/verification-apply.json"
+    },
+    {
+      "checkpoint": "v2.9-2B",
+      "plan_version": "v2.9",
+      "written_and_readback_at": "2026-10-19T14:02:54+08:00",
+      "verified_at": "2026-10-19T14:03:04+08:00",
+      "events": [
+        {
+          "event_id": "v29-2b-implementation-start-20261019",
+          "event_type": "implementation_started",
+          "recorded_at": "2026-10-19T13:14:09+08:00",
+          "checkpoint": "v2.9-2B",
+          "local_plan_version": "v2.9",
+          "user_acceptance": "pending",
+          "summary": "用户已授权2B受控并发执行与页面验证；起步登记实际时间，未交付。受管调用池各槽独立HTTP子进程，真实默认unknown/1，隔离并发及页面与真实单槽分证据；不实施GPU/CPU策略、异步切换或远端启停。交付后集中同步BING-3/BING-7。",
+          "evidence": [
+            "docs/阶段记录/v2.9-2B-受控并发执行与页面验证-验收记录.md"
+          ]
+        },
+        {
+          "event_id": "v29-2b-development-delivery-20261019",
+          "event_type": "development_delivery",
+          "recorded_at": "2026-10-19T14:00:46+08:00",
+          "checkpoint": "v2.9-2B",
+          "local_plan_version": "v2.9",
+          "development_acceptance": "passed",
+          "user_acceptance": "pending",
+          "summary": "2B调用池/独立执行槽/容量视图交付；0012及隔离并发、真实限额1页面转写、重启仅GET和最终退出通过。42任务/42上传，41旧及39旧成功结果保持；后台全量1464通过/1旧测试版本失败/2旧权限跳过，修正后20定向与Windows修复46定向另列，未重复全量。真实unknown/1不扩容，下一项第3部分GPU优先与CPU承接待条件与授权。",
+          "evidence": [
+            "docs/阶段记录/v2.9-2B-受控并发执行与页面验证-验收记录.md",
+            "runtime/verification/concurrency-2b/finalverified-confirmed.json",
+            "runtime/verification/concurrency-2b/browser-live/external-asr-live-report.json"
+          ]
+        }
+      ],
+      "delivery_type": "controlled_concurrency_and_ui",
+      "user_acceptance": "pending",
+      "evidence": "runtime/verification/concurrency-2b/multica-batch/verification-apply.json"
+    },
+    {
+      "checkpoint": "v2.9-3-policy",
+      "plan_version": "v2.9",
+      "written_and_readback_at": "2026-10-19T14:37:17+08:00",
+      "verified_at": "2026-10-19T14:37:27+08:00",
+      "events": [
+        {
+          "event_id": "v29-3-policy-offline-start-20261019",
+          "event_type": "implementation_started",
+          "recorded_at": "2026-10-19T14:20:31+08:00",
+          "inspection_started_at": "2026-10-19T14:12:53+08:00",
+          "checkpoint": "v2.9-3-policy",
+          "local_plan_version": "v2.9",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "user_acceptance": "pending",
+          "summary": "用户已授权第3部分并明确暂无新增GPU/CPU资料，先完成纯决策Service、Pydantic契约、只读离线preview CLI与隔离验证。当前起步、未交付，不预填测试通过；真实资源采集/目标接入/任务路由联调待条件。2B实际Worker链路和unknown/1保持，不停止用户查看的平台、不迁移/登记模拟目标/改env/外部调用。14:18:18只读本机容量200且无活动占位，不据此宣称GPU/CPU能力。仅本地待获准策略范围实际交付后集中同步BING-3/7，旧用户验收保持；下一项为本部分真实目标接入与路由联调。",
+          "evidence": [
+            "docs/阶段记录/v2.9-3-设备选择策略与隔离验证-验收记录.md"
+          ]
+        },
+        {
+          "event_id": "v29-3-policy-offline-delivery-20261019",
+          "event_type": "development_delivered",
+          "recorded_at": "2026-10-19T14:35:24+08:00",
+          "checkpoint": "v2.9-3-policy",
+          "local_plan_version": "v2.9",
+          "issue_keys": [
+            "overview",
+            "ASR-4"
+          ],
+          "user_acceptance": "pending",
+          "development_acceptance": "passed",
+          "delivery_scope": "offline_device_policy_only",
+          "real_device_routing": "pending_conditions",
+          "whole_part3_completion": "not_completed",
+          "evidence": [
+            "docs/阶段记录/v2.9-3-设备选择策略与隔离验证-验收记录.md",
+            "runtime/verification/device-policy-3/policy-final.xml",
+            "runtime/verification/device-policy-3/compatibility-final.xml",
+            "runtime/verification/device-policy-3/delivery-check.json"
+          ],
+          "summary": "本轮仅纯决策策略/严格Schema/离线CLI开发侧交付待用户验收；216新增及83旧链路定向分别通过，四个实际CLI符合GPU/CPU示例/等待/等待。本机HTTP200，原413冻结及84保护文件无差异，平台持续运行、2B unknown/1保持，无日常DB读取或外部请求。真实设备路由、资源采集及CPU阈值待资料与后续授权，下一项本部分真实目标接入与路由联调。"
+        }
+      ],
+      "delivery_type": "offline_device_policy_and_isolated_preview",
+      "user_acceptance": "pending",
+      "evidence": "runtime/verification/device-policy-3/multica-batch/verification-apply.json"
+    }
+  ]
+}
