@@ -1,0 +1,4 @@
+# Independent Node foundation. Reuses the existing environment; Linux installation
+# and production WSGI/systemd packaging are verified in module 6.
+-r base.txt
+filelock==4.1.1

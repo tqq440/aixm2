@@ -54,7 +54,7 @@ describe('upload model versions', () => {
     render(<UploadPanel {...defaults} models={[remote]} serviceBlock="服务未启动" serviceModel={original} externalBlock={null} onSubmit={onSubmit} onReset={vi.fn()} />)
     const file = chooseFile()
     expect(screen.queryByLabelText('识别语言')).toBeNull()
-    expect(screen.getByText(/音频会发送到后台配置的外部 ASR 服务/)).toBeTruthy()
+    expect(screen.getByText(/音频会发送到当前运行配置的 ASR 接口/)).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: '提交转写' }))
     expect(onSubmit).toHaveBeenCalledWith(file, remote.modelId, remote.modelVersion, null)
   })

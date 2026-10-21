@@ -8,6 +8,8 @@ from backend.schema.execution.execution_schema import FailureInfo
 from backend.service.execution.execution_service import failure_fingerprint
 from backend.service.recovery.failure_policy import FailurePolicy, TERMINAL_STATES, WAITING_STATES, waiting_timeout
 from backend.service.asr.remote_service import RemoteAsrService
+from backend.service.invocations.invocation_service import InvocationService
+from backend.data.invocations.invocation_repository import InvocationRepository
 
 
 class RecoveryService:
@@ -16,14 +18,18 @@ class RecoveryService:
         self.execution = ExecutionRepository(database)
         self.policy = FailurePolicy(settings)
         self.remote = RemoteAsrService(database, settings)
+        self.common = InvocationService(database, settings) if settings.common_execution_enabled else None
 
     def tick(self) -> int:
-        return sum(self.recover_task(task_id) for task_id in self.repository.due_ids(limit=20))
+        common = self.common.recover() if self.common else 0
+        return common + sum(self.recover_task(task_id) for task_id in self.repository.due_ids(limit=20))
 
     def recover_task(self, task_id: str) -> bool:
         # SQLite 写锁内重新读取状态/令牌/版本/时间；并发扫描只有首个有效转换能成功。
         with self.execution.lock_task(task_id) as tx:
             task = tx.task
+            if task and InvocationRepository.available(tx.session) and InvocationRepository.for_owner(tx.session, "task", task_id):
+                return False
             if task is None or task.status in TERMINAL_STATES:
                 return False
             expired_lease = task.lease_expires_at is not None and task.lease_expires_at <= tx.now

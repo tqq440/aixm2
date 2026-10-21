@@ -27,7 +27,7 @@ class HttpChatAdapter:
     """endpoint 是完整 Chat Completions URL；不会补路径或查询模型目录。"""
 
     def __init__(self, endpoint: str, model: str, api_key: str | None,
-                 connect_timeout: float, read_timeout: float) -> None:
+                 connect_timeout: float, read_timeout: float, *, transport=None, verify=True, correlation_headers=None) -> None:
         try:
             parts = urlsplit(endpoint)
             valid = (parts.scheme in ("http", "https") and parts.hostname and parts.port != 0
@@ -47,6 +47,11 @@ class HttpChatAdapter:
         self._api_key = api_key
         self._connect_timeout = connect_timeout
         self._read_timeout = read_timeout
+        self._transport, self._verify = transport, verify
+        self._correlation_headers = dict(correlation_headers or {})
+        allowed={"X-Request-ID","X-Inference-Attempt","X-Inference-Service-Revision","X-Inference-Config-Revision"}
+        if any(k not in allowed or not isinstance(v,str) or len(v)>64 or "\r" in v or "\n" in v for k,v in self._correlation_headers.items()):
+            raise ConfigurationError("LLM 关联头无效。")
 
     def open(self, messages: list[dict], parameters: dict, deadline: float) -> "HttpChatStream":
         if isinstance(deadline, bool) or not isinstance(deadline, (int, float)) or not math.isfinite(deadline):
@@ -134,12 +139,17 @@ class HttpChatStream:
                                 write=min(adapter._connect_timeout, remaining),
                                 pool=min(adapter._connect_timeout, remaining))
         headers = {"Content-Type": "application/json", "Accept": "text/event-stream", "Accept-Encoding": "identity"}
+        headers.update(adapter._correlation_headers)
         if adapter._api_key:
             headers["Authorization"] = f"Bearer {adapter._api_key}"
         watchdog = Thread(target=self._watch_deadline, name="llm-http-deadline", daemon=True)
+        transport_options = {"verify": adapter._verify}
+        if adapter._transport is not None:
+            transport_options["transport"] = adapter._transport
         try:
             # Client/transport defaults never opt into redirects or connect retries.
             with httpx.Client(timeout=timeout, trust_env=False, follow_redirects=False,
+                              **transport_options,
                               limits=httpx.Limits(max_connections=1, max_keepalive_connections=0)) as client:
                 with self._lock:
                     self._client = client

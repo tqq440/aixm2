@@ -24,7 +24,7 @@ def run_agent():
         if hasattr(sys.stderr, 'reconfigure'):
             sys.stderr.reconfigure(encoding='utf-8')
         settings = load_settings()
-        logger = configure_logging(settings.log_dir, settings.log_level, 'agent.log')
+        logger = configure_logging(settings.log_dir, settings.log_level, 'agent.log', process_scoped=settings.common_execution_enabled)
         database = Database(settings)
         database.check_connection()
         agent = NodeAgentService(database, settings, logger)

@@ -23,7 +23,7 @@ def execute(operation: Callable[[AppSettings, logging.Logger], BaseModel], *,
             stream.reconfigure(encoding="utf-8")
     try:
         settings = load_settings()
-        logger = configure_logging(settings.log_dir, settings.log_level, log_filename)
+        logger = configure_logging(settings.log_dir, settings.log_level, log_filename, process_scoped=settings.common_execution_enabled)
         logger.info("%s 命令开始，编号 %s", command_name, run_id)
         result = operation(settings, logger)
         print(result.model_dump_json(by_alias=True, indent=2))

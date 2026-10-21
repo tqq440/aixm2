@@ -2,22 +2,22 @@ import type { ComponentView, RuntimeView, TaskType } from '../types/api'
 import type { ErrorInfo } from './Feedback'
 import { Icon } from './Icon'
 
-function componentStatus(component: ComponentView | undefined, isWorker: boolean, taskType: TaskType = 'asr') {
+function componentStatus(component: ComponentView | undefined, isWorker: boolean, taskType: TaskType = 'asr', interfaceAsr = false) {
   if (!component) return { tone: 'neutral', label: '等待状态', detail: '正在读取后台报告' }
   const availability = component.availability
-  if (availability === 'stopped' || availability === 'not_started') return { tone: 'warning', label: '未运行', detail: isWorker ? taskType === 'asr' ? '在 ASR 服务管理区启动转写服务' : '启动 Worker 后自动处理任务' : '启动投递器后发送任务通知' }
+  if (availability === 'stopped' || availability === 'not_started') return { tone: 'warning', label: '未运行', detail: isWorker ? interfaceAsr ? '启动平台调用进程并核对接口配置' : taskType === 'asr' ? '在已有实例管理区启动转写服务' : '启动 Worker 后自动处理任务' : '启动投递器后发送任务通知' }
   if (availability === 'stale') return { tone: 'warning', label: '报告已过期', detail: '暂时无法确认是否可用' }
   if (isWorker && ['draining', 'stopping', 'stop_unconfirmed'].includes(component.reportedState ?? '')) return { tone: 'warning', label: component.reportedState === 'stop_unconfirmed' ? '停止未确认' : '停止中', detail: '不再接单，等待当前任务收尾与退出确认' }
   if (availability === 'error') return { tone: 'danger', label: '运行异常', detail: component.lastError || '请检查对应程序的日志' }
-  if (isWorker && !component.modelReady) return { tone: 'pending', label: '模型加载中', detail: '加载完成后开始接收任务' }
+  if (isWorker && !component.modelReady) return { tone: 'pending', label: interfaceAsr ? '接口检查中' : '模型加载中', detail: interfaceAsr ? '等待服务健康检查通过' : '加载完成后开始接收任务' }
   if (isWorker && component.reportedState === 'busy') return { tone: 'pending', label: taskType === 'vision' ? '正在检测' : '正在转写', detail: '一次执行 1 个任务' }
-  if (component.ready) return { tone: 'success', label: isWorker ? '就绪' : '运行中', detail: isWorker ? '模型已加载 · 等待任务' : '自动投递待处理任务' }
+  if (component.ready) return { tone: 'success', label: isWorker ? '就绪' : '运行中', detail: isWorker ? interfaceAsr ? '调用进程就绪 · 等待任务' : '模型已加载 · 等待任务' : '自动投递待处理任务' }
   return { tone: 'neutral', label: '准备中', detail: '等待下一次运行报告' }
 }
 
-export function RuntimePanel({ runtime, error, loading, taskType = 'asr' }: { runtime: RuntimeView | null; error: ErrorInfo | null; loading: boolean; taskType?: TaskType }) {
+export function RuntimePanel({ runtime, error, loading, taskType = 'asr', interfaceAsr = false }: { runtime: RuntimeView | null; error: ErrorInfo | null; loading: boolean; taskType?: TaskType; interfaceAsr?: boolean }) {
   const unavailable = { tone: 'neutral', label: '状态未知', detail: '后台状态暂时不可读取' }
-  const worker = error ? unavailable : componentStatus(taskType === 'vision' ? runtime?.visionWorker : runtime?.worker, true, taskType)
+  const worker = error ? unavailable : componentStatus(taskType === 'vision' ? runtime?.visionWorker : interfaceAsr ? runtime?.remoteAsrWorker ?? undefined : runtime?.worker, true, taskType, interfaceAsr)
   const dispatcher = error ? unavailable : componentStatus(runtime?.dispatcher, false)
   const api = error
     ? { tone: 'danger', label: '连接异常', detail: '检查 API 是否启动或稍后刷新' }

@@ -17,6 +17,8 @@ from backend.config.settings.app_settings import AppSettings
 from backend.data.database.database import Database
 from backend.data.execution.execution_repository import ExecutionRepository, ExecutionTransaction
 from backend.data.tasks.task_models import TaskRecord
+from backend.data.invocations.invocation_repository import InvocationRepository
+from backend.service.invocations.invocation_service import InvocationService
 from backend.schema.asr.asr_schema import TranscriptionResult
 from backend.schema.vision.detection_schema import DetectionResult
 from backend.schema.execution.execution_schema import (
@@ -75,6 +77,11 @@ class ExecutionService:
                 return busy
             if task is None or task.status in TERMINAL_STATES:
                 return rejected
+            if InvocationRepository.available(tx.session):
+                if InvocationRepository.for_owner(tx.session, "task", task.task_id):
+                    return busy
+                if InvocationRepository.common_occupied(tx.session):
+                    return busy
             if (task.dispatch_version != delivery.dispatch_version
                     or task.execution_plan_version != delivery.execution_plan_version
                     or task.queue_key != delivery.queue_key):
@@ -289,6 +296,12 @@ class ExecutionService:
             task = tx.task
             if task is None or task.caller_id != caller_id:
                 raise AppError("TASK_NOT_FOUND", "未找到此任务。", 404)
+            if InvocationRepository.available(tx.session):
+                invocation = InvocationRepository.for_owner(tx.session, "task", task_id)
+                if invocation:
+                    if not self.settings.common_execution_enabled:
+                        raise AppError("COMMON_EXECUTION_DISABLED", "该任务属于公共通道，请恢复公共执行开关后处理取消。", 503)
+                    return InvocationService(self.repository.database, self.settings).cancel_in_transaction(tx.session, invocation)
             if task.status in TERMINAL_STATES:
                 return "already_finished"
             if task.status in WAITING_STATES:

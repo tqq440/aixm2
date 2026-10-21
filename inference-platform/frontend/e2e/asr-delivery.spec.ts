@@ -121,6 +121,8 @@ test('真实ASR完整交付：页面启停与再启动、真实结果、在途�
 
   try {
     await page.goto('/')
+    await page.getByText('已有实例管理与兼容入口', { exact: true }).click()
+    await page.getByRole('button', { name: '使用已有 Whisper 实例提交', exact: true }).click()
     await expect(badge).toHaveText('未启动')
     const nodeId = await panel.getByLabel('计算节点').inputValue()
     expect(nodeId).toMatch(/^[a-f0-9]{32}$/)
@@ -192,6 +194,8 @@ test('真实ASR完整交付：页面启停与再启动、真实结果、在途�
     const stoppedTxt = await downloaded(page, '下载 TXT', 'delivery-stopped-transcript.txt')
     expect(await readFile(stoppedTxt, 'utf8')).toBe(shortResult.output.text)
     await page.reload()
+    await page.getByText('已有实例管理与兼容入口', { exact: true }).click()
+    await page.getByRole('button', { name: '使用已有 Whisper 实例提交', exact: true }).click()
     await expect(badge).toHaveText('未启动')
     await expect(panel.getByLabel('本机管理令牌', { exact: true })).toHaveValue('')
     await expect(detail).toContainText(shortResult.output.text)

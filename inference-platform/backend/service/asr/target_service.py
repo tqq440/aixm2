@@ -6,7 +6,7 @@ from uuid import uuid4
 from filelock import FileLock, Timeout
 
 from backend.common.exceptions.app_error import AppError
-from backend.config.settings.app_settings import remote_asr_origin
+from backend.config.settings.app_settings import asr_service_origin
 from backend.data.asr.remote_repository import RemoteAsrRepository
 from backend.data.asr.target_repository import AsrTargetRepository
 from backend.data.database.database import database_now
@@ -91,7 +91,7 @@ class TargetAdmissionService:
             command = TargetRegistration(group_id=target.capacity_group_id) if target is not None else TargetRegistration()
         spec = remote_asr_model_spec(self.settings)
         fingerprint = config_fingerprint(self.settings)
-        origin = remote_asr_origin(self.settings.remote_asr_base_url)
+        origin = asr_service_origin(self.settings.remote_asr_base_url)
         endpoint = sha256(origin.encode("utf-8")).hexdigest()
         repo, now = self.repository, database_now(session)
         groups = repo.endpoint_groups(session, endpoint)
@@ -117,11 +117,17 @@ class TargetAdmissionService:
             revision = repo.add_revision(session,
                 revision_id=sha256(f"{self.target_id}:{fingerprint}".encode()).hexdigest(),
                 target_id=self.target_id, config_fingerprint=fingerprint, endpoint_identity=endpoint,
-                config_snapshot={"protocol": "remote-v2-sync", "baseUrl": origin,
+                config_snapshot={"protocol": ("remote-v2-sync" if self.settings.remote_asr_protocol == "remote-v2"
+                                             else "openai-audio"), "baseUrl": origin,
                     "modelId": spec.model_id, "modelVersion": spec.model_version,
                     "versionInfo": spec.version_info.model_dump() if spec.version_info else None,
                     "caFile": str(self.settings.remote_asr_ca_file) if self.settings.remote_asr_ca_file else None,
-                    "insecureTlsOrigin": self.settings.remote_asr_insecure_tls_origin},
+                    "insecureTlsOrigin": self.settings.remote_asr_insecure_tls_origin,
+                    **({"transcribePath": self.settings.remote_asr_transcribe_path,
+                        "healthPath": self.settings.remote_asr_health_path,
+                        "upstreamModel": self.settings.remote_asr_upstream_model,
+                        "apiKeyEnv": self.settings.remote_asr_api_key_env}
+                       if self.settings.asr_service_id is not None else {})},
                 device_kind="unknown", device_evidence=None, created_at=now)
             session.flush()
         return revision

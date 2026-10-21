@@ -65,3 +65,24 @@ class RemoteTranscriptResponse(RemotePayload):
 
 class RemoteRejection(RemotePayload):
     detail: str = Field(min_length=1, max_length=8192)
+
+
+class OpenAiAudioModel(RemotePayload):
+    id: str = Field(min_length=1, max_length=256)
+
+
+class OpenAiAudioModels(RemotePayload):
+    data: list[OpenAiAudioModel] = Field(max_length=10_000)
+
+
+class OpenAiAudioTranscript(RemotePayload):
+    """只接受响应中实际提供的文字和分段，不补造设备、模型版本或时间戳。"""
+
+    text: str = Field(max_length=131_072)
+    segments: list[RemoteSegment] = Field(default_factory=list, max_length=20_000)
+
+    @field_validator("text")
+    @classmethod
+    def validate_text(cls, value):
+        value.encode("utf-8", errors="strict")
+        return value

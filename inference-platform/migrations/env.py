@@ -22,6 +22,16 @@ from backend.data.asr.target_models import (
     AsrCallPermit, AsrCapacityChange, AsrCapacityGroup, AsrComputeTarget, AsrTargetRevision, AsrTargetWorkerSession,
 )
 from backend.data.tasks.task_models import DispatchEvent, IdempotencyRecord, TaskRecord
+from backend.data.catalog.catalog_models import (
+    InferenceCatalogEvent, InferenceResourceGroup, InferenceService, InferenceServiceRevision, InferenceTargetCheck,
+)
+from backend.data.invocations.invocation_models import (
+    InferenceApplicationBudget, InferenceCpuProfile, InferenceInvocation, InferenceReservationItem,
+    InferenceSchedulerCursor, InferenceTaskEvent,
+)
+from backend.data.queue.queue_models import InferenceQueueOutbox, InferenceQueueState
+from backend.data.invocations.node_dispatch_models import InferenceNodeDispatch
+from backend.data.gateway.key_models import GatewayKey, GatewayNodeObservation
 
 # 显式导入业务模型以注册元数据，不自动扫描、导入整个 backend 包。
 

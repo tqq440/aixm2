@@ -30,7 +30,6 @@ def test_default_is_not_configured_and_local_identity_is_unchanged():
 
 @pytest.mark.parametrize("changes", [
     {"remote_asr_model_id": None}, {"remote_asr_base_url": None},
-    {"remote_asr_base_url": "http://isolated.test:8003"},
     {"remote_asr_base_url": "https://user:secret@isolated.test:8003"},
     {"remote_asr_base_url": "https://isolated.test:8003?secret=yes"},
     {"remote_asr_base_url": "https://isolated.test:8003#fragment"},

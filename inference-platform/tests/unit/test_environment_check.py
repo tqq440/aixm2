@@ -102,3 +102,17 @@ def test_platform_environment_checks_vision_dependency_closure_and_both_models(t
     assert observed == [PROJECT_ROOT / "requirements" / "vision.txt", "asr", "vision"]
     assert report.passed
     assert list(tmp_path.iterdir()) == []
+
+
+def test_manual_interface_does_not_require_local_whisper_weights(tmp_path, monkeypatch):
+    monkeypatch.setattr(environment_service, "dependency_mismatches", lambda _: [])
+    monkeypatch.setattr(environment_service, "database_revisions", lambda *_: ({"head"}, {"head"}))
+    monkeypatch.setattr(environment_service, "frontend_mismatches", lambda _: [])
+    monkeypatch.setattr(environment_service, "inspect_model", lambda _: pytest.fail("interface ASR must not inspect local weights"))
+    monkeypatch.setattr(environment_service, "inspect_vision_model", lambda _: None)
+    monkeypatch.setattr(environment_service.subprocess, "run",
+        lambda *_, **__: subprocess.CompletedProcess([], 0, "v24.15.0", ""))
+    settings = AppSettings(database_path=tmp_path / "absent.sqlite3", asr_service_id="configured-interface",
+        remote_asr_base_url="http://127.0.0.1:8001", remote_asr_model_id="whisper-http")
+    assert environment_service.check_environment(settings).passed
+    assert list(tmp_path.iterdir()) == []

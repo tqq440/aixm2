@@ -240,6 +240,19 @@ def test_agent_spawn_records_launch_boundary_before_process_creation(platform, m
     assert before <= observed[0][2] <= datetime.now(timezone.utc).replace(tzinfo=None)
 
 
+@pytest.mark.parametrize("revision", [None, "a" * 64])
+def test_each_child_receives_the_managers_fixed_asr_revision(platform, monkeypatch, revision):
+    observed = []
+    platform.settings = platform.settings.model_copy(update={"asr_service_revision": revision})
+    def process(name, command, **kwargs):
+        observed.append(kwargs["env"]["INFERENCE_ASR_SERVICE_REVISION"])
+        return SimpleNamespace(pid=123, poll=lambda: None)
+    monkeypatch.setattr("backend.service.platform.platform_service.OwnedProcess", process)
+    platform.spawn("api")
+    platform.spawn("remote_asr_worker")
+    assert observed == [revision or "legacy", revision or "legacy"]
+
+
 def test_agent_drain_does_not_stop_other_services_or_terminate_job(platform, monkeypatch):
     signals = []
     platform.processes = {

@@ -2,6 +2,7 @@
 
 import json
 import logging
+import os
 from datetime import datetime, timezone
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
@@ -23,8 +24,11 @@ class JsonFormatter(logging.Formatter):
         return json.dumps(payload, ensure_ascii=False)
 
 
-def configure_logging(log_dir: Path, level: str, filename: str = "api.log") -> logging.Logger:
+def configure_logging(log_dir: Path, level: str, filename: str = "api.log", *, process_scoped: bool = False) -> logging.Logger:
     log_dir.mkdir(parents=True, exist_ok=True)
+    if process_scoped:
+        path = Path(filename)
+        filename = f"{path.stem}-{os.getpid()}{path.suffix}"
     logger = logging.getLogger(f"inference-platform.{uuid4().hex}")
     logger.setLevel(level)
     logger.propagate = False

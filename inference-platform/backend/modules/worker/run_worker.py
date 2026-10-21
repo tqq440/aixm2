@@ -27,7 +27,7 @@ def run_worker(task_type: str, *, asr_profile: str = "local") -> int:
         settings = load_settings()
         log_name = ("remote-asr-worker.log" if asr_profile == "remote" else
                     "worker.log" if task_type == "asr" else "vision-worker.log")
-        logger = configure_logging(settings.log_dir, settings.log_level, log_name)
+        logger = configure_logging(settings.log_dir, settings.log_level, log_name, process_scoped=settings.common_execution_enabled)
         database = Database(settings)
         database.check_connection()
         worker = (RemotePoolService(database, settings, logger) if asr_profile == "remote" else

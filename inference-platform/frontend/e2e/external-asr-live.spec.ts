@@ -100,11 +100,13 @@ test('真实外部 ASR：未知上游版本、一次上传、真实转写与下�
       const model = externalModels[0]
       expect(model.versionInfo).toEqual(unknownVersion)
       modelId = model.modelId; modelVersion = model.modelVersion
-      const external = page.getByRole('region', { name: '外部 ASR 服务', exact: true })
+      const external = page.getByRole('region', { name: 'ASR 服务状态', exact: true })
       await expect(external.locator('.asr-service-state')).toHaveText('可以转写')
       await expect(external).toContainText('上游模型版本未知')
       await expect(external.getByRole('button', { name: /启动|停止/ })).toHaveCount(0)
+      await page.getByText('已有实例管理与兼容入口', { exact: true }).click()
       await expect(page.getByRole('region', { name: 'ASR 服务管理', exact: true }).locator('.asr-service-state')).toHaveText('未启动')
+      await page.getByText('已有实例管理与兼容入口', { exact: true }).click()
       await page.getByLabel('模型', { exact: true }).selectOption(JSON.stringify([modelId, modelVersion]))
       await expect(page.getByRole('region', { name: '新建转写任务', exact: true })).toContainText('上游模型版本未知 · 接入修订')
       await page.getByLabel('选择音频', { exact: true }).setInputFiles(audio)
@@ -158,7 +160,7 @@ test('真实外部 ASR：未知上游版本、一次上传、真实转写与下�
     expect(result.output.engineMetadata?.adapterKey).toBe('remote-v2-sensevoice')
     await page.goto(`/?task=${taskId}`)
     if (process.env.E2E_ASR_CAPACITY_CHECK === '1') {
-      const panel = page.getByRole('region', { name: '外部 ASR 服务', exact: true })
+      const panel = page.getByRole('region', { name: 'ASR 服务状态', exact: true })
       await expect(panel.getByRole('heading', { name: '调用容量', exact: true })).toBeVisible()
       await expect(panel.getByText('调用槽 1', { exact: true })).toBeVisible()
       await expect(panel.getByText('设备：未知', { exact: true })).toBeVisible()

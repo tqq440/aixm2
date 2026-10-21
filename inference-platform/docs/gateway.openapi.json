@@ -1,0 +1,3990 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Inference Gateway Public API",
+    "version": "v1",
+    "description": "外部访问入口Node并携带应用Key。所有GET只读；POST提交使用稳定幂等键。接口不是OpenAI兼容API。"
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/api/v1/services": {
+      "get": {
+        "summary": "查询当前应用允许使用的服务，不公开地址或凭据",
+        "operationId": "get__api_v1_services",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "查询当前应用允许使用的服务，不公开地址或凭据",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/asr": {
+      "post": {
+        "summary": "持久化任务、文件和outbox后返回；重复键返回原任务",
+        "operationId": "post__api_v1_tasks_asr",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "持久化任务、文件和outbox后返回；重复键返回原任务",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PublicRequestView"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "serviceId",
+                  "file"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "serviceId": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "language": {
+                    "type": "string",
+                    "description": "仅支持语言控制的OpenAI Audio服务可填，Remote-V2省略"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/vision": {
+      "post": {
+        "summary": "持久化任务、文件和outbox后返回；重复键返回原任务",
+        "operationId": "post__api_v1_tasks_vision",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "持久化任务、文件和outbox后返回；重复键返回原任务",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PublicRequestView"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "serviceId",
+                  "file"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "serviceId": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "parameters": {
+                    "type": "string",
+                    "description": "可选JSON字符串：confidenceThreshold、iouThreshold、maxDetections"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks": {
+      "get": {
+        "summary": "只读本应用任务列表",
+        "operationId": "get__api_v1_tasks",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "maximum": 1000000,
+              "minimum": 1,
+              "title": "Page",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Pagesize",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "waiting",
+                    "running",
+                    "succeeded",
+                    "failed",
+                    "cancelled",
+                    "unknown"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Status"
+            }
+          },
+          {
+            "name": "serviceId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 64,
+                  "minLength": 1,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Serviceid"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "asr",
+                    "vision",
+                    "llm"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Kind"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "只读本应用任务列表",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "items",
+                        "total",
+                        "page",
+                        "pageSize"
+                      ],
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/PublicRequestView"
+                          }
+                        },
+                        "total": {
+                          "type": "integer"
+                        },
+                        "page": {
+                          "type": "integer"
+                        },
+                        "pageSize": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}": {
+      "get": {
+        "summary": "只读任务详情",
+        "operationId": "get__api_v1_tasks_id",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "只读任务详情",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PublicRequestView"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}/result": {
+      "get": {
+        "summary": "已保存结果；未保存返回409",
+        "operationId": "get__api_v1_tasks_id_result",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "已保存结果；未保存返回409",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "taskId": {
+                          "type": "string"
+                        },
+                        "lateResult": {
+                          "type": "boolean"
+                        },
+                        "originalOutcome": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "result": {
+                          "anyOf": [
+                            {
+                              "$ref": "#/components/schemas/TranscriptionResult"
+                            },
+                            {
+                              "$ref": "#/components/schemas/RemoteDetectionResult"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}/result/download": {
+      "get": {
+        "summary": "下载平台已保存的结果；TXT只适用于ASR",
+        "operationId": "get__api_v1_tasks_id_result_download",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": "json",
+              "enum": [
+                "json",
+                "txt"
+              ],
+              "title": "Format",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "下载平台已保存的结果；TXT只适用于ASR",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/TranscriptionResult"
+                    },
+                    {
+                      "$ref": "#/components/schemas/RemoteDetectionResult"
+                    }
+                  ]
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}/cancel": {
+      "post": {
+        "summary": "请求取消；ACK不确认远端停止",
+        "operationId": "post__api_v1_tasks_id_cancel",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求取消；ACK不确认远端停止",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}/events": {
+      "get": {
+        "summary": "只读游标事件，默认50最多200",
+        "operationId": "get__api_v1_tasks_id_events",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "afterSequence",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Aftersequence",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "只读游标事件，默认50最多200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "items",
+                        "hasMore",
+                        "nextSequence",
+                        "historyNotice"
+                      ],
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "sequence": {
+                                "type": "integer"
+                              },
+                              "eventId": {
+                                "type": "string"
+                              },
+                              "invocationId": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "eventType": {
+                                "type": "string"
+                              },
+                              "source": {
+                                "type": "string"
+                              },
+                              "occurredAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "details": {
+                                "type": "object"
+                              }
+                            }
+                          }
+                        },
+                        "hasMore": {
+                          "type": "boolean"
+                        },
+                        "nextSequence": {
+                          "type": "integer"
+                        },
+                        "historyNotice": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}/monitoring": {
+      "get": {
+        "summary": "只读已保存快照，不即时查询服务",
+        "operationId": "get__api_v1_tasks_id_monitoring",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "只读已保存快照，不即时查询服务",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "invocationId": {
+                          "type": "string"
+                        },
+                        "platform": {
+                          "type": "object"
+                        },
+                        "monitoring": {
+                          "anyOf": [
+                            {
+                              "$ref": "#/components/schemas/TaskMonitoringSnapshot"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "assignedDevice": {
+                          "type": [
+                            "object",
+                            "null"
+                          ]
+                        },
+                        "remoteState": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "resultPending": {
+                          "type": [
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        "resultSaved": {
+                          "type": [
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        "lateResultSaved": {
+                          "type": [
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        "nodeQueryError": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "executionError": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "notice": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/llm/requests/{id}/events": {
+      "get": {
+        "summary": "只读游标事件，默认50最多200",
+        "operationId": "get__api_v1_llm_requests_id_events",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          },
+          {
+            "name": "afterSequence",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Aftersequence",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "只读游标事件，默认50最多200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "items",
+                        "hasMore",
+                        "nextSequence",
+                        "historyNotice"
+                      ],
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "sequence": {
+                                "type": "integer"
+                              },
+                              "eventId": {
+                                "type": "string"
+                              },
+                              "invocationId": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "eventType": {
+                                "type": "string"
+                              },
+                              "source": {
+                                "type": "string"
+                              },
+                              "occurredAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "details": {
+                                "type": "object"
+                              }
+                            }
+                          }
+                        },
+                        "hasMore": {
+                          "type": "boolean"
+                        },
+                        "nextSequence": {
+                          "type": "integer"
+                        },
+                        "historyNotice": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/llm/requests/{id}/monitoring": {
+      "get": {
+        "summary": "只读已保存快照，不即时查询服务",
+        "operationId": "get__api_v1_llm_requests_id_monitoring",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "只读已保存快照，不即时查询服务",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "invocationId": {
+                          "type": "string"
+                        },
+                        "platform": {
+                          "type": "object"
+                        },
+                        "monitoring": {
+                          "anyOf": [
+                            {
+                              "$ref": "#/components/schemas/TaskMonitoringSnapshot"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "assignedDevice": {
+                          "type": [
+                            "object",
+                            "null"
+                          ]
+                        },
+                        "remoteState": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "resultPending": {
+                          "type": [
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        "resultSaved": {
+                          "type": [
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        "lateResultSaved": {
+                          "type": [
+                            "boolean",
+                            "null"
+                          ]
+                        },
+                        "nodeQueryError": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "executionError": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "notice": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/llm/requests": {
+      "post": {
+        "summary": "自定义SSE：accepted/delta/done/error；重复提交返回JSON，不重放token",
+        "operationId": "post__api_v1_llm_requests",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "自定义SSE：accepted/delta/done/error；重复提交返回JSON，不重放token",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "event: delta\ndata: {\"requestId\":\"...\",\"text\":\"hello\"}\n\n"
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "request": {
+                          "$ref": "#/components/schemas/PublicRequestView"
+                        },
+                        "streamReplayed": {
+                          "const": false
+                        }
+                      }
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitOnline"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/llm/requests/{id}": {
+      "get": {
+        "summary": "只读本应用在线元数据，不保存聊天正文",
+        "operationId": "get__api_v1_llm_requests_id",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "只读本应用在线元数据，不保存聊天正文",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/PublicRequestView"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/llm/requests/{id}/cancel": {
+      "post": {
+        "summary": "请求取消在线调用，未知仍占用容量",
+        "operationId": "post__api_v1_llm_requests_id_cancel",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "请求取消在线调用，未知仍占用容量",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/openapi.json": {
+      "get": {
+        "summary": "本协议文档",
+        "operationId": "get__api_v1_openapi.json",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "本协议文档",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "requestId"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "object"
+                    },
+                    "requestId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "错误码以 error.code 为准；404不暴露其他应用资源；503提交结果不明时保留幂等键。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OnlineMessage": {
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "enum": [
+              "system",
+              "user",
+              "assistant"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "content": {
+            "maxLength": 16000,
+            "minLength": 1,
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ],
+        "title": "OnlineMessage",
+        "type": "object"
+      },
+      "OnlineParameters": {
+        "additionalProperties": false,
+        "properties": {
+          "temperature": {
+            "default": 0.7,
+            "maximum": 2,
+            "minimum": 0,
+            "title": "Temperature",
+            "type": "number"
+          },
+          "maxTokens": {
+            "default": 512,
+            "maximum": 2048,
+            "minimum": 1,
+            "title": "Maxtokens",
+            "type": "integer"
+          }
+        },
+        "title": "OnlineParameters",
+        "type": "object"
+      },
+      "SubmitOnline": {
+        "additionalProperties": false,
+        "properties": {
+          "serviceId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Serviceid",
+            "type": "string"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/OnlineMessage"
+            },
+            "maxItems": 32,
+            "minItems": 1,
+            "title": "Messages",
+            "type": "array"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/OnlineParameters"
+          }
+        },
+        "required": [
+          "serviceId",
+          "messages"
+        ],
+        "title": "SubmitOnline",
+        "type": "object"
+      },
+      "PublicRequestView": {
+        "additionalProperties": false,
+        "properties": {
+          "invocationId": {
+            "title": "Invocationid",
+            "type": "string"
+          },
+          "taskId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Taskid"
+          },
+          "onlineRequestId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Onlinerequestid"
+          },
+          "applicationId": {
+            "title": "Applicationid",
+            "type": "string"
+          },
+          "serviceId": {
+            "title": "Serviceid",
+            "type": "string"
+          },
+          "serviceRevision": {
+            "title": "Servicerevision",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "asr",
+              "vision",
+              "llm"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "waiting",
+              "reserved",
+              "sent",
+              "finished"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "permitState": {
+            "enum": [
+              "waiting",
+              "held",
+              "released",
+              "uncertain"
+            ],
+            "title": "Permitstate",
+            "type": "string"
+          },
+          "targetId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Targetid"
+          },
+          "attempt": {
+            "title": "Attempt",
+            "type": "integer"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome"
+          },
+          "resolvedOutcome": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolvedoutcome"
+          },
+          "acceptedAt": {
+            "format": "date-time",
+            "title": "Acceptedat",
+            "type": "string"
+          },
+          "deadlineAt": {
+            "format": "date-time",
+            "title": "Deadlineat",
+            "type": "string"
+          },
+          "finishedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finishedat"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "waiting",
+              "running",
+              "succeeded",
+              "failed",
+              "cancelled",
+              "unknown"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "modelId": {
+            "title": "Modelid",
+            "type": "string"
+          },
+          "modelVersion": {
+            "title": "Modelversion",
+            "type": "string"
+          },
+          "resultAvailable": {
+            "title": "Resultavailable",
+            "type": "boolean"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "cancelRequested": {
+            "title": "Cancelrequested",
+            "type": "boolean"
+          },
+          "input": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input"
+          },
+          "outputCharacters": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outputcharacters"
+          },
+          "finishReason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finishreason"
+          }
+        },
+        "required": [
+          "invocationId",
+          "taskId",
+          "onlineRequestId",
+          "applicationId",
+          "serviceId",
+          "serviceRevision",
+          "kind",
+          "state",
+          "permitState",
+          "targetId",
+          "attempt",
+          "reason",
+          "outcome",
+          "resolvedOutcome",
+          "acceptedAt",
+          "deadlineAt",
+          "finishedAt",
+          "id",
+          "status",
+          "modelId",
+          "modelVersion",
+          "resultAvailable",
+          "error",
+          "cancelRequested",
+          "input",
+          "outputCharacters",
+          "finishReason"
+        ],
+        "title": "PublicRequestView",
+        "type": "object"
+      },
+      "ErrorDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "details": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationIssue"
+            },
+            "title": "Details",
+            "type": "array"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorDetail",
+        "type": "object"
+      },
+      "ValidationIssue": {
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "code"
+        ],
+        "title": "ValidationIssue",
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "error",
+          "requestId"
+        ],
+        "title": "ErrorResponse",
+        "type": "object"
+      },
+      "ActualDevice": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "cpu",
+              "gpu"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "deviceId": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9._:/-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Deviceid"
+          },
+          "namespace": {
+            "default": "service",
+            "enum": [
+              "service",
+              "host"
+            ],
+            "title": "Namespace",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "title": "ActualDevice",
+        "type": "object"
+      },
+      "TaskMonitoringSnapshot": {
+        "additionalProperties": false,
+        "properties": {
+          "supported": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Supported"
+          },
+          "remoteState": {
+            "anyOf": [
+              {
+                "enum": [
+                  "queued",
+                  "running",
+                  "succeeded",
+                  "failed",
+                  "cancelled"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Remotestate"
+          },
+          "progress": {
+            "anyOf": [
+              {
+                "maximum": 100,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Progress"
+          },
+          "stage": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "pattern": "^[A-Za-z0-9._-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Stage"
+          },
+          "queuePosition": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Queueposition"
+          },
+          "actualDevice": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ActualDevice"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "lastQueryAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Lastqueryat"
+          },
+          "lastTrustedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Lasttrustedat"
+          },
+          "lastError": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "pattern": "^[A-Z][A-Z0-9_]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Lasterror"
+          },
+          "lastErrorAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Lasterrorat"
+          },
+          "pollStopped": {
+            "anyOf": [
+              {
+                "const": "deadline",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pollstopped"
+          },
+          "cancelRequested": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cancelrequested"
+          },
+          "stateSource": {
+            "anyOf": [
+              {
+                "enum": [
+                  "response",
+                  "query"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Statesource"
+          }
+        },
+        "title": "TaskMonitoringSnapshot",
+        "type": "object"
+      },
+      "AsrEngineMetadata": {
+        "additionalProperties": false,
+        "description": "引擎报告的可选运行事实；不包含地址、凭据或任意扩展字段。",
+        "properties": {
+          "adapterKey": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Adapterkey",
+            "type": "string"
+          },
+          "modelRepo": {
+            "anyOf": [
+              {
+                "maxLength": 256,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelrepo"
+          },
+          "modelRevision": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelrevision"
+          },
+          "device": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Device"
+          },
+          "computeType": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Computetype"
+          },
+          "cpuThreads": {
+            "anyOf": [
+              {
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cputhreads"
+          },
+          "modelLoadSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelloadseconds"
+          },
+          "transcriptionSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Transcriptionseconds"
+          },
+          "totalSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Totalseconds"
+          },
+          "runtimeVersions": {
+            "maxProperties": 16,
+            "patternProperties": {
+              "^[A-Za-z0-9][A-Za-z0-9._-]*$": {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._+\\-]*$",
+                "type": "string"
+              }
+            },
+            "propertyNames": {
+              "maxLength": 64,
+              "minLength": 1
+            },
+            "title": "Runtimeversions",
+            "type": "object"
+          }
+        },
+        "required": [
+          "adapterKey"
+        ],
+        "title": "AsrEngineMetadata",
+        "type": "object"
+      },
+      "TranscriptionSegment": {
+        "additionalProperties": false,
+        "properties": {
+          "start": {
+            "minimum": 0,
+            "title": "Start",
+            "type": "number"
+          },
+          "end": {
+            "minimum": 0,
+            "title": "End",
+            "type": "number"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start",
+          "end",
+          "text"
+        ],
+        "title": "TranscriptionSegment",
+        "type": "object"
+      },
+      "TranscriptionResult": {
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "segments": {
+            "items": {
+              "$ref": "#/components/schemas/TranscriptionSegment"
+            },
+            "title": "Segments",
+            "type": "array"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Language"
+          },
+          "languageRequested": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Languagerequested"
+          },
+          "languageProbability": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Languageprobability"
+          },
+          "audioDurationSeconds": {
+            "exclusiveMinimum": 0,
+            "title": "Audiodurationseconds",
+            "type": "number"
+          },
+          "engineMetadata": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AsrEngineMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "modelRepo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelrepo"
+          },
+          "modelRevision": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelrevision"
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Device"
+          },
+          "computeType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Computetype"
+          },
+          "cpuThreads": {
+            "anyOf": [
+              {
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cputhreads"
+          },
+          "modelLoadSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelloadseconds"
+          },
+          "transcriptionSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Transcriptionseconds"
+          },
+          "totalSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Totalseconds"
+          },
+          "fasterWhisperVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Fasterwhisperversion"
+          },
+          "ctranslate2Version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Ctranslate2Version"
+          }
+        },
+        "required": [
+          "text",
+          "segments",
+          "audioDurationSeconds"
+        ],
+        "title": "TranscriptionResult",
+        "type": "object"
+      },
+      "BoundingBox": {
+        "additionalProperties": false,
+        "properties": {
+          "xMin": {
+            "minimum": 0,
+            "title": "Xmin",
+            "type": "number"
+          },
+          "yMin": {
+            "minimum": 0,
+            "title": "Ymin",
+            "type": "number"
+          },
+          "xMax": {
+            "minimum": 0,
+            "title": "Xmax",
+            "type": "number"
+          },
+          "yMax": {
+            "minimum": 0,
+            "title": "Ymax",
+            "type": "number"
+          }
+        },
+        "required": [
+          "xMin",
+          "yMin",
+          "xMax",
+          "yMax"
+        ],
+        "title": "BoundingBox",
+        "type": "object"
+      },
+      "RemoteDetection": {
+        "additionalProperties": false,
+        "properties": {
+          "classId": {
+            "maximum": 1000000,
+            "minimum": 0,
+            "title": "Classid",
+            "type": "integer"
+          },
+          "className": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Classname",
+            "type": "string"
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "box": {
+            "$ref": "#/components/schemas/BoundingBox"
+          }
+        },
+        "required": [
+          "classId",
+          "className",
+          "confidence",
+          "box"
+        ],
+        "title": "RemoteDetection",
+        "type": "object"
+      },
+      "RemoteDetectionResult": {
+        "additionalProperties": false,
+        "properties": {
+          "schemaVersion": {
+            "const": "vision-json-v1",
+            "default": "vision-json-v1",
+            "title": "Schemaversion",
+            "type": "string"
+          },
+          "modelId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Modelid",
+            "type": "string"
+          },
+          "modelVersion": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelversion"
+          },
+          "imageWidth": {
+            "exclusiveMinimum": 0,
+            "maximum": 20000,
+            "title": "Imagewidth",
+            "type": "integer"
+          },
+          "imageHeight": {
+            "exclusiveMinimum": 0,
+            "maximum": 20000,
+            "title": "Imageheight",
+            "type": "integer"
+          },
+          "coordinateSystem": {
+            "const": "original-pixels-exif-normalized",
+            "default": "original-pixels-exif-normalized",
+            "title": "Coordinatesystem",
+            "type": "string"
+          },
+          "detections": {
+            "items": {
+              "$ref": "#/components/schemas/RemoteDetection"
+            },
+            "maxItems": 300,
+            "title": "Detections",
+            "type": "array"
+          }
+        },
+        "required": [
+          "modelId",
+          "imageWidth",
+          "imageHeight",
+          "detections"
+        ],
+        "title": "RemoteDetectionResult",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "ApplicationKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "中心签发的独立应用Key；不能调用Node内部执行或管理接口。"
+      }
+    }
+  }
+}

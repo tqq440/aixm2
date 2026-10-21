@@ -9,16 +9,19 @@ import { useAsrManagement } from './hooks/useAsrManagement'
 import { useExternalAsr } from './hooks/useExternalAsr'
 import { useAsrScheduling } from '@/hooks/useAsrScheduling'
 import { catalogFixture, schedulingFixture } from '@/test/asrSchedulingFixtures'
+import { useAsrServices } from '@/hooks/useAsrServices'
+import { servicesFixture } from '@/test/asrServicesFixtures'
 
 vi.mock('./hooks/useAsrManagement', () => ({ useAsrManagement: vi.fn() }))
 vi.mock('./hooks/useExternalAsr', () => ({ useExternalAsr: vi.fn() }))
 vi.mock('@/hooks/useAsrScheduling', () => ({ useAsrScheduling: vi.fn() }))
+vi.mock('@/hooks/useAsrServices', () => ({ useAsrServices: vi.fn() }))
 
 const ASR_ID = 'a'.repeat(32)
 const VISION_ID = 'b'.repeat(32)
 const asrModel: ModelSpec = {
   modelId: 'whisper-small', modelVersion: 'asr-fixed', modelRepo: 'test/asr', taskType: 'asr', executionMode: 'offline',
-  adapterKey: 'faster-whisper', parameterSchema: { defaultLanguage: 'zh', autoDetectionValue: 'auto', languages: ['zh'] },
+  adapterKey: 'remote-v2-sensevoice', managementMode: 'external_call_only', parameterSchema: { defaultLanguage: 'zh', autoDetectionValue: 'auto', languageMode: 'server', languages: ['zh'] },
   inputConstraints: { maxFileBytes: 20 * 1024 * 1024, maxAudioSeconds: 300 }, outputCapabilities: ['text', 'segments'],
 }
 const visionModel: VisionModelSpec = {
@@ -70,10 +73,12 @@ const originalCreate = Object.getOwnPropertyDescriptor(URL, 'createObjectURL')
 const originalRevoke = Object.getOwnPropertyDescriptor(URL, 'revokeObjectURL')
 
 beforeEach(() => {
+  vi.mocked(useAsrServices).mockReturnValue({ state: servicesFixture({ runningModel: { modelId: asrModel.modelId, modelVersion: asrModel.modelVersion } }),
+    error: null, actionError: null, loading: false, pending: null, refresh: vi.fn(), save: vi.fn(), select: vi.fn(), remove: vi.fn() })
   vi.mocked(useAsrScheduling).mockReturnValue({ status: schedulingFixture(), targets: catalogFixture({ total: 0, items: [] }),
     statusError: null, targetsError: null, loading: false, offset: 0, pageSize: 5, now: Date.now(), refresh: vi.fn(),
     setOffset: vi.fn(), statusTrusted: true, targetsTrusted: true })
-  vi.mocked(useExternalAsr).mockReturnValue({ status: { configured: false, available: false, state: 'unconfigured', observedAt: null, message: '尚未配置', currentTaskId: null, uncertainTaskId: null, modelId: null, modelVersion: null }, error: null, loading: false, stale: true, refresh: vi.fn() })
+  vi.mocked(useExternalAsr).mockReturnValue({ status: { configured: true, available: true, state: 'ready', observedAt: new Date().toISOString(), message: '服务已就绪', currentTaskId: null, uncertainTaskId: null, modelId: asrModel.modelId, modelVersion: asrModel.modelVersion }, error: null, loading: false, stale: false, refresh: vi.fn() })
   vi.mocked(useAsrManagement).mockReturnValue({
     nodes: [], instances: [], selectedNodeId: null, selectedInstanceId: null, selectedInstance: null,
     selectNode: vi.fn(), selectInstance: vi.fn(), status: {
@@ -125,10 +130,12 @@ describe('App workspaces', () => {
     vi.mocked(useAsrManagement).mockReturnValue({ ...local, status: { ...local.status!, state: 'stopped', acceptingTasks: false } })
     vi.mocked(useExternalAsr).mockReturnValue({ status: { configured: true, available: true, state: 'ready', observedAt: new Date().toISOString(), message: '外部服务已就绪', currentTaskId: null, uncertainTaskId: null, modelId: 'external-fixture', modelVersion: 'fixture-v1' }, error: null, loading: false, stale: false, refresh: vi.fn() })
     const remote = { ...asrModel, modelId: 'external-fixture', modelVersion: 'fixture-v1', adapterKey: 'remote-v2-sensevoice', modelRepo: null }
+    const services = vi.mocked(useAsrServices).getMockImplementation()!(true)
+    vi.mocked(useAsrServices).mockReturnValue({ ...services, state: servicesFixture({ runningModel: { modelId: remote.modelId, modelVersion: remote.modelVersion } }) })
     vi.mocked(api.models).mockResolvedValue([asrModel, remote])
     render(<App />)
-    await screen.findByRole('option', { name: 'external-fixture · 外部服务' })
-    const panel = screen.getByRole('region', { name: '外部 ASR 服务' })
+    await screen.findByRole('option', { name: 'external-fixture' })
+    const panel = screen.getByRole('region', { name: 'ASR 服务状态' })
     expect(within(panel).queryByRole('button', { name: /启动|停止/ })).toBeNull()
     fireEvent.change(screen.getByLabelText('模型'), { target: { value: JSON.stringify([remote.modelId, remote.modelVersion]) } })
     fireEvent.change(screen.getByLabelText('选择音频'), { target: { files: [new File(['audio'], 'external.wav')] } })
@@ -137,9 +144,12 @@ describe('App workspaces', () => {
     await waitFor(() => expect(api.submit).toHaveBeenCalledWith(expect.any(File), remote.modelId, remote.modelVersion, null, expect.any(String), expect.any(AbortSignal)))
   })
 
-  it('keeps the local upload available when the external channel has an unknown outcome', async () => {
+  it('preserves explicit access to the existing instance without mixing it into configured interface models', async () => {
     vi.mocked(useExternalAsr).mockReturnValue({ status: { configured: true, available: false, state: 'uncertain', observedAt: new Date().toISOString(), message: '等待核对远端请求', currentTaskId: null, uncertainTaskId: ASR_ID, modelId: 'external-fixture', modelVersion: 'fixture-v1' }, error: null, loading: false, stale: false, refresh: vi.fn() })
+    vi.mocked(api.models).mockResolvedValue([{ ...asrModel, adapterKey: 'faster-whisper', managementMode: 'managed', parameterSchema: { ...asrModel.parameterSchema, languageMode: 'client' } }])
     render(<App />)
+    fireEvent.click(screen.getByText('已有实例管理与兼容入口'))
+    fireEvent.click(screen.getByRole('button', { name: '使用已有 Whisper 实例提交' }))
     await screen.findByRole('option', { name: 'Whisper small · 多语言' })
     fireEvent.change(screen.getByLabelText('选择音频'), { target: { files: [new File(['audio'], 'local.wav')] } })
     expect((screen.getByRole('button', { name: '提交转写' }) as HTMLButtonElement).disabled).toBe(false)
@@ -148,7 +158,10 @@ describe('App workspaces', () => {
   it('blocks new ASR uploads when stopped while preserving history and Vision use', async () => {
     const management = vi.mocked(useAsrManagement).getMockImplementation()!(true)
     vi.mocked(useAsrManagement).mockReturnValue({ ...management, status: { ...management.status!, state: 'stopped', desiredState: 'stopped', acceptingTasks: false, modelReady: false } })
+    vi.mocked(api.models).mockResolvedValue([{ ...asrModel, adapterKey: 'faster-whisper', managementMode: 'managed', parameterSchema: { ...asrModel.parameterSchema, languageMode: 'client' } }])
     render(<App />)
+    fireEvent.click(screen.getByText('已有实例管理与兼容入口'))
+    fireEvent.click(screen.getByRole('button', { name: '使用已有 Whisper 实例提交' }))
     await screen.findByRole('option', { name: 'Whisper small · 多语言' })
     fireEvent.change(screen.getByLabelText('选择音频'), { target: { files: [new File(['audio'], 'hold.wav')] } })
     expect((screen.getByRole('button', { name: '提交转写' }) as HTMLButtonElement).disabled).toBe(true)
@@ -157,6 +170,16 @@ describe('App workspaces', () => {
     fireEvent.click(nav('图片检测'))
     await screen.findByRole('option', { name: 'YOLO · 通用目标检测' })
     expect(screen.getByRole('heading', { name: '新建图片检测任务' })).toBeTruthy()
+  })
+  it('blocks new interface uploads while a selected revision awaits restart', async () => {
+    const services = vi.mocked(useAsrServices).getMockImplementation()!(true)
+    vi.mocked(useAsrServices).mockReturnValue({ ...services, state: { ...services.state!, selectedRevision: 'b'.repeat(64), restartRequired: true } })
+    render(<App />)
+    await screen.findByRole('option', { name: 'Whisper small · 多语言' })
+    fireEvent.change(screen.getByLabelText('选择音频'), { target: { files: [new File(['audio'], 'test.wav')] } })
+    expect((screen.getByRole('button', { name: '提交转写' }) as HTMLButtonElement).disabled).toBe(true)
+    expect((screen.getByRole('button', { name: '用当前服务测试音频' }) as HTMLButtonElement).disabled).toBe(true)
+    expect(screen.getByText('待重启生效')).toBeTruthy()
   })
   it('switches list, details and runtime context while retaining the other workspace selection', async () => {
     render(<App />)

@@ -30,3 +30,10 @@ it('does not describe the optional upstream version as an unconfigured service p
   expect(screen.getByText(/上游模型版本可以暂不提供/)).toBeTruthy()
   expect(screen.queryByText(/尚未配置真实服务和模型版本/)).toBeNull()
 })
+
+it('does not advertise new submissions while a selected service revision awaits restart', () => {
+  render(<ExternalAsrPanel external={{ status: ready, error: null, loading: false, stale: false, refresh: vi.fn() }} onSelectTask={vi.fn()} restartRequired />)
+  expect(screen.getByText('待重启后接单')).toBeTruthy()
+  expect(screen.queryByText('可以转写')).toBeNull()
+  expect(screen.getByText('provider-v1')).toBeTruthy()
+})

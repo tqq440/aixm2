@@ -1,0 +1,3 @@
+# Optional Redis Streams transport. No installation is performed at startup.
+# Pin exists upstream; local live-client/server verification is recorded separately.
+redis==6.4.0

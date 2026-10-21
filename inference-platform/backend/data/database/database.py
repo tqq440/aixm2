@@ -22,6 +22,7 @@ def database_now(session: Session) -> datetime:
 
 class Database:
     def __init__(self, settings: AppSettings) -> None:
+        self.common_execution_enabled = settings.common_execution_enabled
         settings.database_path.parent.mkdir(parents=True, exist_ok=True)
         self.engine = create_engine(
             build_database_url(settings),
@@ -30,6 +31,13 @@ class Database:
         )
         event.listen(self.engine, "connect", self._enable_foreign_keys)
         self.session_factory = sessionmaker(bind=self.engine, expire_on_commit=False)
+        if self.common_execution_enabled:
+            from backend.data.invocations.lifecycle_events import (
+                discard_lifecycle_events, persist_lifecycle_events, record_lifecycle_events,
+            )
+            event.listen(self.session_factory, "before_flush", record_lifecycle_events)
+            event.listen(self.session_factory, "after_flush_postexec", persist_lifecycle_events)
+            event.listen(self.session_factory, "after_rollback", discard_lifecycle_events)
 
     @staticmethod
     def _enable_foreign_keys(connection, _record) -> None:

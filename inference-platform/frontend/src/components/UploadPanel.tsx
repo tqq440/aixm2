@@ -32,7 +32,8 @@ export function UploadPanel({ models, modelError, submitting, error, receipt, un
   const model = submittedModel ?? models.find(item => modelKey(item) === selectedModelKey) ?? models[0]
   const available = Boolean(model && models.some(item => modelKey(item) === modelKey(model)))
   const retryOriginal = Boolean(submittedModel && uncertain)
-  const external = model?.adapterKey === 'remote-v2-sensevoice'
+  const external = model?.managementMode === 'external_call_only' || ['remote-v2-sensevoice', 'openai-audio'].includes(model?.adapterKey ?? '')
+  const serverLanguage = model?.parameterSchema.languageMode === 'server' || (model?.parameterSchema.languageMode === undefined && model?.adapterKey === 'remote-v2-sensevoice')
   const integrationRevision = hasUnknownUpstreamVersion(model)
   const modelMismatch = Boolean(!external && model && serviceModel && (model.modelId !== serviceModel.modelId || model.modelVersion !== serviceModel.modelVersion))
   const blocked = external ? externalBlock : serviceBlock || (modelMismatch ? '所选模型版本与当前 ASR 实例不同，请选择该实例对应的模型版本。' : null)
@@ -61,7 +62,7 @@ export function UploadPanel({ models, modelError, submitting, error, receipt, un
     event.preventDefault()
     if (file && model && canSubmit && !validationError && !submitting && !receipt) {
       setSubmittedModel(model)
-      void onSubmit(file, model.modelId, model.modelVersion, external ? null : language)
+      void onSubmit(file, model.modelId, model.modelVersion, serverLanguage ? null : language)
     }
   }
 
@@ -80,17 +81,18 @@ export function UploadPanel({ models, modelError, submitting, error, receipt, un
       <select id="model" aria-label="模型" value={model ? modelKey(model) : ''} disabled={submitting || !model} onChange={event => { clearAttempt(); setSelectedModelKey(event.target.value) }}>
         {!model && <option value="">暂无可提交的模型</option>}
         {submittedModel && !available && <option value={modelKey(submittedModel)} disabled>{submittedModel.modelId} · 原提交{integrationRevision ? '接入修订' : '版本'}</option>}
-        {models.map(item => <option key={modelKey(item)} value={modelKey(item)}>{item.modelId === 'whisper-small' ? 'Whisper small · 多语言' : `${item.modelId}${item.adapterKey === 'remote-v2-sensevoice' ? ' · 外部服务' : ''}`}</option>)}
+        {models.map(item => <option key={modelKey(item)} value={modelKey(item)}>{item.modelId === 'whisper-small' ? 'Whisper small · 多语言' : item.modelId}</option>)}
       </select>
       {model && <p className="field-hint model-version">{integrationRevision ? `上游模型版本未知 · ${submittedModel ? '本次提交接入修订' : '接入修订'}` : submittedModel ? '本次提交版本' : '模型版本'}：<code>{model.modelVersion}</code></p>}
       {!models.length && !modelError && <p className="field-hint" role="status">暂无已启用且可提交的模型。启用后点击“刷新任务”重新读取；已有任务仍可查看和下载。</p>}
       {submittedModel && !available && <p className="field-hint">原提交{integrationRevision ? '接入修订' : '版本'}已不在可提交目录中。{uncertain ? integrationRevision ? '仍可使用原接入修订和提交编号重试确认；不会改用其他接入配置。' : '仍可使用原版本和提交编号重试确认；不会改用其他版本。' : '新任务请在目录恢复后重新选择模型。'}</p>}
-      {external ? <p className="field-hint">语言由服务端决定，平台不传入语言参数。仅排队且尚未领取时可以取消；开始调用后不支持取消，也不会自动重发。</p> : <><label className="field-label" htmlFor="language">识别语言</label>
+      {serverLanguage ? <p className="field-hint">语言由服务端决定，平台不传入语言参数。</p> : <><label className="field-label" htmlFor="language">识别语言</label>
       <select id="language" aria-label="识别语言" value={language} disabled={submitting || !model} onChange={event => { clearAttempt(); setLanguage(event.target.value) }}>
         <option value="auto">自动识别</option>
         {model?.parameterSchema.languages.map(code => <option key={code} value={code}>{languageName(code)}</option>)}
       </select>
       <p className="field-hint">已知音频语言时，建议直接选择对应语言。</p></>}
+      {external && <p className="field-hint">仅排队且尚未领取时可以取消；开始调用后不支持取消，也不会自动重发。</p>}
       <ErrorNotice error={modelError} title="模型目录读取失败" />
       <ErrorNotice error={validationError ? { message: validationError } : error} />
       {blocked && !receipt && <p className="field-hint" role="status">{blocked}{retryOriginal ? ' 可重试确认原提交；不会改用其他模型或新建提交编号。' : ' 已有任务与结果仍可查看。'}</p>}
@@ -101,6 +103,6 @@ export function UploadPanel({ models, modelError, submitting, error, receipt, un
       </button>
       {receipt && <button className="text-button new-task-button" type="button" onClick={reset}>提交新任务</button>}
     </form>
-    <div className="privacy-note"><span className="tiny-dot" /><p>{external ? '音频会发送到后台配置的外部 ASR 服务，并在本机保留任务和结果。关闭页面不会取消远端调用。' : '音频保存在本机。提交完成后，关闭页面不会中断后台任务。'}</p></div>
+    <div className="privacy-note"><span className="tiny-dot" /><p>{external ? '音频会发送到当前运行配置的 ASR 接口，并在平台保留任务和结果。关闭页面不会取消服务调用。' : '音频保存在本机。提交完成后，关闭页面不会中断后台任务。'}</p></div>
   </section>
 }

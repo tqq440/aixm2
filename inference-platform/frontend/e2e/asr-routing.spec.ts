@@ -4,6 +4,7 @@ import path from 'node:path'
 import type { ModelSpec, TaskResultView, TaskView } from '../src/types/api'
 import type { AsrCatalogTarget, AsrSchedulingStatus } from '../src/types/asrScheduling'
 import { catalogFixture, resourceFixture, schedulingFixture, targetFixture, taskRoutingFixture } from '../src/test/asrSchedulingFixtures'
+import { servicesFixture } from '../src/test/asrServicesFixtures'
 
 // All API requests terminate in these local browser substitutes. No real
 // model call, source registration, management operation or daily DB access.
@@ -34,6 +35,7 @@ async function fixture(page: Page) {
       return failed()
     }
     const now = new Date().toISOString()
+    if (url.pathname === '/api/asr/services') return ok(servicesFixture({ runningModel: { modelId: remote.modelId, modelVersion: remote.modelVersion } }))
     if (url.pathname === '/api/asr/external/scheduling') return data.statusFailure ? failed() : ok({ ...data.status, observedAt: now })
     if (url.pathname === '/api/asr/external/targets') {
       if (data.directoryFailure) return failed()

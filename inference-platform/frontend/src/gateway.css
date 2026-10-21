@@ -1,0 +1,24 @@
+.gateway-panel { display: grid; gap: 20px; }
+.gateway-card { background: white; border: 1px solid var(--border, #dde3e5); padding: 24px; border-radius: 16px; min-width: 0; }
+.gateway-card h2 { margin-top: 0; }
+.gateway-card form, .gateway-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 16px 0; }
+.gateway-card label { display: grid; gap: 6px; font-size: 14px; }
+.gateway-card input:not([type=checkbox]), .gateway-card select { max-width: 100%; min-height: 38px; border: 1px solid #bccacc; border-radius: 7px; padding: 7px; }
+.gateway-card input[type=number] { width: 90px; }
+.gateway-scroll { max-width: 100%; overflow-x: auto; }
+.gateway-card table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+.gateway-card th, .gateway-card td { border-bottom: 1px solid #e5ebeb; padding: 12px 8px; vertical-align: top; overflow-wrap: anywhere; }
+.gateway-card small { display: block; color: #647475; margin-top: 6px; }
+.gateway-card td button { margin-right: 8px; margin-bottom: 6px; }
+.gateway-card button:not(.button) { cursor: pointer; color: #13675c; background: #edf6f2; border: 1px solid #c9dfd7; border-radius: 6px; padding: 6px 9px; }
+.gateway-card button:disabled { cursor: default; opacity: .55; }
+.gateway-secret, .gateway-alert { border: 1px solid #dcc886; background: #fff9e6; border-radius: 8px; padding: 14px; }
+.gateway-secret code { display: block; overflow-wrap: anywhere; margin: 12px 0; user-select: all; }
+.gateway-detail { margin-top: 24px; padding-top: 16px; border-top: 2px solid #dbe8e2; }
+.gateway-detail h3 { overflow-wrap: anywhere; }
+.gateway-detail dl { display: grid; grid-template-columns: minmax(120px, 180px) 1fr; gap: 10px; }
+.gateway-detail dd { margin: 0; overflow-wrap: anywhere; }
+.gateway-timeline { padding-left: 22px; }
+.gateway-timeline li { padding: 8px 0; }
+.gateway-timeline pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; background: #f4f7f6; padding: 8px; }
+@media(max-width: 600px) { .gateway-card { padding: 14px; } .gateway-card form { display: grid; align-items: stretch; } .gateway-detail dl { grid-template-columns: 1fr; gap: 5px; } .gateway-detail dd { margin-bottom: 10px; } }

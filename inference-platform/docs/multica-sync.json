@@ -112,7 +112,14 @@
     "docs/Remote-V2-ASR接口资料.md",
     "docs/阶段记录/ASR-4B-真实服务联调-验收记录.md",
     "docs/并发与设备分配方案.md",
-    "docs/阶段记录/v2.9-1-并发与设备分配核查记录.md"
+    "docs/阶段记录/v2.9-1-并发与设备分配核查记录.md",
+    "docs/Node执行恢复-模块4C1.md",
+    "docs/阶段记录/Node执行恢复-模块4C1-验收记录.md",
+    "docs/业务协议与监控-模块4C2.md",
+    "docs/阶段记录/业务协议与监控-模块4C2-验收记录.md",
+    "docs/公共API与管理-模块5.md",
+    "docs/阶段记录/公共API与管理-模块5-验收记录.md",
+    "docs/gateway.openapi.json"
   ],
   "last_verification_report": "runtime/verification/device-policy-3/multica-batch/verification-apply.json",
   "sync_setup_completed_at": "2026-10-14T00:18:57+08:00",
@@ -182,7 +189,7 @@
     "browser_navigation_tested": false
   },
   "url_route_reference": "https://github.com/multica-ai/multica/pull/8147/files",
-  "local_plan_version": "v2.12",
+  "local_plan_version": "v2.21",
   "last_synced_plan_version": "v2.9",
   "plan_version_semantics": "legacy_remote_plan_snapshot",
   "sync_policy": {
@@ -226,6 +233,34 @@
     ]
   },
   "deferred_updates": [
+    {
+      "event_id": "v213-asr-manual-configuration-delivery-20261020",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-20T16:13:19+08:00",
+      "stage": "ASR统一接口配置",
+      "checkpoint": "v2.12-local-3b",
+      "local_plan_version": "v2.13",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "summary": "ASR统一手工接口配置开发侧交付待用户验收。保存/选用/健康测试、正常任务音频测试和Whisper手动HTTP入口完成；后台、前端、隔离Edge及真实回环HTTP子进程通过，详见本地阶段记录，各批不相加。没有真实模型验证，不等于3A/3B或历史验收完成，不写远端。日常42任务42上传/.env保留，现有5000/5173运行保持，后端新功能需重启。",
+      "sync_status": "deferred"
+    },
+    {
+      "event_id": "v213-asr-manual-configuration-scope-20261020",
+      "event_type": "scope_changed",
+      "recorded_at": "2026-10-20T15:53:33+08:00",
+      "stage": "ASR统一接口配置",
+      "checkpoint": "v2.12-local-3b",
+      "local_plan_version": "v2.13",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "summary": "用户要求统一手工接口服务配置和测试，进一步明确本轮先ASR。新增页面与本机配置API，保存多份选用一份重启生效，Remote-V2/OpenAI Audio及Whisper手动HTTP入口，健康与音频任务测试分开。仅本地实施与隔离验证，不改变3A/3B及旧阶段验收，不写远端。",
+      "sync_status": "deferred"
+    },
     {
       "event_id": "v210-lab1-implementation-start-20261019",
       "event_type": "implementation_started",
@@ -492,6 +527,230 @@
         "docs/阶段记录/本机-3A-实验室真实目标与资源接入-验收记录.md"
       ],
       "summary": "用户继续授权本机-3A实验室真实目标与资源接入，10:30:38为实际起步登记时间。先核查已有接口/历史证据、校园ASR及可用只读连接，分别确认目标设备绑定、共享容量和资源来源；CPU承接另需同模型支持与性能实证，不用本机Whisper替代外部SenseVoice。尚未取得新增设备/容量资料，网络/硬件/CPU结果按实际补记，不预填通过；真实新增目标禁用、不启用路由，不上传源码/配置密钥、不部署启停对方模型、不下载依赖模型、不迁移历史。全部入口、unknown/1、20MiB300秒/同步/版本可选/旧指纹和未知结果不重发保持，2A/2B/2C与旧阶段验收不变。本地v2.12远端v2.9，12旧事件和所有远端时间快照保持，不写Multica；3B真实闭环交付后才集中同步，本轮完成讲解后暂停。"
+    },
+    {
+      "event_id": "v215-module2-start-20261021",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-21T10:58:52+08:00",
+      "implementation_status": "in_progress",
+      "stage": "unified-relay-module2",
+      "checkpoint": "deferred-no-remote-sync",
+      "local_plan_version": "v2.15",
+      "issue_keys": [
+        "overview"
+      ],
+      "user_acceptance": "pending",
+      "real_service_verification": "not_run",
+      "evidence": [
+        "docs/阶段记录/公共执行与容量-模块2-验收记录.md",
+        "runtime/verification/common-execution/verified.xml"
+      ],
+      "summary": "Module 2 common execution/capacity/events only; isolated verification; daily 0014 unchanged; Redis/adapters/auth/Linux deferred. No remote synchronization."
+    },
+    {
+      "event_id": "v215-module2-delivered-20261021",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-21T11:44:38.000+08:00",
+      "implementation_status": "delivered",
+      "stage": "unified-relay-module2",
+      "checkpoint": "deferred-no-remote-sync",
+      "local_plan_version": "v2.15",
+      "issue_keys": [
+        "overview"
+      ],
+      "user_acceptance": "pending",
+      "real_service_verification": "not_run",
+      "evidence": [
+        "docs/阶段记录/公共执行与容量-模块2-验收记录.md",
+        "runtime/verification/common-execution/verified.xml"
+      ],
+      "summary": "Module 2 common execution/capacity/events only; isolated verification; daily 0014 unchanged; Redis/adapters/auth/Linux deferred. No remote synchronization."
+    },
+    {
+      "event_id": "v216-module3-start-20261021",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-21T13:47:52+08:00",
+      "implementation_status": "in_progress",
+      "stage": "unified-relay-module3",
+      "checkpoint": "deferred-no-remote-sync",
+      "local_plan_version": "v2.16",
+      "issue_keys": [
+        "overview"
+      ],
+      "user_acceptance": "pending",
+      "real_redis_verification": "pending",
+      "evidence": [
+        "docs/阶段记录/Redis队列-模块3-验收记录.md",
+        "runtime/verification/redis-module3/delivered.xml",
+        "runtime/verification/redis-module3/compat.xml"
+      ],
+      "summary": "Module 3 code and isolated tests delivered; live Redis/client/Lua/restart pending. Default SQLite and daily 0014 preserved; no installation, model call, deployment or remote synchronization."
+    },
+    {
+      "event_id": "v216-module3-code-delivered-20261021",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-21T14:30:24.000+08:00",
+      "implementation_status": "delivered",
+      "stage": "unified-relay-module3",
+      "checkpoint": "deferred-no-remote-sync",
+      "local_plan_version": "v2.16",
+      "issue_keys": [
+        "overview"
+      ],
+      "user_acceptance": "pending",
+      "real_redis_verification": "pending",
+      "evidence": [
+        "docs/阶段记录/Redis队列-模块3-验收记录.md",
+        "runtime/verification/redis-module3/delivered.xml",
+        "runtime/verification/redis-module3/compat.xml"
+      ],
+      "summary": "Module 3 code and isolated tests delivered; live Redis/client/Lua/restart pending. Default SQLite and daily 0014 preserved; no installation, model call, deployment or remote synchronization."
+    },
+    {
+      "event_id": "v217-node4a-start-20261021",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-21T15:58:24.131810+08:00",
+      "inspection_started_at": "2026-10-21T15:30:14.6074227+08:00",
+      "baseline_recorded_at": "2026-10-21T15:33:32.039414+08:00",
+      "checkpoint": "v2.17-module4a",
+      "local_plan_version": "v2.17",
+      "user_acceptance": "pending",
+      "summary": "用户确认原中心Redis/调度/结果/日志全部继续，仅CPU/GPU内存显存交业务侧；外部经Node。本轮仅独立Node基础和隔离上报验证，不启Docker/真实模型、不改日常库、不推送、不写远端。",
+      "evidence": [
+        "docs/独立Node基础-模块4A.md",
+        "docs/Node业务上报协议-v1.md"
+      ]
+    },
+    {
+      "event_id": "v217-node4a-delivered-20261021",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-21T16:02:49.779144+08:00",
+      "checkpoint": "v2.17-module4a",
+      "local_plan_version": "v2.17",
+      "development_acceptance": "passed",
+      "user_acceptance": "pending",
+      "summary": "独立Node基础4A开发侧交付：专库/迁移、登记/修订、报告鉴权/实例序号/过期重启保护、只读事件/OpenAPI和模拟ASR；65通过，旧链路207通过/1真实Redis待配跳过，分列。日常0014/42任务42上传、env/表记录/432旧源码保持。未做容器、动态采集、真实业务或中心执行接线，下一4B暂停等待；没有远端写入。",
+      "evidence": [
+        "docs/阶段记录/独立Node基础-模块4A-验收记录.md",
+        "runtime/verification/node-module4a/checked.xml",
+        "runtime/verification/node-module4a/compat.xml",
+        "runtime/verification/node-module4a/after.json"
+      ]
+    },
+    {
+      "event_id": "v218-node4b-start-20261021",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-21T16:53:46.633182+08:00",
+      "checkpoint": "v2.18-module4b",
+      "local_plan_version": "v2.18",
+      "user_acceptance": "pending",
+      "summary": "用户继续4B主机管理，保留原中心Redis/调度/结果；仅容器固定版本控制、排空/升级与指标采集，不做内存管理/中心接线或真实部署。",
+      "evidence": [
+        "docs/主机管理-模块4B.md",
+        "docs/阶段记录/主机管理-模块4B-验收记录.md"
+      ],
+      "inspection_started_at": "2026-10-21T16:05:10.4067297+08:00",
+      "baseline_recorded_at": "2026-10-21T16:11:33.405336+08:00"
+    },
+    {
+      "event_id": "v218-node4b-delivered-20261021",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-21T16:53:46.633182+08:00",
+      "checkpoint": "v2.18-module4b",
+      "local_plan_version": "v2.18",
+      "user_acceptance": "pending",
+      "summary": "4B开发侧交付：受控容器/排空/恢复/回退、持久操作、CLI与动态快照；131通过、旧链路207通过/1真实Redis待配跳过分列。实际回环HTTP/Windows进程/笔记本指标已验；Docker替身，实际Docker/Linux/ASR仍待补。日常0014/42任务42上传及env/记录/文件保持，4C等待继续，不写远端。",
+      "evidence": [
+        "docs/主机管理-模块4B.md",
+        "docs/阶段记录/主机管理-模块4B-验收记录.md"
+      ],
+      "development_acceptance": "passed"
+    },
+    {
+      "event_id": "v219-node4c1-start-20261021",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-21T17:25:08.411519+08:00",
+      "inspection_started_at": "2026-10-21T16:59:26.6419210+08:00",
+      "baseline_recorded_at": "2026-10-21T17:04:58.521377+08:00",
+      "checkpoint": "v2.19-module4c1",
+      "local_plan_version": "v2.19",
+      "user_acceptance": "pending",
+      "summary": "4C1: central-to-Node execution identity, durable duplicate fencing and result recovery boundary. Production adapters and monitoring remain 4C2; daily data is not activated.",
+      "evidence": [
+        "docs/Node执行恢复-模块4C1.md",
+        "runtime/verification/node-module4c1/before.json"
+      ]
+    },
+    {
+      "event_id": "v219-node4c1-delivered-20261021",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-21T17:45:41.270711+08:00",
+      "checkpoint": "v2.19-module4c1",
+      "local_plan_version": "v2.19",
+      "development_acceptance": "passed",
+      "user_acceptance": "pending",
+      "whole_module4c": "not_completed",
+      "production_adapters": "not_connected",
+      "next_module": "4C2",
+      "summary": "4C1 execution identity and recovery boundary delivered. Node suite 183 passed; full compatibility 207 passed / 1 live Redis skip, plus separately recorded migration, identity and queue bridge checks. Real service adapters remain 4C2. Daily DB 0014, 42 tasks/uploads and credentials unchanged.",
+      "evidence": [
+        "docs/Node执行恢复-模块4C1.md",
+        "docs/阶段记录/Node执行恢复-模块4C1-验收记录.md",
+        "runtime/verification/node-module4c1/delivery.json"
+      ]
+    },
+    {
+      "event_id": "v220-node-4c2-start-20261021",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-21T17:52:02.181726+08:00",
+      "checkpoint": "node-module-4c2",
+      "local_plan_version": "v2.20",
+      "user_acceptance": "pending",
+      "summary": "4C2 HTTP/media/SSE adapters, optional per-call monitoring and explicit worker; isolated data only, no remote sync.",
+      "evidence": [
+        "docs/业务协议与监控-模块4C2.md",
+        "runtime/verification/node-module4c2/before.json"
+      ]
+    },
+    {
+      "event_id": "v220-node-4c2-delivery-20261021",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-21T19:09:54.472154+08:00",
+      "checkpoint": "node-module-4c2",
+      "local_plan_version": "v2.20",
+      "user_acceptance": "pending",
+      "development_acceptance": "passed_with_documented_external_pending",
+      "summary": "4C2 adapters/monitoring/worker: 231 passed; compatibility 302 passed/1 real Redis skipped. Daily data unchanged. Real services/Linux and cross-Node global query budget pending. Module 5 next; paused after explanation.",
+      "evidence": [
+        "docs/阶段记录/业务协议与监控-模块4C2-验收记录.md",
+        "runtime/verification/node-module4c2/delivery.json"
+      ]
+    },
+    {
+      "event_id": "v221-gateway-start-20261021",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-21T19:15:25.660226+08:00",
+      "checkpoint": "module5-public-gateway",
+      "local_plan_version": "v2.21",
+      "user_acceptance": "pending",
+      "summary": "User authorized module 5; isolated API Key, public requests, entry Node and management UI work started. Daily configuration/database unchanged; later validation recorded separately.",
+      "evidence": [
+        "docs/阶段记录/公共API与管理-模块5-验收记录.md",
+        "runtime/verification/gateway-module5/delivery.json"
+      ]
+    },
+    {
+      "event_id": "v221-gateway-delivery-20261021",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-21T20:13:51.471672+08:00",
+      "checkpoint": "module5-public-gateway",
+      "local_plan_version": "v2.21",
+      "user_acceptance": "pending",
+      "summary": "Module 5 developer delivery pending user acceptance. Node/public 268 passed; compatibility 302 passed/1 real Redis skipped; final catalog/public regression 125 passed, startup 3 passed; frontend 341, Edge 2, typecheck/build passed. Daily data unchanged. Module 6 and cross-Node query budget pending; local records only.",
+      "evidence": [
+        "docs/阶段记录/公共API与管理-模块5-验收记录.md",
+        "runtime/verification/gateway-module5/delivery.json"
+      ]
     }
   ],
   "sync_history": [

@@ -14,6 +14,14 @@ from backend.common.exceptions.app_error import ConfigurationError
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_ENV_FILE = PROJECT_ROOT / ".env"
 ENV_FIELDS = {
+    "INFERENCE_PUBLIC_API_ENABLED": "public_api_enabled",
+    "INFERENCE_INGRESS_TOKEN": "ingress_token",
+    "INFERENCE_COMMON_EXECUTION_ENABLED": "common_execution_enabled",
+    "INFERENCE_COMMON_QUEUE_BACKEND": "common_queue_backend",
+    "INFERENCE_REDIS_URL": "redis_url",
+    "INFERENCE_REDIS_NAMESPACE": "redis_namespace",
+    "INFERENCE_REDIS_TIMEOUT_SECONDS": "redis_timeout_seconds",
+    "INFERENCE_REDIS_REPUBLISH_SECONDS": "redis_republish_seconds",
     "INFERENCE_AGENT_TOKEN": "agent_token",
     "INFERENCE_HOST": "host",
     "INFERENCE_PORT": "port",
@@ -32,6 +40,12 @@ ENV_FIELDS = {
     "INFERENCE_REMOTE_ASR_BASE_URL": "remote_asr_base_url",
     "INFERENCE_REMOTE_ASR_MODEL_ID": "remote_asr_model_id",
     "INFERENCE_REMOTE_ASR_MODEL_VERSION": "remote_asr_model_version",
+    "INFERENCE_REMOTE_ASR_PROTOCOL": "remote_asr_protocol",
+    "INFERENCE_REMOTE_ASR_TRANSCRIBE_PATH": "remote_asr_transcribe_path",
+    "INFERENCE_REMOTE_ASR_HEALTH_PATH": "remote_asr_health_path",
+    "INFERENCE_REMOTE_ASR_UPSTREAM_MODEL": "remote_asr_upstream_model",
+    "INFERENCE_REMOTE_ASR_API_KEY_ENV": "remote_asr_api_key_env",
+    "INFERENCE_ASR_SERVICE_REVISION": "asr_service_revision",
     "INFERENCE_REMOTE_ASR_CA_FILE": "remote_asr_ca_file",
     "INFERENCE_REMOTE_ASR_INSECURE_TLS_ORIGIN": "remote_asr_insecure_tls_origin",
     "INFERENCE_REMOTE_ASR_CONNECT_TIMEOUT_SECONDS": "remote_asr_connect_timeout_seconds",
@@ -72,6 +86,42 @@ ENV_FIELDS = {
 }
 
 
+def asr_service_origin(value: str) -> str:
+    """规范化手动配置的 HTTP(S) 服务根地址；不读取网络或推断运行位置。"""
+    parsed = urlsplit(value)
+    if (parsed.scheme not in ("http", "https") or not parsed.hostname or parsed.port == 0
+            or parsed.username is not None or parsed.password is not None
+            or parsed.path not in ("", "/") or "?" in value or "#" in value
+            or any(c in value for c in ("\\", "*", "%")) or parsed.netloc.endswith(":")
+            or any(c.isspace() or ord(c) < 32 or ord(c) == 127 for c in value)):
+        raise ValueError("ASR 地址必须为 HTTP(S) 服务根地址，不含路径、凭据、通配或查询串")
+    hostname = parsed.hostname.lower().encode("idna").decode("ascii")
+    host = f"[{hostname}]" if ":" in hostname else hostname
+    default_port = 443 if parsed.scheme == "https" else 80
+    port = parsed.port or default_port
+    return f"{parsed.scheme}://{host}" + (f":{port}" if port != default_port else "")
+
+
+def asr_service_path(value: str) -> str:
+    """接口路径始终属于已配置来源，不允许完整 URL、查询串或路径跳转。"""
+    if (not value.startswith("/") or value.startswith("//") or len(value) > 512
+            or any(part in (".", "..") for part in value.split("/"))
+            or any(not (c.isascii() and (c.isalnum() or c in "/-._~")) for c in value)):
+        raise ValueError("ASR 接口须为以 / 开头的路径，不含来源、查询串或相对跳转")
+    return value
+
+
+def resolve_remote_asr_api_key(settings: "AppSettings", *, environ: Mapping[str, str] | None = None) -> str | None:
+    """秘密只在调用时从环境读取，不写入服务配置、任务指纹或公开错误。"""
+    if settings.remote_asr_api_key_env is None:
+        return None
+    secret = (os.environ if environ is None else environ).get(settings.remote_asr_api_key_env)
+    if (not secret or not secret.strip() or len(secret) > 4096
+            or any(ord(c) < 33 or ord(c) > 126 for c in secret)):
+        raise ConfigurationError("ASR 鉴权环境变量未设置或值无效；请求尚未发送。")
+    return secret
+
+
 def remote_asr_origin(value: str) -> str:
     """规范化受控 HTTPS 来源；不解析 DNS，也不放宽到通配或任意请求路径。"""
     parsed = urlsplit(value)
@@ -91,6 +141,38 @@ def remote_asr_origin(value: str) -> str:
 
 class AppSettings(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True, validate_default=True)
+    public_api_enabled: bool = False
+    ingress_token: SecretStr | None = Field(default=None, repr=False, exclude=True)
+    common_execution_enabled: bool = False
+
+    @model_validator(mode="after")
+    def public_configuration(self):
+        if self.ingress_token:
+            value=self.ingress_token.get_secret_value()
+            if not 32<=len(value)<=256 or not value.isascii() or any(c.isspace() for c in value):
+                raise ValueError("入口凭据须为32到256位非空白ASCII字符")
+        if self.public_api_enabled and (not self.common_execution_enabled or not self.ingress_token):
+            raise ValueError("公共API须启用公共执行并提供独立入口凭据")
+        return self
+    common_queue_backend: Literal["sqlite", "redis"] = "sqlite"
+    redis_url: SecretStr | None = Field(default=None, repr=False, exclude=True)
+    redis_namespace: str = Field(default="inference", pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
+    redis_timeout_seconds: float = Field(default=1, ge=0.1, le=3, allow_inf_nan=False)
+    redis_republish_seconds: float = Field(default=30, ge=1, le=300, allow_inf_nan=False)
+
+    @model_validator(mode="after")
+    def validate_common_queue(self):
+        if self.common_queue_backend == "redis" and (not self.common_execution_enabled or self.redis_url is None):
+            raise ValueError("Redis 队列需要启用公共执行并配置 Redis 连接")
+        if self.redis_url is not None:
+            value = self.redis_url.get_secret_value()
+            parsed = urlsplit(value)
+            if (len(value) > 4096 or parsed.scheme not in {"redis", "rediss"} or not parsed.hostname
+                    or parsed.port == 0 or parsed.query or parsed.fragment
+                    or parsed.path not in {"", *('/' + str(i) for i in range(16))}
+                    or any(c.isspace() or ord(c) < 32 for c in value)):
+                raise ValueError("Redis 连接必须为 redis/rediss URL 和 0—15 数据库，不含查询串或片段")
+        return self
 
     host: Literal["127.0.0.1"] = "127.0.0.1"
     agent_token: SecretStr | None = Field(default=None, min_length=32, max_length=256, repr=False, exclude=True)
@@ -110,6 +192,13 @@ class AppSettings(BaseModel):
     remote_asr_base_url: str | None = Field(default=None, max_length=2048, repr=False)
     remote_asr_model_id: str | None = Field(default=None, max_length=64, pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
     remote_asr_model_version: str | None = Field(default=None, max_length=64, pattern=r"^[A-Za-z0-9][A-Za-z0-9._+-]*$")
+    remote_asr_protocol: Literal["remote-v2", "openai-audio"] = "remote-v2"
+    remote_asr_transcribe_path: str = "/api/v1/asr/transcripts"
+    remote_asr_health_path: str = "/api/v1/asr/health"
+    remote_asr_upstream_model: str | None = Field(default=None, min_length=1, max_length=256)
+    remote_asr_api_key_env: str | None = Field(default=None, max_length=128, pattern=r"^[A-Za-z_][A-Za-z0-9_]*$")
+    asr_service_id: str | None = Field(default=None, max_length=64, pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+    asr_service_revision: str | None = Field(default=None, max_length=64, pattern=r"^(?:[a-f0-9]{64}|legacy)$")
     remote_asr_ca_file: Path | None = Field(default=None, repr=False)
     remote_asr_insecure_tls_origin: str | None = Field(default=None, max_length=2048, repr=False)
     remote_asr_connect_timeout_seconds: float = Field(default=5, ge=0.1, le=30, allow_inf_nan=False)
@@ -158,12 +247,19 @@ class AppSettings(BaseModel):
         if self.remote_asr_ca_file is not None and not all(group):
             raise ValueError("外部 ASR CA 文件须与完整连接配置一同提供")
         if self.remote_asr_base_url:
-            parsed = urlsplit(self.remote_asr_base_url)
-            if (parsed.scheme != "https" or not parsed.hostname or parsed.port == 0
-                    or parsed.username is not None or parsed.password is not None or parsed.query or parsed.fragment
-                    or parsed.path not in ("", "/") or "\\" in self.remote_asr_base_url
-                    or any(c.isspace() or ord(c) < 32 or ord(c) == 127 for c in self.remote_asr_base_url)):
-                raise ValueError("外部 ASR 地址必须为 HTTPS 服务根地址，不含路径、凭据或查询串")
+            asr_service_origin(self.remote_asr_base_url)
+            if self.remote_asr_ca_file is not None and urlsplit(self.remote_asr_base_url).scheme != "https":
+                raise ValueError("ASR 可信 CA 只能用于 HTTPS 服务")
+        if self.remote_asr_protocol == "openai-audio" and not self.remote_asr_upstream_model:
+            raise ValueError("OpenAI Audio 协议须配置服务端模型名")
+        if self.remote_asr_upstream_model is not None:
+            if (not self.remote_asr_upstream_model.strip()
+                    or any(ord(c) < 32 or ord(c) == 127 for c in self.remote_asr_upstream_model)):
+                raise ValueError("ASR 服务端模型名无效")
+            if not all(group):
+                raise ValueError("ASR 服务端模型名须与完整连接配置一同提供")
+        if self.remote_asr_api_key_env is not None and not all(group):
+            raise ValueError("ASR 鉴权环境变量名须与完整连接配置一同提供")
         if self.remote_asr_insecure_tls_origin is not None:
             if not all(group):
                 raise ValueError("TLS 例外须与完整外部 ASR 配置一同提供")
@@ -172,6 +268,11 @@ class AppSettings(BaseModel):
             if self.remote_asr_insecure_tls_origin != remote_asr_origin(self.remote_asr_base_url):
                 raise ValueError("TLS 例外仅能用于明确指定的外部 ASR 来源")
         return self
+
+    @field_validator("remote_asr_transcribe_path", "remote_asr_health_path")
+    @classmethod
+    def validate_remote_paths(cls, value: str) -> str:
+        return asr_service_path(value)
 
     @field_validator("remote_asr_model_version", mode="before")
     @classmethod
@@ -257,6 +358,7 @@ def load_settings(
     env_file: Path | None = DEFAULT_ENV_FILE,
     *,
     environ: Mapping[str, str] | None = None,
+    include_service_selection: bool = True,
 ) -> AppSettings:
     """优先级：进程环境变量 > 项目 .env > 默认值；不修改进程环境。"""
     values: dict[str, str | None] = {}
@@ -275,7 +377,15 @@ def load_settings(
         if unknown:
             raise ConfigurationError("未知配置项：" + ", ".join(unknown))
         settings = {field: values[key] for key, field in ENV_FIELDS.items() if key in values}
-        return AppSettings.model_validate(settings)
+        configured = AppSettings.model_validate(settings)
+        if include_service_selection:
+            from backend.config.asr.service_config import apply_service_selection
+
+            try:
+                configured = apply_service_selection(configured)
+            except (ValueError, OSError):
+                raise ConfigurationError("ASR 接口配置文件无效或修订不可用；未回退到旧连接。") from None
+        return configured
     except ValidationError as exc:
         names = {value: key for key, value in ENV_FIELDS.items()}
         issues = [f"{names.get(str(item['loc'][0]), str(item['loc'][0])) if item['loc'] else '运行间隔组合'} ({item['type']})" for item in exc.errors()]

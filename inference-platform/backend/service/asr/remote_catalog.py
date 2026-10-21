@@ -11,6 +11,18 @@ REMOTE_QUEUE_KEY = "asr.remote-v2-sensevoice"
 REMOTE_PROFILE_ID = "remote-v2-sensevoice"
 
 
+def _protocol_binding(settings: AppSettings) -> dict:
+    """仅追加新协议配置，默认 Remote-V2 的历史字节身份保持不变。"""
+    optional = {
+        "protocol": (settings.remote_asr_protocol, "remote-v2"),
+        "transcribePath": (settings.remote_asr_transcribe_path, "/api/v1/asr/transcripts"),
+        "healthPath": (settings.remote_asr_health_path, "/api/v1/asr/health"),
+        "upstreamModel": (settings.remote_asr_upstream_model, None),
+        "apiKeyEnv": (settings.remote_asr_api_key_env, None),
+    }
+    return {name: value for name, (value, default) in optional.items() if value != default}
+
+
 def remote_asr_configured(settings: AppSettings) -> bool:
     return bool(settings.remote_asr_base_url and settings.remote_asr_model_id)
 
@@ -27,6 +39,7 @@ def remote_asr_model_version(settings: AppSettings) -> str:
         "caFile": str(settings.remote_asr_ca_file) if settings.remote_asr_ca_file else None,
         "insecureTlsOrigin": settings.remote_asr_insecure_tls_origin,
     }
+    binding.update(_protocol_binding(settings))
     return "integration-" + canonical_json_sha256(binding)[:48]
 
 
@@ -67,17 +80,19 @@ def config_fingerprint(settings: AppSettings) -> str:
         binding["insecureTlsOrigin"] = settings.remote_asr_insecure_tls_origin
     if settings.remote_asr_model_version is None:
         binding["versionBasis"] = "integration_revision"
+    binding.update(_protocol_binding(settings))
     return canonical_json_sha256(binding)
 
 
 def remote_result_matches(settings: AppSettings, result: TranscriptionResult) -> bool:
     metadata = result.engine_metadata
+    allowed_versions = {"remote-v2-api"} if settings.remote_asr_protocol == "remote-v2" else set()
     return bool(remote_asr_configured(settings) and metadata is not None
                 and metadata.adapter_key == REMOTE_ADAPTER_KEY
                 and all(getattr(metadata, name) is None for name in (
                     "model_repo", "model_revision", "device", "compute_type", "cpu_threads",
                     "model_load_seconds", "transcription_seconds", "total_seconds"))
-                and set(metadata.runtime_versions).issubset({"remote-v2-api"})
+                and set(metadata.runtime_versions).issubset(allowed_versions)
                 and result.language is None and result.language_requested is None
                 and result.language_probability is None
                 and all(getattr(result, name) is None for name in (

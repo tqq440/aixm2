@@ -32,6 +32,11 @@ def test_baseline_upgrade_downgrade_and_metadata_check(tmp_path):
                            "asr_target_revisions", "asr_target_worker_sessions", "compute_nodes", "dispatch_events", "execution_attempts", "idempotency_records",
                            "instance_sessions", "managed_instance_sessions", "model_versions", "models", "notification_records", "online_requests",
                            "remote_asr_calls", "runtime_components", "service_instances", "tasks"]
+        expected_tables = sorted([*expected_tables,
+            "asr_catalog_revisions", "asr_resource_observations", "asr_routing_revisions", "asr_task_routes",
+            "inference_catalog_events", "inference_resource_groups", "inference_service_revisions", "inference_services", "inference_target_checks",
+            "inference_application_budgets", "inference_cpu_profiles", "inference_invocations", "inference_reservation_items",
+            "inference_scheduler_cursors", "inference_task_events", "inference_queue_outboxes", "inference_queue_states"])
         assert sorted(Base.metadata.tables) == expected_tables
         assert inspect(engine).get_table_names() == sorted(["alembic_version", *expected_tables])
         with engine.connect() as connection:

@@ -7,6 +7,7 @@ import os
 from sqlalchemy import text
 
 from backend.common.exceptions.app_error import AppError
+from backend.config.asr.service_config import read_service_document
 from backend.data.asr.remote_repository import RemoteAsrRepository
 from backend.data.database.database import database_now
 from backend.data.execution.execution_repository import ExecutionRepository
@@ -109,6 +110,14 @@ class RemoteAsrService:
                       model_version=spec.model_version if spec else None,
                       version_info=spec.version_info if spec else None,
                       capacity=TargetStatusService(self.database, self.settings).status())
+        try:
+            selected = read_service_document(self.settings).selected_revision
+        except (ValueError, OSError):
+            return RemoteAsrStatus(**fields, available=False, state="unavailable",
+                message="ASR 接口配置文件无法校验，暂不接收新任务。")
+        if selected != self.settings.asr_service_revision:
+            return RemoteAsrStatus(**fields, available=False, state="unavailable",
+                message="已选用新的 ASR 配置，请重启平台使其生效后再提交。")
         # 即使移除连接配置，既有未确认事实仍必须可见。
         with self.database.session_factory() as session:
             session.execute(text("BEGIN"))
@@ -156,6 +165,12 @@ class RemoteAsrService:
             raise AppError(code, status.message, 503)
 
     def validate_submission(self, session, task):
+        try:
+            selected = read_service_document(self.settings).selected_revision
+        except (ValueError, OSError):
+            raise AppError("ASR_CONFIG_STORAGE_INVALID", "接口配置无法校验，暂不接收新任务。", 503) from None
+        if selected != self.settings.asr_service_revision:
+            raise AppError("ASR_CONFIG_RESTART_REQUIRED", "已选用新的 ASR 配置，请重启平台后再提交。", 409)
         if self.settings.remote_asr_routing_revision:
             return self.routing.validate_submission(session, task)
         now = database_now(session)

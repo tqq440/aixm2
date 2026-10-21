@@ -47,16 +47,18 @@ def test_unconfigured_health_never_makes_request():
     assert health.error_code == "REMOTE_ASR_NOT_CONFIGURED"
 
 
-@pytest.mark.parametrize("data", [
-    {"status": "loading", "model_loaded": True}, {"status": "ok", "model_loaded": False},
-    {"status": "ok", "model_loaded": "true"}, {"status": "ok"},
+@pytest.mark.parametrize("data,expected", [
+    ({"status": "loading", "model_loaded": True}, "REMOTE_ASR_UNAVAILABLE"),
+    ({"status": "ok", "model_loaded": False}, "REMOTE_ASR_UNAVAILABLE"),
+    ({"status": "ok", "model_loaded": "true"}, "REMOTE_ASR_PROTOCOL_INVALID"),
+    ({"status": "ok"}, "REMOTE_ASR_PROTOCOL_INVALID"),
 ])
-def test_health_requires_explicit_readiness(settings, data):
+def test_health_requires_explicit_readiness(settings, data, expected):
     adapter = RemoteV2AsrAdapter(settings, transport=httpx.MockTransport(
         lambda transcription_request: httpx.Response(200, json={"success": True, "data": data})))
     with pytest.raises(AppError) as caught:
         adapter.prepare_model()
-    assert caught.value.code == "REMOTE_ASR_UNAVAILABLE"
+    assert caught.value.code == expected
 
 
 def test_health_and_transcription_send_only_fixed_protocol_and_keep_unknown_facts_absent(settings, transcription_request):

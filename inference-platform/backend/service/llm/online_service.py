@@ -18,6 +18,8 @@ from backend.data.llm.online_repository import ACTIVE_STATES, OnlineRepository
 from backend.schema.llm.online_schema import (LlmStatus, OnlineCancelReceipt, OnlineRequestInput,
                                             OnlineRequestPage, OnlineRequestView)
 from backend.service.llm.engine_adapter import HttpChatAdapter
+from backend.data.invocations.invocation_repository import InvocationRepository
+from backend.service.invocations.invocation_service import InvocationService
 
 CALLER_ID = "local-user"
 
@@ -66,6 +68,8 @@ class OnlineService:
 
     def _reap(self, session, now):
         for row in self.repository.expired(session, now):
+            if InvocationRepository.available(session) and InvocationRepository.for_owner(session, "online", row.online_request_id):
+                continue
             self.repository.update(row, state="failed", ended_at=now, updated_at=now,
                 error_json={"code": "LLM_OWNER_LOST", "message": "在线处理进程失联，本次生成不会自动重放。"},
                 permit_state="uncertain" if row.permit_state == "held" else "released")
@@ -144,6 +148,14 @@ class OnlineService:
             if row is None:
                 raise AppError("LLM_REQUEST_NOT_FOUND", "未找到该在线请求。", 404)
             decision = "already_finished"
+            if InvocationRepository.available(session):
+                invocation = InvocationRepository.for_owner(session, "online", request_id)
+                if invocation:
+                    if not self.settings.common_execution_enabled:
+                        raise AppError("COMMON_EXECUTION_DISABLED", "该请求属于公共通道，请恢复公共执行开关后处理取消。", 503)
+                    decision = InvocationService(self.database, self.settings).cancel_in_transaction(session, invocation)
+                    return OnlineCancelReceipt(request=self._view(row), decision=(
+                        "cancel_requested" if decision == "cancelled" else decision))
             if row.state in ACTIVE_STATES:
                 self.repository.update(row, cancel_requested=True, updated_at=now)
                 decision = "cancel_requested"
@@ -173,6 +185,9 @@ class OnlineService:
             self.repository.update(row, updated_at=now,
                                    lease_expires_at=now + timedelta(seconds=self.settings.llm_lease_seconds))
             if acquire:
+                if InvocationRepository.available(session) and InvocationRepository.common_occupied(session):
+                    self.repository.update(row, state="waiting_instance")
+                    return False
                 _, occupied, _ = self.repository.counts(session, self.instance_id)
                 if occupied >= self.settings.llm_max_concurrent_requests:
                     self.repository.update(row, state="waiting_instance")

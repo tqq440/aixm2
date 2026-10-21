@@ -14,6 +14,19 @@ from backend.controller.llm.online_controller import online_blueprint
 from backend.controller.nodes.node_controller import node_blueprint
 from backend.controller.agent.agent_controller import agent_blueprint
 from backend.controller.asr.remote_controller import remote_asr_blueprint
+from backend.controller.asr.service_config_controller import asr_services_blueprint
+from backend.controller.catalog.catalog_controller import catalog_blueprint
+from backend.service.catalog.catalog_service import ServiceCatalog
+from backend.service.invocations.invocation_service import InvocationService
+from backend.service.invocations.node_bridge import NodeInvocationBridge
+from backend.service.host_node.input_service import CentralMaterialSource
+from backend.service.gateway.key_service import GatewayKeys
+from backend.service.gateway.request_service import GatewayRequests
+from backend.service.gateway.admin_service import GatewayAdministration
+from backend.controller.gateway.gateway_controller import public_blueprint, gateway_admin_blueprint, protect_legacy
+from backend.service.queue.queue_service import QueueService
+from backend.controller.invocations.invocation_controller import invocation_blueprint
+from backend.service.asr.service_config_service import AsrServiceConfiguration
 from backend.service.asr.remote_service import RemoteAsrService
 from backend.data.database.database import Database
 from backend.data.files.upload_store import LocalUploadStore
@@ -29,6 +42,7 @@ from backend.service.agent.agent_command_service import AgentCommandService
 
 
 def create_app(settings: AppSettings | None = None) -> Flask:
+    environment_settings = settings if settings is not None else load_settings(include_service_selection=False)
     settings = settings if settings is not None else load_settings()
     app = Flask(__name__, static_folder=None)
     app.json.ensure_ascii = False
@@ -39,7 +53,7 @@ def create_app(settings: AppSettings | None = None) -> Flask:
         MAX_FORM_MEMORY_SIZE=128 * 1024, MAX_FORM_PARTS=8,
     )
     try:
-        logger = configure_logging(settings.log_dir, settings.log_level)
+        logger = configure_logging(settings.log_dir, settings.log_level, process_scoped=settings.common_execution_enabled)
     except OSError as exc:
         raise StartupError("日志目录不可写，请检查 INFERENCE_LOG_DIR 和目录权限。") from exc
     app.extensions["app_logger"] = logger
@@ -47,6 +61,15 @@ def create_app(settings: AppSettings | None = None) -> Flask:
     try:
         database = Database(settings)
         database.check_connection()
+        if settings.public_api_enabled:
+            from sqlalchemy import text
+            with database.engine.connect() as connection:
+                if connection.scalar(text("SELECT version_num FROM alembic_version"))!="20261021_0020":
+                    raise StartupError("公共 API 需要显式完成 0020 迁移，不自动升级数据库。")
+    except StartupError:
+        if database is not None:database.dispose()
+        close_logging(logger)
+        raise
     except (OSError, SQLAlchemyError) as exc:
         logger.exception("数据库初始化失败")
         if database is not None:
@@ -54,6 +77,19 @@ def create_app(settings: AppSettings | None = None) -> Flask:
         close_logging(logger)
         raise StartupError("数据库无法连接，请检查 INFERENCE_DATABASE_PATH 和目录权限。") from exc
     app.extensions["database"] = database
+    app.extensions["service_catalog"] = ServiceCatalog(database, settings)
+    app.extensions["queue_service"] = QueueService(database, settings, logger=logger)
+    app.extensions["invocation_service"] = app.extensions["queue_service"].core
+    app.extensions["node_invocation_bridge"] = NodeInvocationBridge(app.extensions["invocation_service"],
+        material_source=CentralMaterialSource(app.extensions["invocation_service"]))
+    configuration = AsrServiceConfiguration(database, settings, environment_settings)
+    try:
+        configuration.register_running()
+    except Exception:
+        database.dispose()
+        close_logging(logger)
+        raise
+    app.extensions["asr_service_configuration"] = configuration
     app.extensions["health_service"] = HealthService(database)
     models = ModelService(settings, database)
     app.extensions["model_service"] = models
@@ -66,6 +102,12 @@ def create_app(settings: AppSettings | None = None) -> Flask:
     app.extensions["agent_service"] = AgentCommandService(database, settings)
     app.extensions["remote_asr_service"] = RemoteAsrService(database, settings)
     register_http_hooks(app)
+    app.extensions["gateway_keys"] = GatewayKeys(app.extensions["invocation_service"])
+    app.extensions["gateway_requests"] = GatewayRequests(app.extensions["invocation_service"], app.extensions["node_invocation_bridge"])
+    app.extensions["gateway_administration"] = GatewayAdministration(app.extensions["invocation_service"], app.extensions["node_invocation_bridge"])
+    app.before_request(protect_legacy)
+    app.register_blueprint(public_blueprint)
+    app.register_blueprint(gateway_admin_blueprint)
     app.register_blueprint(health_blueprint)
     app.register_blueprint(task_blueprint)
     app.register_blueprint(runtime_blueprint)
@@ -73,6 +115,9 @@ def create_app(settings: AppSettings | None = None) -> Flask:
     app.register_blueprint(node_blueprint)
     app.register_blueprint(agent_blueprint)
     app.register_blueprint(remote_asr_blueprint)
+    app.register_blueprint(asr_services_blueprint)
+    app.register_blueprint(catalog_blueprint)
+    app.register_blueprint(invocation_blueprint)
     logger.info("应用初始化完成（上传、任务结果与管理状态；ASR 由本机 Agent 控制）")
     return app
 
@@ -80,6 +125,7 @@ def create_app(settings: AppSettings | None = None) -> Flask:
 def close_app(app: Flask) -> None:
     """运行入口退出时释放连接及日志句柄；不在每个请求结束时销毁连接池。"""
     app.extensions["online_service"].close()
+    app.extensions["queue_service"].close()
     app.extensions["database"].dispose()
     logger = app.extensions["app_logger"]
     logger.info("应用资源已释放")

@@ -1,0 +1,7301 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Host Node Foundation",
+    "version": "lifecycle-v1",
+    "description": "独立 Node 控制与受鉴权的中心内部执行；4C2 提供 HTTP/文件/SSE、后台状态采集，业务开关默认关闭；公共应用鉴权接口留模块5。"
+  },
+  "paths": {
+    "/node/v1/status": {
+      "get": {
+        "summary": "Node 本地运行状态与已实现能力",
+        "security": [
+          {
+            "NodeAdmin": []
+          },
+          {
+            "NodeObserver": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_NodeStatus"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/v1/services": {
+      "get": {
+        "summary": "分页读取服务快照",
+        "security": [
+          {
+            "NodeAdmin": []
+          },
+          {
+            "NodeObserver": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ServicePage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "maximum": 1000000
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        ]
+      }
+    },
+    "/node/v1/services/{serviceId}": {
+      "get": {
+        "summary": "读取服务快照；不查询业务服务",
+        "security": [
+          {
+            "NodeAdmin": []
+          },
+          {
+            "NodeObserver": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ServiceSnapshot"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ]
+      }
+    },
+    "/node/v1/events": {
+      "get": {
+        "summary": "游标读取事件",
+        "security": [
+          {
+            "NodeAdmin": []
+          },
+          {
+            "NodeObserver": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_EventPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "afterSequence",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "minimum": 1,
+              "maximum": 200
+            }
+          }
+        ]
+      }
+    },
+    "/node/v1/services/{serviceId}/events": {
+      "get": {
+        "summary": "游标读取事件",
+        "security": [
+          {
+            "NodeAdmin": []
+          },
+          {
+            "NodeObserver": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_EventPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "afterSequence",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "minimum": 1,
+              "maximum": 200
+            }
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ]
+      }
+    },
+    "/node/v1/admin/services/{serviceId}": {
+      "get": {
+        "summary": "读取配置及版本",
+        "security": [
+          {
+            "NodeAdmin": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ConfigurationView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ]
+      },
+      "put": {
+        "summary": "保存配置；新建 expectedVersion 为 null",
+        "security": [
+          {
+            "NodeAdmin": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ServiceSnapshot"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveNodeService"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/v1/admin/services/{serviceId}/instances": {
+      "post": {
+        "summary": "绑定上报身份；不启动容器",
+        "security": [
+          {
+            "NodeAdmin": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ServiceSnapshot"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenNodeInstance"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/internal/v1/services/{serviceId}/reports": {
+      "post": {
+        "summary": "业务生命周期上报；重复不刷新心跳",
+        "security": [
+          {
+            "ServiceReporter": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ReportReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NodeServiceReport"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/v1/openapi.json": {
+      "get": {
+        "summary": "读取此 OpenAPI 文档（直接返回文档）",
+        "security": [
+          {
+            "NodeAdmin": []
+          },
+          {
+            "NodeObserver": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/v1/resources": {
+      "get": {
+        "summary": "只读主机指标快照；不触发采样",
+        "security": [
+          {
+            "NodeAdmin": []
+          },
+          {
+            "NodeObserver": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ResourceView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/v1/admin/services/{serviceId}/runtime": {
+      "get": {
+        "summary": "读取固定版本容器资料",
+        "security": [
+          {
+            "NodeAdmin": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_RuntimeView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ]
+      },
+      "put": {
+        "summary": "保存固定版本容器资料；不操作 Docker",
+        "security": [
+          {
+            "NodeAdmin": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_RuntimeView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveRuntimeConfig"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/v1/services/{serviceId}/operations": {
+      "get": {
+        "summary": "读取控制操作历史",
+        "security": [
+          {
+            "NodeAdmin": []
+          },
+          {
+            "NodeObserver": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_OperationPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1,
+              "maximum": 1000000
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ]
+      },
+      "post": {
+        "summary": "受理受控启动/停止/升级，后台执行",
+        "security": [
+          {
+            "NodeAdmin": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_OperationView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ControlCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/v1/operations/{operationId}": {
+      "get": {
+        "summary": "读取控制操作",
+        "security": [
+          {
+            "NodeAdmin": []
+          },
+          {
+            "NodeObserver": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_OperationView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "operationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/node/v1/operations/{operationId}/reconcile": {
+      "post": {
+        "summary": "显式观察核对后恢复安全阶段，不重发未知命令",
+        "security": [
+          {
+            "NodeAdmin": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_OperationView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "operationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReconcileCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/v1/operations/{operationId}/abort": {
+      "post": {
+        "summary": "确认所有容器停止并人工核实未决命令后终结操作；不终结推理任务",
+        "security": [
+          {
+            "NodeAdmin": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_OperationView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "operationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AbortControlCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/internal/v1/services/{serviceId}/assignment": {
+      "get": {
+        "summary": "本机业务获取当前启动身份和暂停接单要求",
+        "security": [
+          {
+            "ServiceReporter": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_InstanceAssignment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ]
+      }
+    },
+    "/node/internal/v1/services/{serviceId}/execution-availability": {
+      "get": {
+        "summary": "只读执行门禁与适配器资料，不查询业务",
+        "security": [
+          {
+            "NodeExecutor": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ExecutionAvailability"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+              "maxLength": 64
+            }
+          }
+        ]
+      }
+    },
+    "/node/internal/v1/executions": {
+      "post": {
+        "summary": "执行适配边界；默认未配置适配器返回 503；重复不重做",
+        "security": [
+          {
+            "NodeExecutor": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ExecutionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecutionCommand"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/internal/v1/executions/{invocationId}": {
+      "get": {
+        "summary": "只读执行档案，不返回结果正文",
+        "security": [
+          {
+            "NodeExecutor": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ExecutionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "invocationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ]
+      }
+    },
+    "/node/internal/v1/executions/{invocationId}/result": {
+      "get": {
+        "summary": "读取已保存的结果，不重做推理",
+        "security": [
+          {
+            "NodeExecutor": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ExecutionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "invocationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ]
+      }
+    },
+    "/node/internal/v1/executions/file": {
+      "post": {
+        "summary": "已校验的离线文件调用；不重试；需显式开启业务适配",
+        "security": [
+          {
+            "NodeExecutor": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ExecutionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "command",
+                  "manifest",
+                  "file"
+                ],
+                "properties": {
+                  "command": {
+                    "type": "string",
+                    "maxLength": 16384,
+                    "contentMediaType": "application/json",
+                    "contentSchema": {
+                      "$ref": "#/components/schemas/ExecutionCommand"
+                    }
+                  },
+                  "manifest": {
+                    "type": "string",
+                    "maxLength": 16384,
+                    "contentMediaType": "application/json",
+                    "contentSchema": {
+                      "$ref": "#/components/schemas/ExecutionManifest"
+                    }
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "音频最多20MiB/300秒；静态图片最多10MiB/2000万像素；不采用文件名作为路径。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/internal/v1/executions/stream": {
+      "post": {
+        "summary": "文本流；终帧 receipt 仅含完成元数据，普通断线未知",
+        "security": [
+          {
+            "NodeExecutor": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SSE event=delta: {invocationId,text}; event=receipt: ExecutionReceipt。不会保存或重播 token。",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StreamExecutionInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/internal/v1/executions/{invocationId}/monitoring": {
+      "get": {
+        "summary": "只读缓存进度/实际设备，不查询业务",
+        "security": [
+          {
+            "NodeExecutor": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ExecutionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "invocationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ]
+      }
+    },
+    "/node/internal/v1/executions/{invocationId}/reconcile": {
+      "post": {
+        "summary": "显式核对，包括过期调用；不重新推理",
+        "security": [
+          {
+            "NodeExecutor": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ExecutionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "invocationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/node/internal/v1/executions/{invocationId}/cancel": {
+      "post": {
+        "summary": "请求取消；ACK不作为远端停止证明",
+        "security": [
+          {
+            "NodeExecutor": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ExecutionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "invocationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/{path}": {
+      "get": {
+        "summary": "公共接口白名单代理；需应用Key，完整契约见 /api/v1/openapi.json",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "仅 services、tasks、llm/requests、openapi.json 及文档列明的子路径；不代理管理或执行。"
+          }
+        ]
+      },
+      "post": {
+        "summary": "公共接口白名单代理；需应用Key，完整契约见 /api/v1/openapi.json",
+        "security": [
+          {
+            "ApplicationKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "仅 services、tasks、llm/requests、openapi.json 及文档列明的子路径；不代理管理或执行。"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "NodeServiceConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Name",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "asr",
+              "vision",
+              "llm"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "modelId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Modelid",
+            "type": "string"
+          },
+          "internalBaseUrl": {
+            "anyOf": [
+              {
+                "maxLength": 2048,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Internalbaseurl"
+          },
+          "reportProtocol": {
+            "default": "lifecycle-v1",
+            "enum": [
+              "none",
+              "lifecycle-v1"
+            ],
+            "title": "Reportprotocol",
+            "type": "string"
+          },
+          "reportTokenEnv": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "pattern": "^NODE_REPORT_TOKEN_[A-Z0-9_]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reporttokenenv"
+          },
+          "catalogServiceId": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Catalogserviceid"
+          },
+          "catalogRevision": {
+            "anyOf": [
+              {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Catalogrevision"
+          },
+          "upstream": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NodeUpstreamConfig"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "name",
+          "kind",
+          "modelId"
+        ],
+        "title": "NodeServiceConfig",
+        "type": "object"
+      },
+      "NodeUpstreamConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "protocol": {
+            "enum": [
+              "remote-v2",
+              "openai-audio",
+              "vision-json-v1",
+              "chat-completions-sse"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "invokePath": {
+            "maxLength": 512,
+            "title": "Invokepath",
+            "type": "string"
+          },
+          "mode": {
+            "default": "sync",
+            "enum": [
+              "sync",
+              "async",
+              "stream"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "upstreamModel": {
+            "anyOf": [
+              {
+                "maxLength": 256,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Upstreammodel"
+          },
+          "tokenEnv": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "pattern": "^NODE_UPSTREAM_TOKEN_[A-Z0-9_]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tokenenv"
+          },
+          "caFile": {
+            "anyOf": [
+              {
+                "maxLength": 2048,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cafile"
+          },
+          "timeoutSeconds": {
+            "default": 300,
+            "exclusiveMinimum": 0,
+            "maximum": 900,
+            "title": "Timeoutseconds",
+            "type": "number"
+          },
+          "connectTimeoutSeconds": {
+            "default": 5,
+            "exclusiveMinimum": 0,
+            "maximum": 30,
+            "title": "Connecttimeoutseconds",
+            "type": "number"
+          },
+          "query": {
+            "$ref": "#/components/schemas/TaskQueryConfig"
+          }
+        },
+        "required": [
+          "protocol",
+          "invokePath"
+        ],
+        "title": "NodeUpstreamConfig",
+        "type": "object"
+      },
+      "TaskQueryConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "protocol": {
+            "default": "none",
+            "enum": [
+              "none",
+              "job-json-v1"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "statusPath": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Statuspath"
+          },
+          "resultPath": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Resultpath"
+          },
+          "cancelPath": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cancelpath"
+          },
+          "resultInStatus": {
+            "default": false,
+            "title": "Resultinstatus",
+            "type": "boolean"
+          },
+          "idSource": {
+            "default": "invocation",
+            "enum": [
+              "invocation",
+              "job"
+            ],
+            "title": "Idsource",
+            "type": "string"
+          },
+          "intervalSeconds": {
+            "default": 5,
+            "maximum": 60,
+            "minimum": 5,
+            "title": "Intervalseconds",
+            "type": "number"
+          },
+          "timeoutSeconds": {
+            "default": 3,
+            "exclusiveMinimum": 0,
+            "maximum": 10,
+            "title": "Timeoutseconds",
+            "type": "number"
+          }
+        },
+        "title": "TaskQueryConfig",
+        "type": "object"
+      },
+      "SaveNodeService": {
+        "additionalProperties": false,
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/NodeServiceConfig"
+          },
+          "expectedVersion": {
+            "anyOf": [
+              {
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Expectedversion"
+          }
+        },
+        "required": [
+          "config"
+        ],
+        "title": "SaveNodeService",
+        "type": "object"
+      },
+      "OpenNodeInstance": {
+        "additionalProperties": false,
+        "properties": {
+          "instanceId": {
+            "format": "uuid",
+            "title": "Instanceid",
+            "type": "string"
+          },
+          "configRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Configrevision",
+            "type": "string"
+          },
+          "expectedGeneration": {
+            "maximum": 1000000,
+            "minimum": 0,
+            "title": "Expectedgeneration",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "instanceId",
+          "configRevision",
+          "expectedGeneration"
+        ],
+        "title": "OpenNodeInstance",
+        "type": "object"
+      },
+      "NodeServiceReport": {
+        "additionalProperties": false,
+        "properties": {
+          "instanceId": {
+            "format": "uuid",
+            "title": "Instanceid",
+            "type": "string"
+          },
+          "configRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Configrevision",
+            "type": "string"
+          },
+          "sequence": {
+            "maximum": 9007199254740991,
+            "minimum": 1,
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "state": {
+            "enum": [
+              "starting",
+              "warming",
+              "ready",
+              "busy",
+              "draining",
+              "stopped",
+              "failed"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "health": {
+            "default": "unknown",
+            "enum": [
+              "unknown",
+              "healthy",
+              "unhealthy"
+            ],
+            "title": "Health",
+            "type": "string"
+          },
+          "modelReady": {
+            "default": false,
+            "title": "Modelready",
+            "type": "boolean"
+          },
+          "acceptingRequests": {
+            "default": false,
+            "title": "Acceptingrequests",
+            "type": "boolean"
+          },
+          "queuedTasks": {
+            "anyOf": [
+              {
+                "maximum": 1000000,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Queuedtasks"
+          },
+          "activeTasks": {
+            "anyOf": [
+              {
+                "maximum": 1000000,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Activetasks"
+          },
+          "errorCode": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "pattern": "^[A-Z][A-Z0-9_]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Errorcode"
+          },
+          "reportedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reportedat"
+          },
+          "controlOperationId": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Controloperationid"
+          },
+          "controlAction": {
+            "anyOf": [
+              {
+                "enum": [
+                  "drain",
+                  "resume"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Controlaction"
+          }
+        },
+        "required": [
+          "instanceId",
+          "configRevision",
+          "sequence",
+          "state"
+        ],
+        "title": "NodeServiceReport",
+        "type": "object"
+      },
+      "ErrorDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "details": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationIssue"
+            },
+            "title": "Details",
+            "type": "array"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorDetail",
+        "type": "object"
+      },
+      "ValidationIssue": {
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "code"
+        ],
+        "title": "ValidationIssue",
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "error",
+          "requestId"
+        ],
+        "title": "ErrorResponse",
+        "type": "object"
+      },
+      "ContainerVersion": {
+        "additionalProperties": false,
+        "properties": {
+          "versionId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Versionid",
+            "type": "string"
+          },
+          "containerId": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Containerid",
+            "type": "string"
+          },
+          "imageId": {
+            "pattern": "^sha256:[a-f0-9]{64}$",
+            "title": "Imageid",
+            "type": "string"
+          },
+          "compatibilityEvidence": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Compatibilityevidence",
+            "type": "string"
+          }
+        },
+        "required": [
+          "versionId",
+          "containerId",
+          "imageId",
+          "compatibilityEvidence"
+        ],
+        "title": "ContainerVersion",
+        "type": "object"
+      },
+      "RuntimeConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "versions": {
+            "items": {
+              "$ref": "#/components/schemas/ContainerVersion"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Versions",
+            "type": "array"
+          },
+          "drainPath": {
+            "anyOf": [
+              {
+                "maxLength": 256,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Drainpath"
+          },
+          "resumePath": {
+            "anyOf": [
+              {
+                "maxLength": 256,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Resumepath"
+          },
+          "drainTimeoutSeconds": {
+            "default": 300,
+            "maximum": 3600,
+            "minimum": 1,
+            "title": "Draintimeoutseconds",
+            "type": "integer"
+          },
+          "readyTimeoutSeconds": {
+            "default": 120,
+            "maximum": 1800,
+            "minimum": 1,
+            "title": "Readytimeoutseconds",
+            "type": "integer"
+          },
+          "exitTimeoutSeconds": {
+            "default": 30,
+            "maximum": 300,
+            "minimum": 1,
+            "title": "Exittimeoutseconds",
+            "type": "integer"
+          },
+          "autoRollback": {
+            "default": false,
+            "title": "Autorollback",
+            "type": "boolean"
+          },
+          "rollbackCompatibilityEvidence": {
+            "anyOf": [
+              {
+                "maxLength": 512,
+                "minLength": 16,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Rollbackcompatibilityevidence"
+          }
+        },
+        "required": [
+          "versions"
+        ],
+        "title": "RuntimeConfig",
+        "type": "object"
+      },
+      "SaveRuntimeConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "expectedControlVersion": {
+            "minimum": 0,
+            "title": "Expectedcontrolversion",
+            "type": "integer"
+          },
+          "config": {
+            "$ref": "#/components/schemas/RuntimeConfig"
+          }
+        },
+        "required": [
+          "expectedControlVersion",
+          "config"
+        ],
+        "title": "SaveRuntimeConfig",
+        "type": "object"
+      },
+      "ControlCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "operationId": {
+            "format": "uuid",
+            "title": "Operationid",
+            "type": "string"
+          },
+          "action": {
+            "pattern": "^(start|stop|upgrade)$",
+            "title": "Action",
+            "type": "string"
+          },
+          "versionId": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Versionid"
+          },
+          "expectedControlVersion": {
+            "minimum": 0,
+            "title": "Expectedcontrolversion",
+            "type": "integer"
+          },
+          "configRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Configrevision",
+            "type": "string"
+          }
+        },
+        "required": [
+          "operationId",
+          "action",
+          "expectedControlVersion",
+          "configRevision"
+        ],
+        "title": "ControlCommand",
+        "type": "object"
+      },
+      "ReconcileCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expectedControlVersion": {
+            "minimum": 0,
+            "title": "Expectedcontrolversion",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expectedControlVersion"
+        ],
+        "title": "ReconcileCommand",
+        "type": "object"
+      },
+      "AbortControlCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "expectedControlVersion": {
+            "minimum": 0,
+            "title": "Expectedcontrolversion",
+            "type": "integer"
+          },
+          "evidence": {
+            "maxLength": 512,
+            "minLength": 16,
+            "title": "Evidence",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expectedControlVersion",
+          "evidence"
+        ],
+        "title": "AbortControlCommand",
+        "type": "object"
+      },
+      "ExecutionCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "nodeId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Nodeid",
+            "type": "string"
+          },
+          "serviceId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Serviceid",
+            "type": "string"
+          },
+          "configRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Configrevision",
+            "type": "string"
+          },
+          "instanceId": {
+            "format": "uuid",
+            "title": "Instanceid",
+            "type": "string"
+          },
+          "invocationId": {
+            "pattern": "^[a-f0-9]{32}$",
+            "title": "Invocationid",
+            "type": "string"
+          },
+          "attempt": {
+            "maximum": 1000000,
+            "minimum": 1,
+            "title": "Attempt",
+            "type": "integer"
+          },
+          "serviceRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Servicerevision",
+            "type": "string"
+          },
+          "targetId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Targetid",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "asr",
+              "vision",
+              "llm"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "modelId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Modelid",
+            "type": "string"
+          },
+          "protocol": {
+            "enum": [
+              "remote-v2",
+              "openai-audio",
+              "vision-json-v1",
+              "chat-completions-sse"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "inputRef": {
+            "pattern": "^[a-f0-9]{32}$",
+            "title": "Inputref",
+            "type": "string"
+          },
+          "inputSha256": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Inputsha256",
+            "type": "string"
+          },
+          "deadlineAt": {
+            "format": "date-time",
+            "title": "Deadlineat",
+            "type": "string"
+          },
+          "manifestHash": {
+            "anyOf": [
+              {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Manifesthash"
+          }
+        },
+        "required": [
+          "nodeId",
+          "serviceId",
+          "configRevision",
+          "instanceId",
+          "invocationId",
+          "attempt",
+          "serviceRevision",
+          "targetId",
+          "kind",
+          "modelId",
+          "protocol",
+          "inputRef",
+          "inputSha256",
+          "deadlineAt"
+        ],
+        "title": "ExecutionCommand",
+        "type": "object"
+      },
+      "OnlineMessage": {
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "enum": [
+              "system",
+              "user",
+              "assistant"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "content": {
+            "maxLength": 16000,
+            "minLength": 1,
+            "title": "Content",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ],
+        "title": "OnlineMessage",
+        "type": "object"
+      },
+      "OnlineParameters": {
+        "additionalProperties": false,
+        "properties": {
+          "temperature": {
+            "default": 0.7,
+            "maximum": 2,
+            "minimum": 0,
+            "title": "Temperature",
+            "type": "number"
+          },
+          "maxTokens": {
+            "default": 512,
+            "maximum": 2048,
+            "minimum": 1,
+            "title": "Maxtokens",
+            "type": "integer"
+          }
+        },
+        "title": "OnlineParameters",
+        "type": "object"
+      },
+      "OnlineRequestInput": {
+        "additionalProperties": false,
+        "properties": {
+          "modelId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Modelid",
+            "type": "string"
+          },
+          "modelVersion": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]*$",
+            "title": "Modelversion",
+            "type": "string"
+          },
+          "onlineRequestId": {
+            "pattern": "^[0-9a-f]{32}$",
+            "title": "Onlinerequestid",
+            "type": "string"
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/OnlineMessage"
+            },
+            "maxItems": 32,
+            "minItems": 1,
+            "title": "Messages",
+            "type": "array"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/OnlineParameters"
+          }
+        },
+        "required": [
+          "modelId",
+          "modelVersion",
+          "onlineRequestId",
+          "messages"
+        ],
+        "title": "OnlineRequestInput",
+        "type": "object"
+      },
+      "StreamExecutionInput": {
+        "additionalProperties": false,
+        "properties": {
+          "command": {
+            "$ref": "#/components/schemas/ExecutionCommand"
+          },
+          "request": {
+            "$ref": "#/components/schemas/OnlineRequestInput"
+          }
+        },
+        "required": [
+          "command",
+          "request"
+        ],
+        "title": "StreamExecutionInput",
+        "type": "object"
+      },
+      "ExecutionManifest": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "asr",
+              "vision"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "sizeBytes": {
+            "exclusiveMinimum": 0,
+            "maximum": 20971520,
+            "title": "Sizebytes",
+            "type": "integer"
+          },
+          "modelVersion": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelversion"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z]{2,3}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Language"
+          },
+          "audioDurationSeconds": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "maximum": 300,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Audiodurationseconds"
+          },
+          "imageWidth": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "maximum": 20000,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Imagewidth"
+          },
+          "imageHeight": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0,
+                "maximum": 20000,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Imageheight"
+          },
+          "confidenceThreshold": {
+            "default": 0.25,
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "title": "Confidencethreshold",
+            "type": "number"
+          },
+          "iouThreshold": {
+            "default": 0.45,
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "title": "Iouthreshold",
+            "type": "number"
+          },
+          "maxDetections": {
+            "default": 100,
+            "maximum": 300,
+            "minimum": 1,
+            "title": "Maxdetections",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "kind",
+          "sizeBytes"
+        ],
+        "title": "ExecutionManifest",
+        "type": "object"
+      },
+      "NodeCapabilities": {
+        "additionalProperties": false,
+        "properties": {
+          "serviceRegistry": {
+            "const": true,
+            "default": true,
+            "title": "Serviceregistry",
+            "type": "boolean"
+          },
+          "lifecycleReports": {
+            "const": true,
+            "default": true,
+            "title": "Lifecyclereports",
+            "type": "boolean"
+          },
+          "inferenceQueue": {
+            "const": false,
+            "default": false,
+            "title": "Inferencequeue",
+            "type": "boolean"
+          },
+          "publicGateway": {
+            "const": false,
+            "default": false,
+            "title": "Publicgateway",
+            "type": "boolean"
+          },
+          "containerControl": {
+            "default": false,
+            "title": "Containercontrol",
+            "type": "boolean"
+          },
+          "resourceMetrics": {
+            "default": false,
+            "title": "Resourcemetrics",
+            "type": "boolean"
+          }
+        },
+        "title": "NodeCapabilities",
+        "type": "object"
+      },
+      "NodeStatus": {
+        "additionalProperties": false,
+        "properties": {
+          "nodeId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Nodeid",
+            "type": "string"
+          },
+          "epochId": {
+            "title": "Epochid",
+            "type": "string"
+          },
+          "status": {
+            "const": "online",
+            "title": "Status",
+            "type": "string"
+          },
+          "startedAt": {
+            "format": "date-time",
+            "title": "Startedat",
+            "type": "string"
+          },
+          "evaluatedAt": {
+            "format": "date-time",
+            "title": "Evaluatedat",
+            "type": "string"
+          },
+          "heartbeatSeconds": {
+            "title": "Heartbeatseconds",
+            "type": "integer"
+          },
+          "staleSeconds": {
+            "title": "Staleseconds",
+            "type": "integer"
+          },
+          "capabilities": {
+            "$ref": "#/components/schemas/NodeCapabilities"
+          }
+        },
+        "required": [
+          "nodeId",
+          "epochId",
+          "status",
+          "startedAt",
+          "evaluatedAt",
+          "heartbeatSeconds",
+          "staleSeconds",
+          "capabilities"
+        ],
+        "title": "NodeStatus",
+        "type": "object"
+      },
+      "SuccessResponse_NodeStatus": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/NodeStatus"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[NodeStatus]",
+        "type": "object"
+      },
+      "ServiceCapabilities": {
+        "additionalProperties": false,
+        "properties": {
+          "lifecycleReports": {
+            "title": "Lifecyclereports",
+            "type": "boolean"
+          },
+          "containerControl": {
+            "default": false,
+            "title": "Containercontrol",
+            "type": "boolean"
+          },
+          "resourceMetrics": {
+            "default": false,
+            "title": "Resourcemetrics",
+            "type": "boolean"
+          },
+          "taskMonitoring": {
+            "default": false,
+            "title": "Taskmonitoring",
+            "type": "boolean"
+          },
+          "businessProxy": {
+            "default": false,
+            "title": "Businessproxy",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "lifecycleReports"
+        ],
+        "title": "ServiceCapabilities",
+        "type": "object"
+      },
+      "ServicePage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ServiceSnapshot"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "pageSize": {
+            "title": "Pagesize",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "pageSize"
+        ],
+        "title": "ServicePage",
+        "type": "object"
+      },
+      "ServiceSnapshot": {
+        "additionalProperties": false,
+        "properties": {
+          "serviceId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Serviceid",
+            "type": "string"
+          },
+          "nodeId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Nodeid",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "asr",
+              "vision",
+              "llm"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "modelId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Modelid",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "configRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Configrevision",
+            "type": "string"
+          },
+          "generation": {
+            "title": "Generation",
+            "type": "integer"
+          },
+          "instanceId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instanceid"
+          },
+          "sequence": {
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "state": {
+            "enum": [
+              "unknown",
+              "starting",
+              "warming",
+              "ready",
+              "busy",
+              "draining",
+              "stopped",
+              "failed"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "reportedState": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reportedstate"
+          },
+          "health": {
+            "enum": [
+              "unknown",
+              "healthy",
+              "unhealthy"
+            ],
+            "title": "Health",
+            "type": "string"
+          },
+          "reportedHealth": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reportedhealth"
+          },
+          "modelReady": {
+            "title": "Modelready",
+            "type": "boolean"
+          },
+          "acceptingRequests": {
+            "title": "Acceptingrequests",
+            "type": "boolean"
+          },
+          "reportedAcceptingRequests": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reportedacceptingrequests"
+          },
+          "queuedTasks": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Queuedtasks"
+          },
+          "activeTasks": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Activetasks"
+          },
+          "reportFresh": {
+            "title": "Reportfresh",
+            "type": "boolean"
+          },
+          "lastReceivedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastreceivedat"
+          },
+          "reportedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reportedat"
+          },
+          "evaluatedAt": {
+            "format": "date-time",
+            "title": "Evaluatedat",
+            "type": "string"
+          },
+          "lastErrorCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lasterrorcode"
+          },
+          "containerState": {
+            "default": "unknown",
+            "title": "Containerstate",
+            "type": "string"
+          },
+          "control": {
+            "additionalProperties": true,
+            "title": "Control",
+            "type": "object"
+          },
+          "actualExecutionDevice": {
+            "default": null,
+            "title": "Actualexecutiondevice",
+            "type": "null"
+          },
+          "progress": {
+            "default": null,
+            "title": "Progress",
+            "type": "null"
+          },
+          "executionReady": {
+            "default": false,
+            "title": "Executionready",
+            "type": "boolean"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
+          "capabilities": {
+            "$ref": "#/components/schemas/ServiceCapabilities"
+          }
+        },
+        "required": [
+          "serviceId",
+          "nodeId",
+          "name",
+          "kind",
+          "modelId",
+          "version",
+          "configRevision",
+          "generation",
+          "instanceId",
+          "sequence",
+          "state",
+          "reportedState",
+          "health",
+          "reportedHealth",
+          "modelReady",
+          "acceptingRequests",
+          "reportedAcceptingRequests",
+          "queuedTasks",
+          "activeTasks",
+          "reportFresh",
+          "lastReceivedAt",
+          "reportedAt",
+          "evaluatedAt",
+          "lastErrorCode",
+          "issues",
+          "capabilities"
+        ],
+        "title": "ServiceSnapshot",
+        "type": "object"
+      },
+      "SuccessResponse_ServicePage": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServicePage"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[ServicePage]",
+        "type": "object"
+      },
+      "SuccessResponse_ServiceSnapshot": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ServiceSnapshot"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[ServiceSnapshot]",
+        "type": "object"
+      },
+      "EventPage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NodeEventView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "hasMore": {
+            "title": "Hasmore",
+            "type": "boolean"
+          },
+          "nextSequence": {
+            "title": "Nextsequence",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "hasMore",
+          "nextSequence"
+        ],
+        "title": "EventPage",
+        "type": "object"
+      },
+      "NodeEventView": {
+        "additionalProperties": false,
+        "properties": {
+          "sequence": {
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "serviceId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serviceid"
+          },
+          "instanceId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instanceid"
+          },
+          "configRevision": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Configrevision"
+          },
+          "eventType": {
+            "title": "Eventtype",
+            "type": "string"
+          },
+          "source": {
+            "enum": [
+              "node",
+              "service"
+            ],
+            "title": "Source",
+            "type": "string"
+          },
+          "details": {
+            "additionalProperties": true,
+            "title": "Details",
+            "type": "object"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "title": "Createdat",
+            "type": "string"
+          }
+        },
+        "required": [
+          "sequence",
+          "serviceId",
+          "instanceId",
+          "configRevision",
+          "eventType",
+          "source",
+          "details",
+          "createdAt"
+        ],
+        "title": "NodeEventView",
+        "type": "object"
+      },
+      "SuccessResponse_EventPage": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/EventPage"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[EventPage]",
+        "type": "object"
+      },
+      "ConfigurationView": {
+        "additionalProperties": false,
+        "properties": {
+          "serviceId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Serviceid",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "configRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Configrevision",
+            "type": "string"
+          },
+          "config": {
+            "$ref": "#/components/schemas/NodeServiceConfig"
+          }
+        },
+        "required": [
+          "serviceId",
+          "version",
+          "configRevision",
+          "config"
+        ],
+        "title": "ConfigurationView",
+        "type": "object"
+      },
+      "SuccessResponse_ConfigurationView": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ConfigurationView"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[ConfigurationView]",
+        "type": "object"
+      },
+      "ReportReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "duplicate": {
+            "title": "Duplicate",
+            "type": "boolean"
+          },
+          "service": {
+            "$ref": "#/components/schemas/ServiceSnapshot"
+          }
+        },
+        "required": [
+          "duplicate",
+          "service"
+        ],
+        "title": "ReportReceipt",
+        "type": "object"
+      },
+      "SuccessResponse_ReportReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ReportReceipt"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[ReportReceipt]",
+        "type": "object"
+      },
+      "InstanceAssignment": {
+        "additionalProperties": false,
+        "properties": {
+          "serviceId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Serviceid",
+            "type": "string"
+          },
+          "instanceId": {
+            "format": "uuid",
+            "title": "Instanceid",
+            "type": "string"
+          },
+          "configRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Configrevision",
+            "type": "string"
+          },
+          "generation": {
+            "title": "Generation",
+            "type": "integer"
+          },
+          "sequence": {
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "startPaused": {
+            "title": "Startpaused",
+            "type": "boolean"
+          },
+          "operationId": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Operationid"
+          }
+        },
+        "required": [
+          "serviceId",
+          "instanceId",
+          "configRevision",
+          "generation",
+          "sequence",
+          "startPaused",
+          "operationId"
+        ],
+        "title": "InstanceAssignment",
+        "type": "object"
+      },
+      "SuccessResponse_InstanceAssignment": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/InstanceAssignment"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[InstanceAssignment]",
+        "type": "object"
+      },
+      "OperationView": {
+        "additionalProperties": false,
+        "properties": {
+          "operationId": {
+            "format": "uuid",
+            "title": "Operationid",
+            "type": "string"
+          },
+          "serviceId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Serviceid",
+            "type": "string"
+          },
+          "action": {
+            "enum": [
+              "start",
+              "stop",
+              "upgrade"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "running",
+              "unknown",
+              "blocked",
+              "succeeded",
+              "failed",
+              "rolled_back",
+              "aborted"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "phase": {
+            "title": "Phase",
+            "type": "string"
+          },
+          "errorCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errorcode"
+          },
+          "runtimeRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Runtimerevision",
+            "type": "string"
+          },
+          "configRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Configrevision",
+            "type": "string"
+          },
+          "requestedVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requestedversion"
+          },
+          "effectiveVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effectiveversion"
+          },
+          "rollingBack": {
+            "title": "Rollingback",
+            "type": "boolean"
+          },
+          "controlVersion": {
+            "title": "Controlversion",
+            "type": "integer"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "title": "Createdat",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "title": "Updatedat",
+            "type": "string"
+          }
+        },
+        "required": [
+          "operationId",
+          "serviceId",
+          "action",
+          "status",
+          "phase",
+          "errorCode",
+          "runtimeRevision",
+          "configRevision",
+          "requestedVersion",
+          "effectiveVersion",
+          "rollingBack",
+          "controlVersion",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "OperationView",
+        "type": "object"
+      },
+      "SuccessResponse_OperationView": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/OperationView"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[OperationView]",
+        "type": "object"
+      },
+      "OperationPage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/OperationView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          },
+          "page": {
+            "title": "Page",
+            "type": "integer"
+          },
+          "pageSize": {
+            "title": "Pagesize",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "pageSize"
+        ],
+        "title": "OperationPage",
+        "type": "object"
+      },
+      "SuccessResponse_OperationPage": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/OperationPage"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[OperationPage]",
+        "type": "object"
+      },
+      "ResourceComponent": {
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "ok",
+              "warming",
+              "unknown",
+              "unavailable"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "errorCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errorcode"
+          },
+          "lastSuccessAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastsuccessat"
+          },
+          "checkedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checkedat"
+          },
+          "fresh": {
+            "title": "Fresh",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "status",
+          "value",
+          "errorCode",
+          "lastSuccessAt",
+          "checkedAt",
+          "fresh"
+        ],
+        "title": "ResourceComponent",
+        "type": "object"
+      },
+      "ResourceView": {
+        "additionalProperties": false,
+        "properties": {
+          "nodeId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Nodeid",
+            "type": "string"
+          },
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "sampledAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sampledat"
+          },
+          "evaluatedAt": {
+            "format": "date-time",
+            "title": "Evaluatedat",
+            "type": "string"
+          },
+          "components": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ResourceComponent"
+            },
+            "title": "Components",
+            "type": "object"
+          }
+        },
+        "required": [
+          "nodeId",
+          "enabled",
+          "sampledAt",
+          "evaluatedAt",
+          "components"
+        ],
+        "title": "ResourceView",
+        "type": "object"
+      },
+      "SuccessResponse_ResourceView": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ResourceView"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[ResourceView]",
+        "type": "object"
+      },
+      "RuntimeView": {
+        "additionalProperties": false,
+        "properties": {
+          "serviceId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Serviceid",
+            "type": "string"
+          },
+          "runtimeRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Runtimerevision",
+            "type": "string"
+          },
+          "controlVersion": {
+            "title": "Controlversion",
+            "type": "integer"
+          },
+          "config": {
+            "$ref": "#/components/schemas/RuntimeConfig"
+          },
+          "control": {
+            "additionalProperties": true,
+            "title": "Control",
+            "type": "object"
+          }
+        },
+        "required": [
+          "serviceId",
+          "runtimeRevision",
+          "controlVersion",
+          "config",
+          "control"
+        ],
+        "title": "RuntimeView",
+        "type": "object"
+      },
+      "SuccessResponse_RuntimeView": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/RuntimeView"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[RuntimeView]",
+        "type": "object"
+      },
+      "ExecutionAvailability": {
+        "additionalProperties": false,
+        "properties": {
+          "nodeId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Nodeid",
+            "type": "string"
+          },
+          "serviceId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Serviceid",
+            "type": "string"
+          },
+          "configRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Configrevision",
+            "type": "string"
+          },
+          "instanceId": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instanceid"
+          },
+          "kind": {
+            "enum": [
+              "asr",
+              "vision",
+              "llm"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "modelId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Modelid",
+            "type": "string"
+          },
+          "acceptingRequests": {
+            "title": "Acceptingrequests",
+            "type": "boolean"
+          },
+          "adapterConfigured": {
+            "title": "Adapterconfigured",
+            "type": "boolean"
+          },
+          "protocols": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 4,
+            "title": "Protocols",
+            "type": "array"
+          },
+          "inputRequired": {
+            "default": false,
+            "title": "Inputrequired",
+            "type": "boolean"
+          },
+          "invocationMode": {
+            "anyOf": [
+              {
+                "enum": [
+                  "sync",
+                  "async",
+                  "stream"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Invocationmode"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Issues",
+            "type": "array"
+          }
+        },
+        "required": [
+          "nodeId",
+          "serviceId",
+          "configRevision",
+          "instanceId",
+          "kind",
+          "modelId",
+          "acceptingRequests",
+          "adapterConfigured",
+          "issues"
+        ],
+        "title": "ExecutionAvailability",
+        "type": "object"
+      },
+      "SuccessResponse_ExecutionAvailability": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ExecutionAvailability"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[ExecutionAvailability]",
+        "type": "object"
+      },
+      "ActualDevice": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "cpu",
+              "gpu"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "deviceId": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9._:/-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Deviceid"
+          },
+          "namespace": {
+            "default": "service",
+            "enum": [
+              "service",
+              "host"
+            ],
+            "title": "Namespace",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "title": "ActualDevice",
+        "type": "object"
+      },
+      "AsrEngineMetadata": {
+        "additionalProperties": false,
+        "description": "引擎报告的可选运行事实；不包含地址、凭据或任意扩展字段。",
+        "properties": {
+          "adapterKey": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Adapterkey",
+            "type": "string"
+          },
+          "modelRepo": {
+            "anyOf": [
+              {
+                "maxLength": 256,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelrepo"
+          },
+          "modelRevision": {
+            "anyOf": [
+              {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelrevision"
+          },
+          "device": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Device"
+          },
+          "computeType": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Computetype"
+          },
+          "cpuThreads": {
+            "anyOf": [
+              {
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cputhreads"
+          },
+          "modelLoadSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelloadseconds"
+          },
+          "transcriptionSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Transcriptionseconds"
+          },
+          "totalSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Totalseconds"
+          },
+          "runtimeVersions": {
+            "maxProperties": 16,
+            "patternProperties": {
+              "^[A-Za-z0-9][A-Za-z0-9._-]*$": {
+                "maxLength": 128,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._+\\-]*$",
+                "type": "string"
+              }
+            },
+            "propertyNames": {
+              "maxLength": 64,
+              "minLength": 1
+            },
+            "title": "Runtimeversions",
+            "type": "object"
+          }
+        },
+        "required": [
+          "adapterKey"
+        ],
+        "title": "AsrEngineMetadata",
+        "type": "object"
+      },
+      "BoundingBox": {
+        "additionalProperties": false,
+        "properties": {
+          "xMin": {
+            "minimum": 0,
+            "title": "Xmin",
+            "type": "number"
+          },
+          "yMin": {
+            "minimum": 0,
+            "title": "Ymin",
+            "type": "number"
+          },
+          "xMax": {
+            "minimum": 0,
+            "title": "Xmax",
+            "type": "number"
+          },
+          "yMax": {
+            "minimum": 0,
+            "title": "Ymax",
+            "type": "number"
+          }
+        },
+        "required": [
+          "xMin",
+          "yMin",
+          "xMax",
+          "yMax"
+        ],
+        "title": "BoundingBox",
+        "type": "object"
+      },
+      "Detection": {
+        "additionalProperties": false,
+        "properties": {
+          "classId": {
+            "maximum": 79,
+            "minimum": 0,
+            "title": "Classid",
+            "type": "integer"
+          },
+          "className": {
+            "minLength": 1,
+            "title": "Classname",
+            "type": "string"
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "box": {
+            "$ref": "#/components/schemas/BoundingBox"
+          }
+        },
+        "required": [
+          "classId",
+          "className",
+          "confidence",
+          "box"
+        ],
+        "title": "Detection",
+        "type": "object"
+      },
+      "DetectionResult": {
+        "additionalProperties": false,
+        "properties": {
+          "modelId": {
+            "const": "yolo-general",
+            "default": "yolo-general",
+            "title": "Modelid",
+            "type": "string"
+          },
+          "modelVersion": {
+            "const": "yolov5n-v7.0-onnx",
+            "default": "yolov5n-v7.0-onnx",
+            "title": "Modelversion",
+            "type": "string"
+          },
+          "modelSha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Modelsha256",
+            "type": "string"
+          },
+          "imageWidth": {
+            "exclusiveMinimum": 0,
+            "title": "Imagewidth",
+            "type": "integer"
+          },
+          "imageHeight": {
+            "exclusiveMinimum": 0,
+            "title": "Imageheight",
+            "type": "integer"
+          },
+          "coordinateSystem": {
+            "const": "original-pixels-exif-normalized",
+            "default": "original-pixels-exif-normalized",
+            "title": "Coordinatesystem",
+            "type": "string"
+          },
+          "detections": {
+            "items": {
+              "$ref": "#/components/schemas/Detection"
+            },
+            "maxItems": 300,
+            "title": "Detections",
+            "type": "array"
+          },
+          "device": {
+            "const": "cpu",
+            "default": "cpu",
+            "title": "Device",
+            "type": "string"
+          },
+          "runtimeVersion": {
+            "title": "Runtimeversion",
+            "type": "string"
+          },
+          "inputType": {
+            "const": "float16",
+            "default": "float16",
+            "title": "Inputtype",
+            "type": "string"
+          },
+          "preprocessingVersion": {
+            "const": "pillow-bilinear-letterbox-v1",
+            "default": "pillow-bilinear-letterbox-v1",
+            "title": "Preprocessingversion",
+            "type": "string"
+          },
+          "loadSeconds": {
+            "minimum": 0,
+            "title": "Loadseconds",
+            "type": "number"
+          },
+          "inferenceSeconds": {
+            "minimum": 0,
+            "title": "Inferenceseconds",
+            "type": "number"
+          },
+          "totalSeconds": {
+            "minimum": 0,
+            "title": "Totalseconds",
+            "type": "number"
+          }
+        },
+        "required": [
+          "modelSha256",
+          "imageWidth",
+          "imageHeight",
+          "detections",
+          "runtimeVersion",
+          "loadSeconds",
+          "inferenceSeconds",
+          "totalSeconds"
+        ],
+        "title": "DetectionResult",
+        "type": "object"
+      },
+      "ExecutionReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "command": {
+            "$ref": "#/components/schemas/ExecutionCommand"
+          },
+          "requestHash": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Requesthash",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "sending",
+              "succeeded",
+              "failed",
+              "cancelled",
+              "unknown"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "resultHash": {
+            "anyOf": [
+              {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Resulthash"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TranscriptionResult"
+              },
+              {
+                "$ref": "#/components/schemas/DetectionResult"
+              },
+              {
+                "$ref": "#/components/schemas/RemoteDetectionResult"
+              },
+              {
+                "$ref": "#/components/schemas/OnlineCompletion"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Result"
+          },
+          "errorCode": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "pattern": "^[A-Z][A-Z0-9_]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Errorcode"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "title": "Createdat",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "title": "Updatedat",
+            "type": "string"
+          },
+          "monitoring": {
+            "$ref": "#/components/schemas/TaskMonitoringSnapshot"
+          }
+        },
+        "required": [
+          "command",
+          "requestHash",
+          "state",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "ExecutionReceipt",
+        "type": "object"
+      },
+      "OnlineCompletion": {
+        "additionalProperties": false,
+        "properties": {
+          "outputCharacters": {
+            "maximum": 131072,
+            "minimum": 0,
+            "title": "Outputcharacters",
+            "type": "integer"
+          },
+          "finishReason": {
+            "enum": [
+              "stop",
+              "length"
+            ],
+            "title": "Finishreason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "outputCharacters",
+          "finishReason"
+        ],
+        "title": "OnlineCompletion",
+        "type": "object"
+      },
+      "RemoteDetection": {
+        "additionalProperties": false,
+        "properties": {
+          "classId": {
+            "maximum": 1000000,
+            "minimum": 0,
+            "title": "Classid",
+            "type": "integer"
+          },
+          "className": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Classname",
+            "type": "string"
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Confidence",
+            "type": "number"
+          },
+          "box": {
+            "$ref": "#/components/schemas/BoundingBox"
+          }
+        },
+        "required": [
+          "classId",
+          "className",
+          "confidence",
+          "box"
+        ],
+        "title": "RemoteDetection",
+        "type": "object"
+      },
+      "RemoteDetectionResult": {
+        "additionalProperties": false,
+        "properties": {
+          "schemaVersion": {
+            "const": "vision-json-v1",
+            "default": "vision-json-v1",
+            "title": "Schemaversion",
+            "type": "string"
+          },
+          "modelId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Modelid",
+            "type": "string"
+          },
+          "modelVersion": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelversion"
+          },
+          "imageWidth": {
+            "exclusiveMinimum": 0,
+            "maximum": 20000,
+            "title": "Imagewidth",
+            "type": "integer"
+          },
+          "imageHeight": {
+            "exclusiveMinimum": 0,
+            "maximum": 20000,
+            "title": "Imageheight",
+            "type": "integer"
+          },
+          "coordinateSystem": {
+            "const": "original-pixels-exif-normalized",
+            "default": "original-pixels-exif-normalized",
+            "title": "Coordinatesystem",
+            "type": "string"
+          },
+          "detections": {
+            "items": {
+              "$ref": "#/components/schemas/RemoteDetection"
+            },
+            "maxItems": 300,
+            "title": "Detections",
+            "type": "array"
+          }
+        },
+        "required": [
+          "modelId",
+          "imageWidth",
+          "imageHeight",
+          "detections"
+        ],
+        "title": "RemoteDetectionResult",
+        "type": "object"
+      },
+      "TaskMonitoringSnapshot": {
+        "additionalProperties": false,
+        "properties": {
+          "supported": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Supported"
+          },
+          "remoteState": {
+            "anyOf": [
+              {
+                "enum": [
+                  "queued",
+                  "running",
+                  "succeeded",
+                  "failed",
+                  "cancelled"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Remotestate"
+          },
+          "progress": {
+            "anyOf": [
+              {
+                "maximum": 100,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Progress"
+          },
+          "stage": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "pattern": "^[A-Za-z0-9._-]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Stage"
+          },
+          "queuePosition": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Queueposition"
+          },
+          "actualDevice": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ActualDevice"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "lastQueryAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Lastqueryat"
+          },
+          "lastTrustedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Lasttrustedat"
+          },
+          "lastError": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "pattern": "^[A-Z][A-Z0-9_]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Lasterror"
+          },
+          "lastErrorAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Lasterrorat"
+          },
+          "pollStopped": {
+            "anyOf": [
+              {
+                "const": "deadline",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pollstopped"
+          },
+          "cancelRequested": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cancelrequested"
+          },
+          "stateSource": {
+            "anyOf": [
+              {
+                "enum": [
+                  "response",
+                  "query"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Statesource"
+          }
+        },
+        "title": "TaskMonitoringSnapshot",
+        "type": "object"
+      },
+      "TranscriptionResult": {
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "segments": {
+            "items": {
+              "$ref": "#/components/schemas/TranscriptionSegment"
+            },
+            "title": "Segments",
+            "type": "array"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Language"
+          },
+          "languageRequested": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Languagerequested"
+          },
+          "languageProbability": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Languageprobability"
+          },
+          "audioDurationSeconds": {
+            "exclusiveMinimum": 0,
+            "title": "Audiodurationseconds",
+            "type": "number"
+          },
+          "engineMetadata": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AsrEngineMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "modelRepo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelrepo"
+          },
+          "modelRevision": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelrevision"
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Device"
+          },
+          "computeType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Computetype"
+          },
+          "cpuThreads": {
+            "anyOf": [
+              {
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Cputhreads"
+          },
+          "modelLoadSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Modelloadseconds"
+          },
+          "transcriptionSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Transcriptionseconds"
+          },
+          "totalSeconds": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Totalseconds"
+          },
+          "fasterWhisperVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Fasterwhisperversion"
+          },
+          "ctranslate2Version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Ctranslate2Version"
+          }
+        },
+        "required": [
+          "text",
+          "segments",
+          "audioDurationSeconds"
+        ],
+        "title": "TranscriptionResult",
+        "type": "object"
+      },
+      "TranscriptionSegment": {
+        "additionalProperties": false,
+        "properties": {
+          "start": {
+            "minimum": 0,
+            "title": "Start",
+            "type": "number"
+          },
+          "end": {
+            "minimum": 0,
+            "title": "End",
+            "type": "number"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start",
+          "end",
+          "text"
+        ],
+        "title": "TranscriptionSegment",
+        "type": "object"
+      },
+      "SuccessResponse_ExecutionReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ExecutionReceipt"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[ExecutionReceipt]",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "NodeAdmin": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "独立 Node 管理凭据"
+      },
+      "NodeObserver": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "只读观察凭据"
+      },
+      "NodeExecutor": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "中心内部执行凭据；不能管理服务或伪造业务报告"
+      },
+      "ServiceReporter": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "对应服务的独立上报凭据；无管理或查询权限"
+      },
+      "ApplicationKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "外部应用Key，仅公共白名单代理；由中心鉴权"
+      }
+    }
+  }
+}

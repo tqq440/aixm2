@@ -32,13 +32,16 @@ def check_environment(settings: AppSettings, *, node_path: Path | None = None) -
         add("database", current == expected, f"当前迁移 {', '.join(sorted(current)) or '空'}；要求 {', '.join(sorted(expected))}。")
     except Exception:
         add("database", False, "现有 SQLite 数据库或迁移记录不可读；请先检查路径并执行 Alembic upgrade head。")
-    try:
-        inspect_model(settings)
-        add("modelFiles", True, "固定版本 Whisper small 的本地清单、文件大小与 SHA-256 校验通过；未加载推理模型。")
-    except AppError as exc:
-        add("modelFiles", False, f"{exc.code}: {exc.message}")
-    except (OSError, ValueError):
-        add("modelFiles", False, "本地模型文件不可读或清单损坏。")
+    if settings.asr_service_id:
+        add("modelFiles", True, "ASR 使用手工配置的接口；平台启动不要求本机 Whisper 权重。")
+    else:
+        try:
+            inspect_model(settings)
+            add("modelFiles", True, "固定版本 Whisper small 的本地清单、文件大小与 SHA-256 校验通过；未加载推理模型。")
+        except AppError as exc:
+            add("modelFiles", False, f"{exc.code}: {exc.message}")
+        except (OSError, ValueError):
+            add("modelFiles", False, "本地模型文件不可读或清单损坏。")
     try:
         inspect_vision_model(settings)
         add("visionModelFiles", True, "固定版本 YOLOv5n 的本地清单、大小与 SHA-256 校验通过；未加载推理模型。")

@@ -47,7 +47,7 @@ def inference_child(connection: Connection) -> None:
                 raise AppError("ASR_CONSOLE_DETACH_FAILED", "ASR 子进程控制台隔离失败，未加载模型。", 503) from exc
         log_name = ("remote-asr-worker-child.log" if asr_profile == "remote" else
                     "worker-child.log" if task_type == "asr" else "vision-worker-child.log")
-        logger = configure_logging(settings.log_dir, settings.log_level, log_name)
+        logger = configure_logging(settings.log_dir, settings.log_level, log_name, process_scoped=settings.common_execution_enabled)
         asr_plugin = configured_asr_plugin(settings, profile=asr_profile) if task_type == "asr" else None
         model_spec = asr_plugin.model_spec() if asr_plugin is not None else None
         adapter = asr_plugin.create(settings) if asr_plugin is not None else DetectionService(settings)

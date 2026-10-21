@@ -86,6 +86,8 @@ class PlatformService:
     def spawn(self, name: str):
         command = [sys.executable, "-m", "backend.modules.platform.child_entry", name]
         environment = dict(os.environ, PYTHONUTF8="1", PYTHONUNBUFFERED="1")
+        # 同一次启动全部入口使用固定服务修订；稍后页面选用新配置仅影响下次启动。
+        environment["INFERENCE_ASR_SERVICE_REVISION"] = self.settings.asr_service_revision or "legacy"
         # 只给 Vite 注入代理；INFERENCE_API_TARGET 不是后台配置字段。
         environment.pop("INFERENCE_API_TARGET", None)
         if name == "frontend":
