@@ -13,13 +13,16 @@ from backend.data.host_node.execution_models import HostNodeExecution
 from backend.schema.host_node.execution_schema import AdapterOutcome, ExecutionCommand
 from backend.schema.host_node.upstream_schema import ExecutionManifest
 from backend.service.host_node.execution_service import TERMINAL
+from backend.service.host_node.monitor_budget_gate import MonitorBudgetGate
 from backend.utils.time.iso_time import iso_utc
 from backend.utils.time.time_utils import as_utc
 
 
 class NodeMonitorService:
-    def __init__(self,executions):
+    def __init__(self,executions, *, budget_client):
         self.executions=executions;self.guard=Lock();self.busy={};self.futures=[];self.closed=False
+        self.budget=MonitorBudgetGate(executions,budget_client)
+        self.budget.recover()
         self.pool=ThreadPoolExecutor(max_workers=4,thread_name_prefix="node-query")
 
     def _enter(self,identifier,service):
@@ -40,11 +43,14 @@ class NodeMonitorService:
         adapter=self.executions.adapter
         if not getattr(adapter,"requires_material",False):return
         self.futures=[f for f in self.futures if not f.done()]
+        for identifier in self.budget.outstanding():
+            token=self._enter(identifier,"budget-release:"+identifier)
+            if token:self.futures.append(self.pool.submit(self._release_budget,identifier,token))
         with self.executions._transaction() as session:
             now=self.executions.node._now(session);due=[]
             for row in session.scalars(select(HostNodeExecution).where(HostNodeExecution.state.in_(("sending","unknown"))).order_by(HostNodeExecution.updated_at)):
                 m=row.monitoring_json or {}
-                if not m.get("supported") or m.get("pollStopped"):continue
+                if not m.get("supported") or m.get("pollStopped") or m.get("budgetPhase")=="uncertain":continue
                 stamp=m.get("nextPollAt")
                 if stamp and now<as_utc(datetime.fromisoformat(stamp)).replace(tzinfo=None):continue
                 due.append((row.invocation_id,self._service_key(session,row)))
@@ -61,7 +67,20 @@ class NodeMonitorService:
         if not token:raise AppError("NODE_MONITOR_BUSY","该服务已有查询或全局查询已满。",409)
         return self._poll(identifier,token,True)
 
+    def _release_budget(self,identifier,token):
+        try:self.budget.release(identifier)
+        finally:self._leave(identifier,token)
+
+    def confirm_query_stopped(self,identifier):
+        with self.executions._transaction() as session:
+            key=self._service_key(session,session.get(HostNodeExecution,identifier))
+        token=self._enter(identifier,key)
+        if not token:raise AppError("NODE_MONITOR_BUSY","本机查询尚在运行，不能归还。",409)
+        try:return self.budget.confirm_stopped(identifier)
+        finally:self._leave(identifier,token)
+
     def _poll(self,identifier,token,manual):
+        granted=False
         try:
             with self.executions._transaction(immediate=True) as session:
                 self.executions.node._require_owner(session);row=session.get(HostNodeExecution,identifier)
@@ -73,8 +92,14 @@ class NodeMonitorService:
                     row.monitoring_json={**m,"pollStopped":"deadline","pollToken":None}
                     self.executions._event(session,row,"EXECUTION_MONITOR_DEADLINE")
                     return self.executions._view(row,include_result=True)
-                row.monitoring_json={**m,"pollToken":token,"lastQueryAt":iso_utc(now)}
                 job_id=m.get("jobId")
+            if self.budget.acquire(identifier) is None:
+                return self.executions.get(identifier,include_result=True)
+            granted=True
+            with self.executions._transaction(immediate=True) as session:
+                self.executions.node._require_owner(session);row=session.get(HostNodeExecution,identifier)
+                if row.state in TERMINAL:return self.executions._view(row,include_result=True)
+                row.monitoring_json={**(row.monitoring_json or {}),"pollToken":token,"lastQueryAt":iso_utc(self.executions.node._now(session))}
             adapter=self.executions.adapter
             if not getattr(adapter,"requires_material",False):raise ProtocolFailure("UPSTREAM_QUERY_UNSUPPORTED")
             status=adapter.query(command,config,job_id)
@@ -89,7 +114,10 @@ class NodeMonitorService:
             self._schedule(identifier,token,config)
         except Exception as error:
             self._error(identifier,token,error)
-        finally:self._leave(identifier,token)
+        finally:
+            try:
+                if granted:self.budget.release(identifier,confirmed=True)
+            finally:self._leave(identifier,token)
         return self.executions.get(identifier,include_result=True)
 
     def _apply(self,identifier,token,status):

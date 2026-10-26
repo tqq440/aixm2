@@ -143,7 +143,7 @@ def test_node_restart_reconciles_existing_job_without_posting_again(create):
     value=create(mode="async",query=True);_,lease=value.task();value.bridge.dispatch(lease)
     adapter=value.executor.adapter
     close_node_app(value.node.app)
-    value.node.app=create_node_app(value.node.settings,clock=value.node.clock,execution_adapter=adapter)
+    value.node.app=create_node_app(value.node.settings,clock=value.node.clock,execution_adapter=adapter,monitor_budget_client=value.node.budget)
     value.node.client=value.node.app.test_client();value.node.service=value.node.app.extensions["host_node_service"]
     value.executor=value.node.app.extensions["host_node_executions"];value.monitor=value.node.app.extensions["host_node_monitor"]
     assert value.executor.get(lease.invocation_id)["state"]=="unknown"

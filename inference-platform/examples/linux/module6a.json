@@ -1,0 +1,11 @@
+{
+  "name": "module6a",
+  "projectDir": "/home/swufe/FIC-Project/tyb/inference-platform",
+  "pythonExecutable": "/home/swufe/FIC-Project/tyb/inference-platform/.venv/bin/python",
+  "stateRoot": "/home/swufe/FIC-Project/tyb/inference-platform/runtime/deployment-validation/module6a",
+  "centerPort": 15000,
+  "nodePort": 18020,
+  "uiPort": 15173,
+  "publicProxyPort": 18080,
+  "threads": 16
+}

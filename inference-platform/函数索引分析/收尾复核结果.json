@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-10-26T17:16:39+08:00",
+  "functionEntries": 5606,
+  "checkedCodeFiles": 698,
+  "callEdgesValidated": 7033,
+  "matchedGraphIdentitiesValidated": 4080,
+  "sourceCoverageMatchesCurrentFiles": true,
+  "pythonAstFunctionCountsMatch": true,
+  "coverageHashesMatch": true,
+  "callIndexReferencesAndCountsMatch": true,
+  "localMarkdownLinksChecked": 5616,
+  "localMarkdownLinksValid": true,
+  "notes": [
+    "只读取源码与静态图导出，不执行平台业务、迁移或模型。",
+    "调用边及执行流的静态分析限制见README。"
+  ]
+}

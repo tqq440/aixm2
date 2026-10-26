@@ -7,6 +7,7 @@ from sqlalchemy import URL, create_engine, event, inspect, text
 from sqlalchemy.orm import sessionmaker
 
 from backend.common.exceptions.app_error import StartupError
+from backend.common.storage.recovery_guard import require_active_database
 
 
 NODE_REVISION = "20261021_node_0004"
@@ -30,6 +31,7 @@ def check_node_database(connection, *, initialized):
 
 class NodeDatabase:
     def __init__(self, settings):
+        require_active_database(settings.database_path)
         if not settings.database_path.is_file():
             raise StartupError("NODE_MIGRATION_REQUIRED：Node 数据库尚未初始化。")
         self.path = settings.database_path

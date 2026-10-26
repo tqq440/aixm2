@@ -1,6 +1,7 @@
 """独立 Node 应用工厂，不加载平台应用或模型。"""
 
 from flask import Flask
+from backend.service.host_node.monitor_budget_client import MonitorBudgetClient
 
 from backend.common.logging.app_logging import close_logging, configure_logging
 from backend.common.middleware.http_hooks import register_http_hooks
@@ -16,7 +17,7 @@ from backend.service.host_node.ingress_service import NodeIngress
 from backend.controller.host_node.ingress_controller import ingress_blueprint
 
 
-def create_node_app(settings, *, clock=None, docker=None, business=None, sampler=None, execution_adapter=None):
+def create_node_app(settings, *, clock=None, docker=None, business=None, sampler=None, execution_adapter=None, monitor_budget_client=None):
     database = NodeDatabase(settings)
     service = NodeService(database, settings, clock=clock)
     logger = None
@@ -35,7 +36,7 @@ def create_node_app(settings, *, clock=None, docker=None, business=None, sampler
         executions = NodeExecutionService(service, adapter=adapter)
         executions.recover()
         app.extensions["host_node_executions"] = executions
-        app.extensions["host_node_monitor"] = NodeMonitorService(executions)
+        app.extensions["host_node_monitor"] = NodeMonitorService(executions, budget_client=monitor_budget_client or MonitorBudgetClient(settings))
         app.extensions["host_node_resources"] = ResourceService(service, sampler=sampler)
         register_http_hooks(app)
         app.register_blueprint(node_blueprint)

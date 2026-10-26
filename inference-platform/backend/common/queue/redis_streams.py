@@ -16,7 +16,10 @@ local fields = rows[1][2]
 if #fields ~= #ARGV - 2 then return -1 end
 local expected = {}
 for i = 3, #ARGV, 2 do expected[ARGV[i]] = ARGV[i+1] end
+local seen = {}
 for i = 1, #fields, 2 do
+  if seen[fields[i]] then return -1 end
+  seen[fields[i]] = true
   if expected[fields[i]] ~= fields[i+1] then return -1 end
 end
 redis.call('XACK', KEYS[1], ARGV[1], ARGV[2])

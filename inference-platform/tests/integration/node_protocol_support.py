@@ -13,6 +13,7 @@ from backend.data.tasks.task_models import TaskRecord
 from backend.data.files.upload_store import LocalUploadStore
 from backend.modules.host_node.app import create_node_app
 from backend.service.host_node.http_adapter import NodeHttpAdapter
+from backend.service.monitoring.budget_service import MonitorBudgetService
 from backend.service.host_node.input_service import CentralMaterialSource
 from backend.service.host_node.execution_client import NodeExecutionClient
 from backend.service.host_node.migration_service import upgrade_node_database
@@ -35,8 +36,9 @@ class FlaskStream(httpx.SyncByteStream):
     def close(self):self.response.close()
 
 
-def protocol_case(case,folder,*,kind="asr",protocol="remote-v2",mode="sync",query=False,base_url=None,extra_reports=None,inline_result=False):
+def protocol_case(case,folder,*,kind="asr",protocol="remote-v2",mode="sync",query=False,base_url=None,extra_reports=None,inline_result=False, node_id=None, service_suffix="", application_version=None, application_limit=1, monitor_group=None):
     options={}
+    if node_id:options["node_id"]=node_id
     if extra_reports:
         options["report_tokens"]={"NODE_REPORT_TOKEN_ASR":REPORT,"NODE_REPORT_TOKEN_LLM":LLM_REPORT,"NODE_REPORT_TOKEN_VISION":VISION_REPORT,**extra_reports}
     settings=node_settings(folder,business_enabled=True,executor_token=EXECUTOR,metrics_enabled=False,**options)
@@ -78,7 +80,8 @@ def protocol_case(case,folder,*,kind="asr",protocol="remote-v2",mode="sync",quer
         if phase.get("result") or "/result/" in request.url.path:value["result"]=result
         return httpx.Response(200,json=value)
     adapter=NodeHttpAdapter(settings,transport=httpx.MockTransport(upstream))
-    node.app=create_node_app(settings,clock=clock,execution_adapter=adapter);node.client=node.app.test_client()
+    node.budget=MonitorBudgetService(case.db)
+    node.app=create_node_app(settings,clock=clock,execution_adapter=adapter,monitor_budget_client=node.budget);node.client=node.app.test_client()
     node.service=node.app.extensions["host_node_service"]
     definition=config(kind);definition["modelId"]=model
     if base_url:definition["internalBaseUrl"]=base_url
@@ -90,20 +93,22 @@ def protocol_case(case,folder,*,kind="asr",protocol="remote-v2",mode="sync",quer
         definition["upstream"]["query"]["resultInStatus"]=True
     entry=bind(node,register(node,kind=kind,definition=definition))
     data(send(node,entry,token=LLM_REPORT if kind=="llm" else VISION_REPORT if kind=="vision" else REPORT))
-    service=kind+"-main";case.group();case.service(service,kind)
+    service=kind+"-main"+service_suffix;group="shared"+service_suffix;case.group(group);case.service(service,kind,groups=(group,))
     target={"targetId":"primary","name":"isolated","baseUrl":definition["internalBaseUrl"],"invokePath":"/infer","healthPath":"/health",
-        "upstreamModel":"fixture-upstream","resourceGroupIds":["shared"],"node":{"nodeId":settings.node_id,"serviceId":"asr",
+        "upstreamModel":"fixture-upstream","resourceGroupIds":[group],"node":{"nodeId":settings.node_id,"serviceId":"asr",
             "configRevision":entry["configRevision"],"baseUrl":"http://127.0.0.1:8020","executorTokenEnv":"TEST_NODE_EXECUTOR"}}
     if mode=="async":
         target["monitoring"]={"protocol":"job-json-v1","statusPath":"/status/{requestId}","reportsProgress":True,"reportsDevice":True}
         if inline_result:target["monitoring"]["resultInStatus"]=True
         else:target["monitoring"]["resultPath"]="/result/{requestId}"
+    if monitor_group:
+        target.setdefault("monitoring",{})["budgetGroup"]=monitor_group
     cfg={**case.definitions[service],"protocol":protocol,"invocationMode":mode,"modelId":model,"modelVersion":version,"maxFileBytes":(10 if kind=="vision" else 20)*1024*1024,"targets":[target]}
     current=case.entries[service]
     current=case.catalog.save(service,SaveService.model_validate({"config":cfg,"expectedVersion":current["version"]}))
     case.catalog.check(service,"primary",CheckTarget(expected_version=current["version"],revision=current["draftRevision"]))
     current=case.catalog.activate(service,ActivateService(expected_version=current["version"],revision=current["draftRevision"],enabled=True))
-    case.definitions[service]=cfg;case.entries[service]=current;case.budget()
+    case.definitions[service]=cfg;case.entries[service]=current;case.budget(version=application_version,limit=application_limit)
     def transport(request):
         response=node.app.test_client().open(request.url.path,method=request.method,data=request.content,
             headers={k:v for k,v in request.headers.items() if k.lower()!="host"},buffered=False)

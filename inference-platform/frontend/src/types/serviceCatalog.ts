@@ -4,6 +4,7 @@ export interface MonitoringConfig {
   protocol: 'none' | 'job-json-v1'; statusPath: string | null; resultPath: string | null
   reportsProgress: boolean; reportsDevice: boolean; pollSeconds: number
   resultInStatus?: boolean
+  budgetGroup?: string | null
 }
 export interface CatalogTarget {
   targetId: string; name: string; enabled: boolean; baseUrl: string; invokePath: string; healthPath: string

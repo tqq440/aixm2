@@ -68,6 +68,8 @@ class AdapterOutcome(ApiSchema):
 
 
 class TaskMonitoringSnapshot(ApiSchema):
+    query_budget_state: Literal["waiting", "querying", "release_pending", "uncertain"] | None = None
+    query_budget_reason: str | None = Field(default=None, max_length=64, pattern=r"^[A-Z][A-Z0-9_]*$")
     supported: bool | None = None
     remote_state: Literal["queued","running","succeeded","failed","cancelled"] | None = None
     progress: float | None = Field(default=None,ge=0,le=100,allow_inf_nan=False)

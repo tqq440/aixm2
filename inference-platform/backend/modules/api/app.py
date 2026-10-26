@@ -1,6 +1,9 @@
 """应用工厂只组装基础组件与入口，不包含任务业务规则。"""
 
 from flask import Flask
+from backend.common.storage.recovery_guard import require_active_database
+from backend.controller.monitoring.budget_controller import monitor_budget_blueprint
+from backend.service.monitoring.budget_service import MonitorBudgetService
 from sqlalchemy.exc import SQLAlchemyError
 
 from backend.common.exceptions.app_error import StartupError
@@ -8,6 +11,8 @@ from backend.common.logging.app_logging import close_logging, configure_logging
 from backend.common.middleware.http_hooks import register_http_hooks
 from backend.config.settings.app_settings import AppSettings, load_settings
 from backend.controller.health.health_controller import health_blueprint
+from backend.controller.deployment.validation_controller import validation_blueprint
+from backend.service.deployment.validation_issue_service import ValidationIssueLog
 from backend.controller.tasks.task_controller import task_blueprint
 from backend.controller.runtime.runtime_controller import runtime_blueprint
 from backend.controller.llm.online_controller import online_blueprint
@@ -44,6 +49,7 @@ from backend.service.agent.agent_command_service import AgentCommandService
 def create_app(settings: AppSettings | None = None) -> Flask:
     environment_settings = settings if settings is not None else load_settings(include_service_selection=False)
     settings = settings if settings is not None else load_settings()
+    require_active_database(settings.database_path)
     app = Flask(__name__, static_folder=None)
     app.json.ensure_ascii = False
     app.config.update(
@@ -64,8 +70,13 @@ def create_app(settings: AppSettings | None = None) -> Flask:
         if settings.public_api_enabled:
             from sqlalchemy import text
             with database.engine.connect() as connection:
-                if connection.scalar(text("SELECT version_num FROM alembic_version"))!="20261021_0020":
+                if connection.scalar(text("SELECT version_num FROM alembic_version")) not in {"20261021_0020", "20261022_0021"}:
                     raise StartupError("公共 API 需要显式完成 0020 迁移，不自动升级数据库。")
+        if settings.monitor_token:
+            from sqlalchemy import text
+            with database.engine.connect() as connection:
+                if connection.scalar(text("SELECT version_num FROM alembic_version")) != "20261022_0021":
+                    raise StartupError("查询预算需要显式完成0021迁移，不自动升级数据库。")
     except StartupError:
         if database is not None:database.dispose()
         close_logging(logger)
@@ -76,7 +87,10 @@ def create_app(settings: AppSettings | None = None) -> Flask:
             database.dispose()
         close_logging(logger)
         raise StartupError("数据库无法连接，请检查 INFERENCE_DATABASE_PATH 和目录权限。") from exc
+    app.extensions["monitor_budget"] = MonitorBudgetService(database)
+    app.register_blueprint(monitor_budget_blueprint)
     app.extensions["database"] = database
+    app.extensions["validation_issue_log_factory"] = lambda: ValidationIssueLog(settings.log_dir/"validation")
     app.extensions["service_catalog"] = ServiceCatalog(database, settings)
     app.extensions["queue_service"] = QueueService(database, settings, logger=logger)
     app.extensions["invocation_service"] = app.extensions["queue_service"].core
@@ -109,6 +123,7 @@ def create_app(settings: AppSettings | None = None) -> Flask:
     app.register_blueprint(public_blueprint)
     app.register_blueprint(gateway_admin_blueprint)
     app.register_blueprint(health_blueprint)
+    app.register_blueprint(validation_blueprint)
     app.register_blueprint(task_blueprint)
     app.register_blueprint(runtime_blueprint)
     app.register_blueprint(online_blueprint)

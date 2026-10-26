@@ -3630,6 +3630,139 @@
         }
       }
     },
+    "/node/v1/admin/executions/{invocationId}/monitor-budget/release": {
+      "post": {
+        "summary": "核实原查询已停止后归还未知查询许可；不释放推理容量",
+        "security": [
+          {
+            "NodeAdmin": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UTC ISO8601 时间；未知字段为 null。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse_ExecutionReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求格式错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "凭据无效或角色不符",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务或接口不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "配置、实例、调用或序号冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求超过该接口上限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "内容类型不匹配",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "业务适配器尚未配置或服务不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "invocationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmQueriesStopped"
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/{path}": {
       "get": {
         "summary": "公共接口白名单代理；需应用Key，完整契约见 /api/v1/openapi.json",
@@ -4997,6 +5130,21 @@
           "sizeBytes"
         ],
         "title": "ExecutionManifest",
+        "type": "object"
+      },
+      "ConfirmQueriesStopped": {
+        "additionalProperties": false,
+        "properties": {
+          "queriesStoppedConfirmed": {
+            "const": true,
+            "title": "Queriesstoppedconfirmed",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "queriesStoppedConfirmed"
+        ],
+        "title": "ConfirmQueriesStopped",
         "type": "object"
       },
       "NodeCapabilities": {
@@ -6843,6 +6991,38 @@
       "TaskMonitoringSnapshot": {
         "additionalProperties": false,
         "properties": {
+          "queryBudgetState": {
+            "anyOf": [
+              {
+                "enum": [
+                  "waiting",
+                  "querying",
+                  "release_pending",
+                  "uncertain"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Querybudgetstate"
+          },
+          "queryBudgetReason": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "pattern": "^[A-Z][A-Z0-9_]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Querybudgetreason"
+          },
           "supported": {
             "anyOf": [
               {

@@ -189,7 +189,7 @@
     "browser_navigation_tested": false
   },
   "url_route_reference": "https://github.com/multica-ai/multica/pull/8147/files",
-  "local_plan_version": "v2.21",
+  "local_plan_version": "v2.27",
   "last_synced_plan_version": "v2.9",
   "plan_version_semantics": "legacy_remote_plan_snapshot",
   "sync_policy": {
@@ -750,6 +750,222 @@
       "evidence": [
         "docs/阶段记录/公共API与管理-模块5-验收记录.md",
         "runtime/verification/gateway-module5/delivery.json"
+      ]
+    },
+    {
+      "event_id": "v222-module6a-linux-preparation-start-20261021",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-21T22:03:17.832503+08:00",
+      "local_plan_version": "v2.22",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "summary": "用户继续后仅实施6A本地部署准备及隔离环境验证；真实Linux、Redis、模型、部署与历史迁移待后续。不访问Multica。",
+      "evidence": [
+        "docs/Linux部署准备-模块6A.md",
+        "runtime/verification/linux-module6a/before.json"
+      ],
+      "sync_status": "deferred"
+    },
+    {
+      "event_id": "v222-module6a-linux-preparation-delivery-20261021",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-21T22:30:51.823620+08:00",
+      "local_plan_version": "v2.22",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "summary": "6A本地准备交付：离线systemd/nginx资料、独立初始化/私有env、只读预检、显式单worker WSGI入口与执行器。最终新增/结构/回环52通过、1个Windows目录链接权限跳过；兼容128通过、1真实Redis跳过，分列。日常0014/26表/42任务/42上传/.env保持；Linux/Gunicorn/systemd/Redis/真实模型多机未验，下一部分6B，讲解后暂停。",
+      "evidence": [
+        "docs/阶段记录/Linux部署准备-模块6A-验收记录.md",
+        "runtime/verification/linux-module6a/delivery-tests.xml",
+        "runtime/verification/linux-module6a/compatibility.xml",
+        "runtime/verification/linux-module6a/delivery.json"
+      ],
+      "sync_status": "deferred"
+    },
+    {
+      "event_id": "v223-module6b-start-20261021",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-21T22:38:14.589175+08:00",
+      "summary": "用户要求6A收尾后做6B，进入独立Redis真实验收准备。缺测试Linux/Redis，不安装或操作共用服务、日常库，6B进行中。",
+      "local_plan_version": "v2.23",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "implementation_status": "in_progress",
+      "real_redis_acceptance": "pending_environment",
+      "sync_status": "deferred",
+      "evidence": [
+        "docs/Redis真实验收-模块6B.md",
+        "docs/阶段记录/Redis真实验收-模块6B-验收记录.md",
+        "runtime/verification/redis-module6b/tests-final.xml"
+      ]
+    },
+    {
+      "event_id": "v223-module6b-tools-ready-awaiting-env-20261021",
+      "event_type": "progress_recorded",
+      "recorded_at": "2026-10-21T22:49:42.718712+08:00",
+      "summary": "独立Redis进程/AOF/身份核验工具、脚本及9个真实场景就绪，ACK重复字段保护已补。57本地回归通过、10真实相关跳过；无客户端/服务/Linux/地址，已请求用户环境信息。真实6B未验未完成，不自动推进。",
+      "local_plan_version": "v2.23",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "implementation_status": "in_progress",
+      "real_redis_acceptance": "pending_environment",
+      "sync_status": "deferred",
+      "evidence": [
+        "docs/Redis真实验收-模块6B.md",
+        "docs/阶段记录/Redis真实验收-模块6B-验收记录.md",
+        "runtime/verification/redis-module6b/tests-final.xml"
+      ]
+    },
+    {
+      "event_id": "v223-local-validation-log-campus-deferred-20261022",
+      "event_type": "progress_recorded",
+      "recorded_at": "2026-10-22T09:55:34.961599+08:00",
+      "local_plan_version": "v2.23",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "sync_status": "deferred",
+      "implementation_status": "in_progress",
+      "user_acceptance": "pending",
+      "summary": "用户确认既有SSH信息并暂不能接校园网，先本地开发并记日志。只读SSH/TCP超时未认证，v100密钥保留；不再自动试连。新增独立验收问题快照及现有JSON日志defer/show，18项通过，实际登记CAMPUS_NETWORK_UNAVAILABLE/waiting_external_verification。日常0014/26表/42任务42上传/env保持，真实Redis未验，不自动6C。",
+      "evidence": [
+        "docs/阶段记录/Redis真实验收-模块6B-验收记录.md",
+        "runtime/verification/redis-module6b/local-log-20261022/log-tests.xml",
+        "runtime/verification/redis-module6b/local-log-20261022/checkpoint.json"
+      ]
+    },
+    {
+      "event_id": "v224-validation-dashboard-start-20261022",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-22T10:04:05.301162+08:00",
+      "summary": "用户继续下一步，先完成6B本地验收问题管理页/只读接口，网络及真实验收保留，不自动6C。",
+      "local_plan_version": "v2.24",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "sync_status": "deferred",
+      "user_acceptance": "pending",
+      "evidence": [
+        "docs/阶段记录/环境验收管理页-验收记录.md",
+        "runtime/verification/validation-dashboard-20261022/delivery.json"
+      ]
+    },
+    {
+      "event_id": "v224-validation-dashboard-delivery-20261022",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-22T10:21:56.456558+08:00",
+      "summary": "验收问题接入管理页、本机GET/OpenAPI，默认0014/关闭公共兼容，手动刷新不探测网络，敏感证据不公开。后台42、前端全量355及19定向、类型/构建、Edge桌面手机4项通过，分列不累加。日常0014/26表/42任务上传/env和原验收日志保持；旧API下次正常重启生效。真实Redis/Linux仍待验，不重试校园网。",
+      "local_plan_version": "v2.24",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "sync_status": "deferred",
+      "user_acceptance": "pending",
+      "evidence": [
+        "docs/阶段记录/环境验收管理页-验收记录.md",
+        "runtime/verification/validation-dashboard-20261022/delivery.json"
+      ]
+    },
+    {
+      "event_id": "v225-monitor-budget-start-20261022",
+      "event_type": "started",
+      "recorded_at": "2026-10-22T11:07:15.526797+08:00",
+      "checkpoint": "v2.25-monitor-budget-local",
+      "local_plan_version": "v2.25",
+      "user_acceptance": "pending",
+      "summary": "用户继续跨Node监控统一查询预算，限本地设计/隔离实现，不访问校园网，不改日常库或部署。",
+      "evidence": [
+        "docs/阶段记录/跨Node监控统一限流-验收记录.md",
+        "runtime/verification/monitor-budget-20261022/delivery.json"
+      ]
+    },
+    {
+      "event_id": "v225-monitor-budget-delivery-20261022",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-22T11:35:18.780197+08:00",
+      "checkpoint": "v2.25-monitor-budget-local",
+      "local_plan_version": "v2.25",
+      "user_acceptance": "pending",
+      "summary": "跨Node查询预算本地交付：后台68/兼容154及1旧Windows权限跳过，前端355/类型构建/Edge4分别通过。日常0014/42任务上传/env/验收日志保持，真实多机与Redis/Linux仍待验，讲解后暂停。",
+      "evidence": [
+        "docs/阶段记录/跨Node监控统一限流-验收记录.md",
+        "runtime/verification/monitor-budget-20261022/delivery.json"
+      ]
+    },
+    {
+      "event_id": "v226-recovery-start-20261022",
+      "event_type": "started",
+      "recorded_at": "2026-10-22T11:39:39.188255+08:00",
+      "checkpoint": "v2.26-local-recovery",
+      "local_plan_version": "v2.26",
+      "user_acceptance": "pending",
+      "summary": "用户继续本地备份恢复准备：仅独立验证环境成套快照与隔离恢复，不操作日常历史库或真实服务器。",
+      "evidence": [
+        "docs/阶段记录/本地成套备份与隔离恢复-验收记录.md",
+        "runtime/verification/backup-restore-20261022/delivery.json"
+      ]
+    },
+    {
+      "event_id": "v226-recovery-delivery-20261022",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-22T12:11:41.388979+08:00",
+      "checkpoint": "v2.26-local-recovery",
+      "local_plan_version": "v2.26",
+      "user_acceptance": "pending",
+      "summary": "本地成套备份/校验/隔离恢复开发侧交付：50主批、28最后守卫复核、131兼容及1旧Windows权限跳过，分别记录。原结果/Key/outbox/未知推理及查询名额保持；日常0014/42任务上传/env/日志/PID保持，无日常备份迁移，真实生产恢复仍待验，讲解后暂停。",
+      "evidence": [
+        "docs/阶段记录/本地成套备份与隔离恢复-验收记录.md",
+        "runtime/verification/backup-restore-20261022/delivery.json"
+      ]
+    },
+    {
+      "event_id": "v227-legacy-migration-start-20261022",
+      "event_type": "implementation_started",
+      "recorded_at": "2026-10-22T04:30:30.042714+00:00",
+      "local_plan_version": "v2.27",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "summary": "用户继续后仅实施合成0014到0021迁移隔离演练；新目录、旧表/文件/指纹和未知占位保持，不复制迁移日常库、不启动业务、不访问校园网或Multica。",
+      "evidence": [
+        "docs/阶段记录/旧版本迁移隔离演练-验收记录.md",
+        "runtime/verification/legacy-migration-20261022/before.json"
+      ]
+    },
+    {
+      "event_id": "v227-legacy-migration-delivery-20261022",
+      "event_type": "development_delivered",
+      "recorded_at": "2026-10-22T12:46:55.889587+08:00",
+      "local_plan_version": "v2.27",
+      "issue_keys": [
+        "overview",
+        "ASR-4"
+      ],
+      "user_acceptance": "pending",
+      "development_acceptance": "passed",
+      "summary": "合成0014→0021迁移隔离演练交付：33主批、24旧迁移/恢复守卫兼容通过；26旧表、8任务/8上传/2在线及未知占位保持，新公共调用/outbox/事件为空。独立CLI和0016中断/启动隔离已验；日常0014/42任务42上传/env/验收日志保持，未备份复制迁移/切换日常库，无网络、真实模型容器或推送。",
+      "evidence": [
+        "docs/阶段记录/旧版本迁移隔离演练-验收记录.md",
+        "runtime/verification/legacy-migration-20261022/delivery-final.xml",
+        "runtime/verification/legacy-migration-20261022/compat.xml",
+        "runtime/verification/legacy-migration-20261022/delivery-protection.json"
       ]
     }
   ],

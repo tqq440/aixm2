@@ -20,6 +20,7 @@ class MonitoringConfig(ApiSchema):
     reports_progress: StrictBool = False
     reports_device: StrictBool = False
     poll_seconds: float = Field(default=5, ge=5, le=60, allow_inf_nan=False)
+    budget_group: Identifier | None = Field(default=None, exclude_if=lambda value: value is None)
 
     @model_validator(mode="after")
     def validate_paths(self):

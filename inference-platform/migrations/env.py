@@ -7,6 +7,7 @@ from sqlalchemy import create_engine, pool
 
 from backend.config.settings.app_settings import AppSettings, load_settings
 from backend.data.database.base import Base
+from backend.data.monitoring.budget_models import MonitoringPermit
 from backend.data.execution.attempt_models import ExecutionAttempt
 from backend.data.database.database import build_database_url
 from backend.data.broker.broker_models import NotificationRecord

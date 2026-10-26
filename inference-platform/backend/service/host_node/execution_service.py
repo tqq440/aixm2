@@ -68,7 +68,8 @@ class NodeExecutionService:
     def monitoring(row):
         value=row.monitoring_json or {}
         names=("supported","remoteState","progress","stage","queuePosition","actualDevice","lastQueryAt",
-               "lastTrustedAt","lastError","lastErrorAt","pollStopped","cancelRequested","stateSource")
+               "lastTrustedAt","lastError","lastErrorAt","pollStopped","cancelRequested","stateSource",
+               "queryBudgetState","queryBudgetReason")
         return {key:value.get(key) for key in names}
 
     @staticmethod

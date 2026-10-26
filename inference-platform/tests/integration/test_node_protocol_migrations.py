@@ -42,6 +42,9 @@ def test_center_0018_dispatch_and_results_survive_monitoring_upgrade(linked):
     # Simulate an 0018 file using SQLite's lossless column removal; the actual
     # forward Alembic migration must retain the complete old row and result.
     engine=linked.case.db.engine
+    # This fixture manually reconstructs an 0018 file; remove the newer empty
+    # budget ledger through its migration before stamping the historical file.
+    command.downgrade(linked.case.migration,"20261021_0020")
     with engine.begin() as connection:
         old=dict(connection.execute(text("SELECT * FROM inference_node_dispatches")).mappings().one())
         old.pop("monitoring_json")

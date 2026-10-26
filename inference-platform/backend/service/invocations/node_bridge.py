@@ -163,6 +163,9 @@ class NodeInvocationBridge:
                 self.core.repository.event(session,row,"invocation.upstream_snapshot",now,
                     {k:snapshot.get(k) for k in meaningful},source="service")
                 stamp=as_utc(now).isoformat()
+            reason=snapshot.get("queryBudgetReason")
+            if reason and reason!=previous.get("snapshot",{}).get("queryBudgetReason"):
+                self.core.repository.event(session,row,"invocation.monitor_budget_wait",now,{"reason":reason})
             binding.monitoring_json={**previous,"snapshot":snapshot,"progressEventAt":stamp,
                 "checkedAt":as_utc(now).isoformat(),"nodeQueryError":None,"executionError":receipt.error_code}
             if receipt.state not in {"succeeded", "failed", "cancelled"}:

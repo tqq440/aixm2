@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "tool": "GitNexus 1.6.12 CLI cypher",
+  "nodesByLabel": {
+    "Process": 418,
+    "Function": 2917,
+    "Interface": 74,
+    "Class": 524,
+    "Method": 1169,
+    "Folder": 158,
+    "Const": 186,
+    "Section": 1007,
+    "File": 813,
+    "TypeAlias": 28,
+    "Variable": 374,
+    "Community": 329,
+    "Route": 119,
+    "Property": 3548
+  },
+  "relationsByType": {
+    "HAS_PROPERTY": 3035,
+    "IMPLEMENTS": 2,
+    "CONTAINS": 1964,
+    "CALLS": 7033,
+    "ACCESSES": 1791,
+    "IMPORTS": 3005,
+    "HANDLES_ROUTE": 223,
+    "ENTRY_POINT_OF": 21,
+    "DEFINES": 4631,
+    "USES": 84,
+    "HAS_METHOD": 1204,
+    "METHOD_OVERRIDES": 2,
+    "MEMBER_OF": 3355,
+    "STEP_IN_PROCESS": 1699,
+    "EXTENDS": 300,
+    "FETCHES": 2
+  },
+  "totalNodes": 11664,
+  "totalRelations": 28351,
+  "functionAndMethodNodes": 4086,
+  "exportedFunctionNodesAndCallEdgesUnchanged": true,
+  "note": "Two independent CLI read-only queries succeeded after generated-index checkpoint recovery; FTS load-only warning is expected."
+}

@@ -1,0 +1,450 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Cross-Node monitoring budget",
+    "version": "1.0.0",
+    "description": "单中心SQLite事务裁决，最多四个并发查询，同一物理服务最多一个；无TTL自动释放。"
+  },
+  "paths": {
+    "/internal/v1/monitor-budget/acquire": {
+      "post": {
+        "summary": "申请全局查询名额",
+        "security": [
+          {
+            "MonitorToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MonitorPermitCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "held/released/denied；拒绝不改变推理任务",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonitorPermitResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "独立凭据无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "调用身份冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求过大",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "未启用或暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/v1/monitor-budget/release": {
+      "post": {
+        "summary": "幂等归还；先归还会留下阻止迟到申请的墓碑",
+        "security": [
+          {
+            "MonitorToken": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MonitorPermitCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "held/released/denied；拒绝不改变推理任务",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonitorPermitResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "独立凭据无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "调用身份冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "请求过大",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "参数无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "未启用或暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ExecutionCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "nodeId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Nodeid",
+            "type": "string"
+          },
+          "serviceId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Serviceid",
+            "type": "string"
+          },
+          "configRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Configrevision",
+            "type": "string"
+          },
+          "instanceId": {
+            "format": "uuid",
+            "title": "Instanceid",
+            "type": "string"
+          },
+          "invocationId": {
+            "pattern": "^[a-f0-9]{32}$",
+            "title": "Invocationid",
+            "type": "string"
+          },
+          "attempt": {
+            "maximum": 1000000,
+            "minimum": 1,
+            "title": "Attempt",
+            "type": "integer"
+          },
+          "serviceRevision": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Servicerevision",
+            "type": "string"
+          },
+          "targetId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Targetid",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "asr",
+              "vision",
+              "llm"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "modelId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "title": "Modelid",
+            "type": "string"
+          },
+          "protocol": {
+            "enum": [
+              "remote-v2",
+              "openai-audio",
+              "vision-json-v1",
+              "chat-completions-sse"
+            ],
+            "title": "Protocol",
+            "type": "string"
+          },
+          "inputRef": {
+            "pattern": "^[a-f0-9]{32}$",
+            "title": "Inputref",
+            "type": "string"
+          },
+          "inputSha256": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Inputsha256",
+            "type": "string"
+          },
+          "deadlineAt": {
+            "format": "date-time",
+            "title": "Deadlineat",
+            "type": "string"
+          },
+          "manifestHash": {
+            "anyOf": [
+              {
+                "pattern": "^[a-f0-9]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Manifesthash"
+          }
+        },
+        "required": [
+          "nodeId",
+          "serviceId",
+          "configRevision",
+          "instanceId",
+          "invocationId",
+          "attempt",
+          "serviceRevision",
+          "targetId",
+          "kind",
+          "modelId",
+          "protocol",
+          "inputRef",
+          "inputSha256",
+          "deadlineAt"
+        ],
+        "title": "ExecutionCommand",
+        "type": "object"
+      },
+      "MonitorPermitCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "pollId": {
+            "pattern": "^[a-f0-9]{32}$",
+            "title": "Pollid",
+            "type": "string"
+          },
+          "command": {
+            "$ref": "#/components/schemas/ExecutionCommand"
+          }
+        },
+        "required": [
+          "pollId",
+          "command"
+        ],
+        "title": "MonitorPermitCommand",
+        "type": "object"
+      },
+      "MonitorPermitReply": {
+        "additionalProperties": false,
+        "properties": {
+          "pollId": {
+            "pattern": "^[a-f0-9]{32}$",
+            "title": "Pollid",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "held",
+              "released",
+              "denied"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "enum": [
+                  "GLOBAL_QUERY_LIMIT",
+                  "SERVICE_QUERY_LIMIT"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reason"
+          }
+        },
+        "required": [
+          "pollId",
+          "state"
+        ],
+        "title": "MonitorPermitReply",
+        "type": "object"
+      },
+      "MonitorPermitResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/MonitorPermitReply"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[MonitorPermitReply]",
+        "type": "object"
+      },
+      "ErrorDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "details": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationIssue"
+            },
+            "title": "Details",
+            "type": "array"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorDetail",
+        "type": "object"
+      },
+      "ValidationIssue": {
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "code"
+        ],
+        "title": "ValidationIssue",
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "error",
+          "requestId"
+        ],
+        "title": "ErrorResponse",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "MonitorToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "INFERENCE_MONITOR_TOKEN；只供受信Node使用，不能复用入口或执行凭据"
+      }
+    }
+  }
+}

@@ -52,6 +52,11 @@ def test_queries_are_global_four_and_one_per_actual_service_including_aliases(cr
                 config_revision=command.config_revision,job_id=job_id,state="running",progress=20.0)
         finally:
             with guard:active[key]-=1;counts["total"]-=1
+    from backend.schema.monitoring.budget_schema import MonitorPermitReply
+    class LocalGuardBudget:
+        def change(self,command,*,release=False):
+            return MonitorPermitReply(poll_id=command.poll_id,state="released" if release else "held")
+    value.monitor.budget.client=LocalGuardBudget()
     value.executor.adapter.query=query
     value.monitor.tick()
     try:

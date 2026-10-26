@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "functionEntries": 5606,
+  "checkedCodeFiles": 698,
+  "fileLocationsValidated": 5606,
+  "csvAndMarkdownRowsMatch": true,
+  "uniqueIdsAndLocations": true,
+  "graphNodeLocationsMatch": true,
+  "parseErrorFiles": 0,
+  "sourceCodeFilesUnchanged": true,
+  "protectedFiles": 820,
+  "expectedPublicationDocChanges": [
+    "inference-platform/docs/开发进度.md"
+  ],
+  "indexSourceCounts": {
+    "GitNexus + AST校核": 4080,
+    "AST补全": 1524,
+    "模板声明扫描": 2
+  }
+}

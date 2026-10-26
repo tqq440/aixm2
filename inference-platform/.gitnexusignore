@@ -1,0 +1,13 @@
+# Local analysis only: exclude runtime data and generated function-index artifacts.
+/runtime/
+/.gitnexus/
+/函数索引表.md
+/函数索引表.csv
+/函数索引表.json
+/函数索引分析/
+# Include test/support source directories that GitNexus normally skips.
+!__tests__/
+!__mocks__/
+!fixtures/
+!snapshots/
+!__snapshots__/

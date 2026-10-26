@@ -15,6 +15,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_ENV_FILE = PROJECT_ROOT / ".env"
 ENV_FIELDS = {
     "INFERENCE_PUBLIC_API_ENABLED": "public_api_enabled",
+    "INFERENCE_MONITOR_TOKEN": "monitor_token",
     "INFERENCE_INGRESS_TOKEN": "ingress_token",
     "INFERENCE_COMMON_EXECUTION_ENABLED": "common_execution_enabled",
     "INFERENCE_COMMON_QUEUE_BACKEND": "common_queue_backend",
@@ -141,12 +142,19 @@ def remote_asr_origin(value: str) -> str:
 
 class AppSettings(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True, validate_default=True)
+    monitor_token: SecretStr | None = Field(default=None, repr=False, exclude=True)
     public_api_enabled: bool = False
     ingress_token: SecretStr | None = Field(default=None, repr=False, exclude=True)
     common_execution_enabled: bool = False
 
     @model_validator(mode="after")
     def public_configuration(self):
+        if self.monitor_token:
+            token=self.monitor_token.get_secret_value()
+            if not self.common_execution_enabled or not 32<=len(token)<=256 or not token.isascii() or any(c.isspace() for c in token):
+                raise ValueError("查询预算凭据须独立且启用公共执行")
+            if any(secret and token==secret.get_secret_value() for secret in (self.ingress_token,self.agent_token,self.llm_api_key)):
+                raise ValueError("查询预算不得复用入口/Agent/业务凭据")
         if self.ingress_token:
             value=self.ingress_token.get_secret_value()
             if not 32<=len(value)<=256 or not value.isascii() or any(c.isspace() for c in value):

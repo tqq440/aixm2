@@ -1,0 +1,7 @@
+# Optional isolated Linux queue verification only; no local model engines.
+-r linux.txt
+-r queue.txt
+pytest==9.1.1
+iniconfig==2.3.1
+pluggy==1.6.0
+Pygments==2.21.0

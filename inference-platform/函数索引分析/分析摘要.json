@@ -1,0 +1,57 @@
+{
+  "generatedAt": "2026-10-26T17:05:59+08:00",
+  "platformRoot": "D:\\1 研究生\\aixm\\inference-platform",
+  "tool": "GitNexus",
+  "version": "1.6.12",
+  "source": "https://github.com/abhigyanpatwari/GitNexus",
+  "graph": {
+    "files": 813,
+    "nodes": 11664,
+    "edges": 28351,
+    "communities": 390,
+    "processes": 418,
+    "embeddings": 0
+  },
+  "functionEntries": 5606,
+  "namedFunctions": 4023,
+  "anonymousFunctions": 1581,
+  "templateDeclarations": 2,
+  "filesWithFunctions": 525,
+  "checkedCodeFiles": 698,
+  "byLanguage": {
+    "Python": 3994,
+    "TypeScript": 1577,
+    "JavaScript": 13,
+    "Mako/Python": 2,
+    "PowerShell": 20
+  },
+  "byCategory": {
+    "后端": 1422,
+    "脚本与示例": 23,
+    "测试": 3431,
+    "前端": 676,
+    "迁移": 54
+  },
+  "gitnexusFunctionNodes": 4086,
+  "matchedGitnexusNodes": 4080,
+  "unmatchedGitnexusNodes": 6,
+  "astSupplements": 1526,
+  "callEdges": 7033,
+  "importEdges": 3005,
+  "parseErrorFiles": 0,
+  "protectedFiles": 820,
+  "protectedFilesUnchanged": true,
+  "limits": [
+    "仅静态分析，不执行平台或测试；不代表业务测试/生产验收通过。",
+    "CALLS是GitNexus静态推断；动态派发/反射/框架注入/跨语言及HTTP远端调用可能缺失或误连，计数0不等于未使用。",
+    "AST补全符号没有GitNexus图身份时，调用计数为null（表中—），不冒充0。",
+    "418条执行流受工具预算截断：761候选入口未排名、906被调分支省略、28路径受预算限制、1条受深度限制；不是完整运行路径列表。",
+    "205处跨语言属性访问未链接；不据此断言字段未使用。",
+    "未启用全文搜索扩展、向量嵌入或LLM；代码仅在本机解析。",
+    "runtime、第三方依赖、构建缓存、环境秘密与工作区历史归档不属本次平台源码范围。"
+  ],
+  "graphStatsSource": "GitNexus analyze summary/meta; communities=390 is reported clustering count; persisted Community nodes=329, independently queried.",
+  "persistedCommunityNodes": 329,
+  "cliGraphQueryVerified": true,
+  "protectedFilesCheckScope": "索引构建时、交付进度文档追加前；最终预期文档变更见索引校验结果。"
+}

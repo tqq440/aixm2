@@ -1,0 +1,50 @@
+[
+  {
+    "id": "Method:frontend/src/hooks/usePlatform.ts:PlatformApi.models#1",
+    "name": "models",
+    "filePath": "frontend/src/hooks/usePlatform.ts",
+    "startLine": 9,
+    "endLine": 9,
+    "description": null
+  },
+  {
+    "id": "Method:frontend/src/hooks/usePlatform.ts:PlatformApi.tasks#2",
+    "name": "tasks",
+    "filePath": "frontend/src/hooks/usePlatform.ts",
+    "startLine": 10,
+    "endLine": 10,
+    "description": null
+  },
+  {
+    "id": "Method:frontend/src/hooks/usePlatform.ts:PlatformApi.task#2",
+    "name": "task",
+    "filePath": "frontend/src/hooks/usePlatform.ts",
+    "startLine": 11,
+    "endLine": 11,
+    "description": null
+  },
+  {
+    "id": "Method:frontend/src/hooks/usePlatform.ts:PlatformApi.result#2",
+    "name": "result",
+    "filePath": "frontend/src/hooks/usePlatform.ts",
+    "startLine": 12,
+    "endLine": 12,
+    "description": null
+  },
+  {
+    "id": "Method:frontend/src/hooks/usePlatform.ts:PlatformApi.cancel#2",
+    "name": "cancel",
+    "filePath": "frontend/src/hooks/usePlatform.ts",
+    "startLine": 13,
+    "endLine": 13,
+    "description": null
+  },
+  {
+    "id": "Method:frontend/src/hooks/usePlatform.ts:PlatformApi.submit#6",
+    "name": "submit",
+    "filePath": "frontend/src/hooks/usePlatform.ts",
+    "startLine": 14,
+    "endLine": 14,
+    "description": null
+  }
+]

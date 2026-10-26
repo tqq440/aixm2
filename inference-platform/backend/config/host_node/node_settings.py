@@ -13,6 +13,7 @@ from backend.common.exceptions.app_error import ConfigurationError
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 NODE_ENV_FIELDS = {
+    "NODE_MONITOR_CENTRAL_URL": "monitor_central_url", "NODE_MONITOR_TOKEN": "monitor_token",
     "NODE_ID": "node_id", "NODE_DATABASE_PATH": "database_path", "NODE_LOG_DIR": "log_dir",
     "NODE_HOST": "host", "NODE_PORT": "port", "NODE_ADMIN_TOKEN": "admin_token",
     "NODE_OBSERVER_TOKEN": "observer_token", "NODE_HEARTBEAT_SECONDS": "heartbeat_seconds",
@@ -39,10 +40,12 @@ class NodeSettings(BaseModel):
     executor_token: SecretStr | None = Field(default=None, exclude=True, repr=False)
     upstream_tokens: dict[str, SecretStr] = Field(default_factory=dict, exclude=True, repr=False)
     business_enabled: bool = False
+    monitor_central_url: str | None = None
+    monitor_token: SecretStr | None = Field(default=None, exclude=True, repr=False)
     central_url: str | None = None
     ingress_token: SecretStr | None = Field(default=None, exclude=True, repr=False)
 
-    @field_validator("central_url")
+    @field_validator("central_url", "monitor_central_url")
     @classmethod
     def central_address(cls,value):
         if value is not None:
@@ -66,7 +69,7 @@ class NodeSettings(BaseModel):
             raise ValueError("Docker 只使用显式本机 Unix socket")
         return value
 
-    @field_validator("admin_token", "observer_token", "executor_token")
+    @field_validator("admin_token", "observer_token", "executor_token", "monitor_token")
     @classmethod
     def valid_token(cls, value):
         if value is not None:
@@ -92,7 +95,11 @@ class NodeSettings(BaseModel):
             raise ValueError("Node 不允许使用日常平台数据库")
         if self.stale_seconds < self.heartbeat_seconds * 2:
             raise ValueError("过期间隔至少为心跳间隔两倍")
+        if (self.monitor_central_url is None)!=(self.monitor_token is None):
+            raise ValueError("中心查询预算地址与独立凭据须一起配置")
         secrets = [self.admin_token.get_secret_value()]
+        if self.monitor_token:
+            secrets.append(self.monitor_token.get_secret_value())
         if self.observer_token:
             secrets.append(self.observer_token.get_secret_value())
         if (self.central_url is None)!=(self.ingress_token is None):

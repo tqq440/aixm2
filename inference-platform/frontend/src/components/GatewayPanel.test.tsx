@@ -2,16 +2,19 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { gatewayApi as api } from '@/api/gateway'
 import { GatewayPanel } from '@/components/GatewayPanel'
+import { validationIssuesApi } from '@/api/validation-issues'
 
 vi.mock('@/api/gateway', () => ({ gatewayApi: { status: vi.fn(), applications: vi.fn(), save: vi.fn(), issue: vi.fn(), rotate: vi.fn(), revoke: vi.fn(), requests: vi.fn(), monitor: vi.fn(), events: vi.fn(), nodes: vi.fn(), refreshNodes: vi.fn(), capacity: vi.fn() } }))
+vi.mock('@/api/validation-issues', () => ({ validationIssuesApi: { list: vi.fn().mockResolvedValue({ items: [], total: 0, offset: 0, limit: 50, unreadableCount: 0, scanTruncated: false, notice: '' }) } }))
 const task = { id: 'a'.repeat(32), invocationId: 'b'.repeat(32), applicationId: 'campus', serviceId: 'asr-main', kind: 'asr', status: 'unknown', reason: 'REMOTE_UNKNOWN', permitState: 'uncertain', modelId: 'asr-model', acceptedAt: '2026-10-21T10:00:00Z', resultAvailable: false }
 beforeEach(() => {
+  vi.mocked(validationIssuesApi.list).mockResolvedValue({ items: [], total: 0, offset: 0, limit: 50, unreadableCount: 0, scanTruncated: false, notice: '' })
   vi.mocked(api.status).mockResolvedValue({ enabled: true, managementAvailable: true, notice: '应用通过Node调用' })
   vi.mocked(api.applications).mockResolvedValue({ items: [{ applicationId: 'campus', version: 1, enabled: true, concurrencyLimit: 1, allowedServices: ['asr-main'], keys: [{ keyId: 'c'.repeat(32), label: 'default', revokedAt: null }] }] })
   vi.mocked(api.requests).mockResolvedValue({ items: [task], total: 1 })
   vi.mocked(api.nodes).mockResolvedValue({ items: [] })
   vi.mocked(api.capacity).mockResolvedValue({ resources: [{ resourceKey: 'group:gpu-shared', concurrencyLimit: 1, held: 0, uncertain: 1 }], notice: '并发许可账本' })
-  vi.mocked(api.monitor).mockResolvedValue({ assignedDevice: { kind: 'gpu', deviceId: '0' }, resultPending: true, resultSaved: false, nodeQueryError: null, executionError: null, monitoring: { supported: true, progress: null, actualDevice: { kind: 'cpu', deviceId: null, namespace: 'service' }, lastTrustedAt: null, lastError: 'UPSTREAM_HTTP_404' } })
+  vi.mocked(api.monitor).mockResolvedValue({ assignedDevice: { kind: 'gpu', deviceId: '0' }, resultPending: true, resultSaved: false, nodeQueryError: null, executionError: null, monitoring: { supported: true, progress: null, actualDevice: { kind: 'cpu', deviceId: null, namespace: 'service' }, lastTrustedAt: null, lastError: 'UPSTREAM_HTTP_404', queryBudgetState: 'waiting', queryBudgetReason: 'GLOBAL_QUERY_LIMIT' } })
   vi.mocked(api.events).mockResolvedValue({ items: [{ sequence: 1, eventType: 'invocation.accepted', source: 'platform', occurredAt: '2026-10-21T10:00:00Z', details: {} }], hasMore: true, nextSequence: 1, historyNotice: '详细日志从升级后开始记录' })
 })
 afterEach(() => { cleanup(); vi.resetAllMocks(); localStorage.clear() })
@@ -24,6 +27,7 @@ it('opening only reads saved platform records', async () => {
 it('does not query unmigrated daily data when management is disabled', async () => {
   vi.mocked(api.status).mockResolvedValue({ enabled: false, managementAvailable: false, notice: '公共调用尚未启用' })
   render(<GatewayPanel />); await screen.findByText(/公共调用尚未启用/)
+  expect(screen.getByRole('heading', { name: '环境与待验收记录' })).toBeTruthy()
   expect(api.applications).not.toHaveBeenCalled(); expect(api.requests).not.toHaveBeenCalled()
 })
 
@@ -32,6 +36,8 @@ it('shows assigned and reported device separately, without inventing progress', 
   await screen.findByText('GPU 0'); expect(screen.getByText(/CPU（服务内编号）/)).toBeTruthy()
   expect(screen.getByText('服务暂未报告进度')).toBeTruthy(); expect(screen.getByText('服务已完成，结果待获取')).toBeTruthy()
   expect(screen.getByText('UPSTREAM_HTTP_404')).toBeTruthy()
+  expect(screen.getByText('全平台查询名额已满，等待下次采集')).toBeTruthy()
+  vi.mocked(api.events).mockResolvedValueOnce({ items: [{ sequence: 2, eventType: 'invocation.send_started', source: 'platform', occurredAt: '2026-10-21T10:01:00Z', details: {} }], hasMore: false, nextSequence: 2, historyNotice: '详细日志从升级后开始记录' })
   fireEvent.click(screen.getByRole('button', { name: '加载更多事件' }))
   await waitFor(() => expect(api.events).toHaveBeenLastCalledWith(task.invocationId, 1))
   expect(api.refreshNodes).not.toHaveBeenCalled()

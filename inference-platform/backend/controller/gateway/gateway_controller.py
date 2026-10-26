@@ -175,7 +175,7 @@ def gateway_status():
     if available:
         from sqlalchemy import text
         with current_app.extensions["database"].engine.connect() as connection:
-            available=connection.scalar(text("SELECT version_num FROM alembic_version"))=="20261021_0020"
+            available=connection.scalar(text("SELECT version_num FROM alembic_version")) in {"20261021_0020", "20261022_0021"}
     notice="应用通过入口Node携带Key调用；管理页面仅本机开放。" if available else (
         "公共管理资料尚未升级，请先按说明备份和迁移。" if settings.common_execution_enabled else "公共调用与应用管理尚未启用。")
     return response({"enabled":settings.public_api_enabled,"managementAvailable":available,"notice":notice})

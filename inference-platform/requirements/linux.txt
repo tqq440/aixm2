@@ -1,0 +1,5 @@
+# Deployment candidate: verified against official Gunicorn 26.2.0 metadata/source.
+# Not installed by the deployment tools; actual Linux/server verification pending.
+-r relay.txt
+gunicorn==26.2.0
+packaging==26.3

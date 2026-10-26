@@ -8,6 +8,7 @@ from sqlalchemy import URL, create_engine, event, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from backend.config.settings.app_settings import AppSettings
+from backend.common.storage.recovery_guard import require_active_database
 
 
 def build_database_url(settings: AppSettings) -> URL:
@@ -22,6 +23,7 @@ def database_now(session: Session) -> datetime:
 
 class Database:
     def __init__(self, settings: AppSettings) -> None:
+        require_active_database(settings.database_path)
         self.common_execution_enabled = settings.common_execution_enabled
         settings.database_path.parent.mkdir(parents=True, exist_ok=True)
         self.engine = create_engine(

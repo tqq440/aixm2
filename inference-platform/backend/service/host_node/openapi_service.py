@@ -11,6 +11,7 @@ from backend.schema.host_node.control_schema import (
 )
 from backend.schema.host_node.execution_schema import ExecutionAvailability, ExecutionCommand, ExecutionReceipt, StreamExecutionInput
 from backend.schema.host_node.upstream_schema import ExecutionManifest
+from backend.schema.monitoring.budget_schema import ConfirmQueriesStopped
 
 
 def node_openapi():
@@ -20,7 +21,7 @@ def node_openapi():
                ExecutionAvailability, ExecutionReceipt)
     for model in (SaveNodeService, OpenNodeInstance, NodeServiceReport, ErrorResponse,
                   SaveRuntimeConfig, ControlCommand, ReconcileCommand, AbortControlCommand, ExecutionCommand,
-                  StreamExecutionInput, ExecutionManifest,
+                  StreamExecutionInput, ExecutionManifest, ConfirmQueriesStopped,
                   *(SuccessResponse[output] for output in outputs)):
         schema = model.model_json_schema(by_alias=True, ref_template="#/components/schemas/{model}")
         schemas.update(schema.pop("$defs", {}))
@@ -109,6 +110,8 @@ def node_openapi():
     operation("/node/internal/v1/executions/{invocationId}/monitoring","get","只读缓存进度/实际设备，不查询业务",role="executor",output=ExecutionReceipt)
     operation("/node/internal/v1/executions/{invocationId}/reconcile","post","显式核对，包括过期调用；不重新推理",role="executor",output=ExecutionReceipt)
     operation("/node/internal/v1/executions/{invocationId}/cancel","post","请求取消；ACK不作为远端停止证明",role="executor",output=ExecutionReceipt)
+    operation("/node/v1/admin/executions/{invocationId}/monitor-budget/release","post",
+              "核实原查询已停止后归还未知查询许可；不释放推理容量",role="admin",model=ConfirmQueriesStopped,output=ExecutionReceipt)
     for suffix in ("reconcile","cancel"):
         paths["/node/internal/v1/executions/{invocationId}/"+suffix]["post"]["requestBody"]={"required":True,"content":{"application/json":{"schema":{"type":"object","additionalProperties":False}}}}
     for method in ("get","post"):

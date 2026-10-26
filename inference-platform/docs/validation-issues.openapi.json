@@ -1,0 +1,331 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "本机环境验收记录",
+    "version": "1.0.0",
+    "description": "仅本机管理页面/客户端；不是应用API。记录为空不表示验收通过，证据原文件不公开。"
+  },
+  "paths": {
+    "/api/admin/validation/issues": {
+      "get": {
+        "operationId": "listValidationIssues",
+        "summary": "只读已保存的环境验收问题",
+        "parameters": [
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "module6a",
+                    "module6b"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Stage"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "maximum": 1000,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "只读本地验收记录；不访问校园网、Redis或模型。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationIssuePageResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "本机权限、参数或本地记录读取错误，不改变任务状态。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "本机权限、参数或本地记录读取错误，不改变任务状态。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "本机权限、参数或本地记录读取错误，不改变任务状态。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/validation/openapi.json": {
+      "get": {
+        "operationId": "getValidationOpenapi",
+        "responses": {
+          "200": {
+            "description": "本接口OpenAPI定义"
+          },
+          "403": {
+            "description": "仅本机访问"
+          },
+          "422": {
+            "description": "不接受查询参数"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ValidationIssuePage": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationIssueView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "unreadableCount": {
+            "title": "Unreadablecount",
+            "type": "integer"
+          },
+          "scanTruncated": {
+            "title": "Scantruncated",
+            "type": "boolean"
+          },
+          "notice": {
+            "title": "Notice",
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "offset",
+          "limit",
+          "unreadableCount",
+          "scanTruncated",
+          "notice"
+        ],
+        "title": "ValidationIssuePage",
+        "type": "object"
+      },
+      "ValidationIssueView": {
+        "additionalProperties": false,
+        "properties": {
+          "stage": {
+            "enum": [
+              "module6a",
+              "module6b"
+            ],
+            "title": "Stage",
+            "type": "string"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          },
+          "code": {
+            "enum": [
+              "CAMPUS_NETWORK_UNAVAILABLE",
+              "REDIS_CLIENT_MISSING",
+              "REDIS_SERVER_UNVERIFIED",
+              "LINUX_RUNTIME_UNVERIFIED"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "source": {
+            "enum": [
+              "platform",
+              "operator"
+            ],
+            "title": "Source",
+            "type": "string"
+          },
+          "state": {
+            "const": "waiting_external_verification",
+            "title": "State",
+            "type": "string"
+          },
+          "firstObservedAt": {
+            "format": "date-time",
+            "title": "Firstobservedat",
+            "type": "string"
+          },
+          "lastObservedAt": {
+            "format": "date-time",
+            "title": "Lastobservedat",
+            "type": "string"
+          },
+          "observationCount": {
+            "title": "Observationcount",
+            "type": "integer"
+          },
+          "evidenceSha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidencesha256"
+          }
+        },
+        "required": [
+          "stage",
+          "target",
+          "code",
+          "source",
+          "state",
+          "firstObservedAt",
+          "lastObservedAt",
+          "observationCount",
+          "evidenceSha256"
+        ],
+        "title": "ValidationIssueView",
+        "type": "object"
+      },
+      "ValidationIssuePageResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ValidationIssuePage"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "data",
+          "requestId"
+        ],
+        "title": "SuccessResponse[ValidationIssuePage]",
+        "type": "object"
+      },
+      "ErrorDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "details": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationIssue"
+            },
+            "title": "Details",
+            "type": "array"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorDetail",
+        "type": "object"
+      },
+      "ValidationIssue": {
+        "additionalProperties": false,
+        "properties": {
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "code"
+        ],
+        "title": "ValidationIssue",
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "error",
+          "requestId"
+        ],
+        "title": "ErrorResponse",
+        "type": "object"
+      }
+    }
+  }
+}

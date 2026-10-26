@@ -16,6 +16,9 @@ from backend.service.host_node.openapi_service import node_openapi
 from backend.schema.host_node.execution_schema import ExecutionAvailability, ExecutionCommand, ExecutionReceipt
 from backend.schema.host_node.execution_schema import StreamExecutionInput
 from backend.schema.host_node.upstream_schema import ExecutionManifest
+from backend.schema.monitoring.budget_schema import ConfirmQueriesStopped
+from pydantic import TypeAdapter
+from backend.schema.host_node.execution_schema import InvocationId
 from backend.service.host_node.input_service import ExecutionMaterial
 
 
@@ -233,3 +236,14 @@ def reconcile_execution(invocation_id):
 def cancel_execution(invocation_id):
     _executions();ApiSchema.model_validate(request.get_json())
     return _response(current_app.extensions["host_node_monitor"].cancel(invocation_id),ExecutionReceipt)
+
+
+@node_blueprint.post("/node/v1/admin/executions/<invocation_id>/monitor-budget/release")
+def confirm_monitor_stopped(invocation_id):
+    _service(admin=True)
+    _query(ApiSchema)
+    TypeAdapter(InvocationId).validate_python(invocation_id)
+    ConfirmQueriesStopped.model_validate(request.get_json())
+    monitor=current_app.extensions["host_node_monitor"]
+    monitor.executions.get(invocation_id)
+    return _response(monitor.confirm_query_stopped(invocation_id),ExecutionReceipt)

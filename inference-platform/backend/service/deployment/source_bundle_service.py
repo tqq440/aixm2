@@ -9,7 +9,7 @@ from backend.utils.files.source_archive import (
 )
 
 
-SOURCE_TREES = ("backend", "tests", "migrations", "requirements", "scripts", "docs", "frontend/src", "frontend/e2e", "frontend/public")
+SOURCE_TREES = ("backend", "tests", "migrations", "node-migrations", "requirements", "scripts", "docs", "examples", "frontend/src", "frontend/e2e", "frontend/public")
 ROOT_FILES = frozenset({"AGENTS.md", "README.md", "alembic.ini", "pytest.ini", "env.example", ".gitignore"})
 FRONTEND_FILES = frozenset({"package.json", "package-lock.json", "tsconfig.json", "vite.config.ts", "playwright.config.ts", "index.html", "env.example"})
 REFERENCE_FILES = frozenset({"AGENTS.md", "后端开发规范.md", "后端开发规范-项目补充约定.md"})

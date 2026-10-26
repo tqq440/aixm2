@@ -3295,6 +3295,38 @@
       "TaskMonitoringSnapshot": {
         "additionalProperties": false,
         "properties": {
+          "queryBudgetState": {
+            "anyOf": [
+              {
+                "enum": [
+                  "waiting",
+                  "querying",
+                  "release_pending",
+                  "uncertain"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Querybudgetstate"
+          },
+          "queryBudgetReason": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "pattern": "^[A-Z][A-Z0-9_]*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Querybudgetreason"
+          },
           "supported": {
             "anyOf": [
               {
